@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const Product = require('./app/Products/models/productModel');
+const MongoStore = require('connect-mongo');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const expressLayouts = require('express-ejs-layouts');
