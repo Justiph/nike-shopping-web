@@ -1,0 +1,74 @@
+{
+  "products": [
+    {
+      "name": "Nike C1TY 'Concrete'",
+      "img": "/assets/img-products/img1.png",
+      "price": 150,
+      "desc": "Nike C1TY is engineered to overcome anything the city throws your way. A mesh upper keeps the fit breathable, while the reinforced sides and toe box help protect your feet from the elements. This edition pulls colour inspiration from concrete—giving street style a whole new meaning.",
+      "gender": "MEN"
+    },
+    {
+      "name": "Nike P-6000",
+      "img": "/assets/img-products/img2.png",
+      "price": 175,
+      "desc": "A mash-up of past Pegasus sneakers, the P-6000 takes early-2000s running to modern heights. Featuring airy mesh and sporty lines, it's the perfect mix of head-turning looks and breathable comfort. Plus, its foam cushioning adds a lifted, athletics-inspired stance and unbelievable cushioning.",
+      "gender": "WOMEN"
+    },
+    {
+      "name": "Nike Court Vision Low Next Nature",
+      "img": "/assets/img-products/img3.png",
+      "price": 200,
+      "desc": "In love with the classic look of '80s basketball but have a thing for the fast-paced culture of today's game? Meet the Nike Court Vision Low Next Nature. Made from at least 20% recycled materials by weight, its crisp upper and stitched overlays are inspired by the days of hook-shots and tube socks. The padded collar and rubber outsole bring comfort and traction for your world.",
+      "gender": "KIDS"
+    },
+    {
+      "name": "Nike P-6000",
+      "img": "/assets/img-products/img4.png",
+      "price": 225,
+      "desc": "The Nike P-6000 draws on the 2006 Nike Air Pegasus, bringing you a mash-up of iconic style that's breathable, comfortable and evocative of that early-2000s vibe.",
+      "gender": "MEN"
+    },
+    {
+      "name": "Nike Cortez",
+      "img": "/assets/img-products/img5.png",
+      "price": 250,
+      "desc": "From athletics superstar to fashion phenom, the Cortez pairs retro appeal with modern comfort. We've updated the shape to give you extra room in the toe box and above your foot. Plus, a sponge-soft midsole and see-saw detailing on the outsole deliver the heritage vibes you know and love.",
+      "gender": "WOMEN"
+    },
+    {
+      "name": "Nike Cortez EasyOn",
+      "img": "/assets/img-products/img6.png",
+      "price": 275,
+      "desc": "How do you make a classic like the Cortez even better? Make it quick and easy to put on, of course. The lace area opens up wide so squirming feet can slip in easily. A hook-and-loop strap lets you lock in or adjust the fit fast. Plus, extra wiggle room in the toe box helps give little feet the space they need to feel comfortable.",
+      "gender": "KIDS"
+    },
+    {
+      "name": "Nike Dunk Low",
+      "img": "/assets/img-products/img7.png",
+      "price": 300,
+      "desc": "Created for the hardwood but taken to the streets, the '80s b-ball icon returns with perfectly sheened leather and lots of retro flair. The paisley Swoosh channels vintage vibes back onto the street, while the plush, low-cut collar lets you take your game anywhere—in comfort.",
+      "gender": "MEN"
+    },
+    {
+      "name": "Nike Revolution 7 EasyOn",
+      "img": "/assets/img-products/img8.png",
+      "price": 325,
+      "desc": "We loaded the Revolution 7 with the sort of soft cushioning and support that might change your running world. Stylish as ever, comfortable when the rubber meets the road and performance-driven for your desired pace, it's an evolution of a fan favourite that offers a soft, smooth ride. We added the quick-and-easy toggle system that makes putting these shoes on and taking them off a breeze.",
+      "gender": "WOMEN"
+    },
+    {
+      "name": "Nike Killshot 2 Leather",
+      "img": "/assets/img-products/img9.png",
+      "price": 350,
+      "desc": "Inspired by the original low-profile tennis shoes, the Nike Killshot 2 updates the upper with various textured leathers to create a fresh look. From soft suedes to smooth leathers with the perfect sheen, it's courtside attitude with a modern touch. To prove you're on top, the rubber gum sole adds the cherry on the bottom.",
+      "gender": "KIDS"
+    },
+    {
+      "name": "Nike Court Vision Low Next Nature",
+      "img": "/assets/img-products/img10.png",
+      "price": 375,
+      "desc": "In love with the classic look of '80s basketball but have a thing for the fast-paced culture of today's game? Meet the Court Vision Low. It features a smooth upper inspired by old-school sneakers, and a classic cupsole featured on some of the most iconic silhouettes of the past.",
+      "gender": "MEN"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+
+<div class="bg-gray-900 text-white min-h-screen p-3 md:p-6">
+    <!-- Include the carousel section -->
+    <%- include('carousels') %>
+    
+    <!-- Include the product list section -->
+    <%- include('product-list', { filteredData: filteredData, men, women, kid, searchQuery, gender,
+        size,
+        category,
+        price }) %>
+</div>
+
