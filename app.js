@@ -23,6 +23,9 @@ const contactRoutes = require('./app/Contact/routes/contactRoutes');
 app.use(express.static('src'));
 app.use(cookieParser());
 
+
+app.set('trust proxy', 1); // Trust the first proxy
+
 // Initialize passport middleware
 app.use(session({
   secret: 'your_secret_key', // Replace with a strong secret
@@ -33,7 +36,7 @@ app.use(session({
   }),
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' && process.env.USE_HTTPS === 'true',
     maxAge: 1000 * 60 * 60, // 1 hour
   },
 }));
