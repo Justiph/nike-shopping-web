@@ -27,6 +27,9 @@ app.use(session({
   secret: 'your_secret_key', // Replace with a strong secret
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.DB_URI, // MongoDB URI
+  }),
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
