@@ -9,7 +9,11 @@ exports.register = async (req, res) => {
   console.log("register", username, email, password, confirmPassword);
 
   if (password !== confirmPassword) {
-    return res.status(400).json({ message: "Passwords do not match" });
+    return res.status(400).render('Auth/register', {
+      title: 'Register',
+      error: "Passwords do not match",
+      formData: { username, email } // Pass form data back to prefill the form
+    });
   }
 
   try {
@@ -30,23 +34,32 @@ exports.register = async (req, res) => {
 
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
 
-  
-    
     // Redirect to login page after successful registration
-    return res.redirect('/auth/login');  // Redirect to login page
-
-    
+    return res.redirect('/auth/login');
   } catch (error) {
     if (error.code === 11000 && error.keyValue.username) {
-      return res.status(400).json({ message: "Username đã tồn tại" });
+      return res.status(400).render('Auth/register', {
+        title: 'Register',
+        error: "Username already exists",
+        formData: { email } // Prefill the email field only
+      });
     }
     if (error.code === 11000 && error.keyValue.email) {
-      return res.status(400).json({ message: "Email đã tồn tại" });
+      return res.status(400).render('Auth/register', {
+        title: 'Register',
+        error: "Email already exists",
+        formData: { username } // Prefill the username field only
+      });
     }
-    // Lỗi khác
-    res.status(500).json({ message: "Lỗi server: " + error.message });
+    // Handle other errors
+    return res.status(500).render('Auth/register', {
+      title: 'Register',
+      error: "Server error: " + error.message,
+      formData: { username, email }
+    });
   }
 };
+
 
 exports.login = async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
@@ -58,7 +71,7 @@ exports.login = async (req, res, next) => {
   
     if (!user) {
       console.log('No user found:', info);
-      return res.status(401).render('login', { 
+      return res.status(401).render('Auth/login', { 
         title: 'Login', 
         error: info.message 
       });
