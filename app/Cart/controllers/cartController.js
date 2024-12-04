@@ -112,7 +112,8 @@ exports.checkout = async (req, res) => {
 };
 
 exports.processCheckout = async (req, res) => {
-  const { paymentMethod, shippingMethod } = req.body;
+  const orderData = req.body;
+  console.log(orderData);
 
   try {
     const cart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
@@ -138,8 +139,13 @@ exports.processCheckout = async (req, res) => {
     cart.products = [];
     await cart.save();
 
+    orderData.date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
+
     // Redirect to order confirmation or success page
-    res.redirect('/cart/order/confirmation'); // Create a confirmation page for better UX
+    res.render('Checkout/order-confirmation', {
+      title: 'Order confirmation',
+      orderData,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error processing checkout');
