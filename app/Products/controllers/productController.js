@@ -45,7 +45,7 @@ exports.getShoppingPage = async (req, res) => {
       }
     }
 
-    console.log('Filter Conditions:', filterConditions);
+    //console.log('Filter Conditions:', filterConditions);
 
     const filteredData = await Product.find(filterConditions);
     const men = '/assets/men.png';
