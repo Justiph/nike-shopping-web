@@ -83,7 +83,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', homeRoutes);
 app.use(productRoutes);
 app.use('/auth', authRoutes);
-app.use(cartRoutes);
+app.use('/cart', cartRoutes);
 app.use(aboutRoutes);
 app.use(contactRoutes);
 

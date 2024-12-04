@@ -1,17 +1,17 @@
-<section class="flex gap-6 pt-12">
+<section class="flex flex-col lg:flex-row gap-6 pt-12 px-4 lg:px-0">
   <!-- Sidebar Filters -->
-  <aside class="w-1/4 p-6 bg-gray-800 rounded-lg shadow-lg border-white">
+  <aside class="w-full lg:w-1/4 bg-gray-800 rounded-lg shadow-lg border-white p-4 lg:sticky lg:top-6">
     <h3 class="text-white text-2xl mb-6 font-semibold border-b-2 border-gray-600 pb-3">Filters</h3>
     <form action="/shopping" method="GET">
       <!-- Filter: Gender -->
       <div class="mb-6">
-        <h4 class="text-white text-lg mb-2">Gender</h4>
-        <div class="flex flex-col gap-2">
+        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Gender</h4>
+        <div class="flex flex-col gap-2 ">
           <% ['MEN', 'WOMEN', 'KIDS'].forEach((option) => { %>
-            <label class="text-white flex items-center">
+            <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
               <input 
                 type="checkbox" 
-                class="mr-2" 
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
                 name="gender" 
                 value="<%= option %>" 
                 <%= gender && gender.includes(option) ? 'checked' : '' %> 
@@ -24,13 +24,13 @@
 
       <!-- Filter: Size -->
       <div class="mb-6">
-        <h4 class="text-white text-lg mb-2">Size</h4>
+        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Size</h4>
         <div class="flex flex-col gap-2">
           <% [40, 41, 42, 43, 44, 45].forEach((sizeOption) => { %>
-            <label class="text-white flex items-center">
+            <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
               <input 
                 type="checkbox" 
-                class="mr-2" 
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
                 name="size" 
                 value="<%= sizeOption %>" 
                 <%= size && size.includes(sizeOption.toString()) ? 'checked' : '' %> 
@@ -43,16 +43,16 @@
 
       <!-- Filter: Category -->
       <div class="mb-6">
-        <h4 class="text-white text-lg mb-2">Category</h4>
+        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Category</h4>
         <div class="flex flex-col gap-2">
           <% ['Running', 'Basketball', 'Lifestyle', 'Soccer'].forEach((categoryOption) => { %>
-            <label class="text-white flex items-center">
+            <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
               <input 
                 type="checkbox" 
-                class="mr-2" 
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
                 name="category" 
                 value="<%= categoryOption %>" 
-                <%= category === categoryOption ? 'checked' : '' %> 
+                <%= category && category.includes(categoryOption.toString()) ? 'checked' : '' %> 
               />
               <%= categoryOption %>
             </label>
@@ -62,7 +62,7 @@
 
       <!-- Filter: Price -->
       <div class="mb-6">
-        <h4 class="text-white text-lg mb-2">Price</h4>
+        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Price</h4>
         <div class="flex flex-col gap-2">
           <% [
               { label: 'Under $100', value: 'under100' },
@@ -70,13 +70,13 @@
               { label: '$200 - $300', value: '200to300' },
               { label: 'Over $300', value: 'over300' },
             ].forEach((priceOption) => { %>
-            <label class="text-white flex items-center">
+            <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
               <input 
                 type="checkbox" 
-                class="mr-2" 
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
                 name="price" 
                 value="<%= priceOption.value %>" 
-                <%= price === priceOption.value ? 'checked' : '' %> 
+                <%= price && price.includes(priceOption.value) ? 'checked' : '' %> 
               />
               <%= priceOption.label %>
             </label>
@@ -95,7 +95,7 @@
   </aside>
 
   <!-- Main Content -->
-  <main class="w-3/4 flex flex-col gap-12">
+  <main class="w-full lg:w-3/4 flex flex-col gap-12">
     <!-- Search Bar -->
     <div class="flex justify-center mb-12">
       <form action="/shopping" method="GET" class="w-1/2 flex border rounded-lg overflow-hidden shadow-md">
@@ -127,7 +127,7 @@
     </div>
 
     <!-- Product List -->
-    <section class="px-4">
+    <section class="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12">
       <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <% if (filteredData.length === 0) { %>
           <p class="text-center text-gray-500 col-span-full">No products found.</p>
@@ -157,6 +157,9 @@
             </div>
           <% }); %>
         <% } %>
+      </div>
+      <div class="w-full text-center">
+        <button type="button" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show more</button>
       </div>
     </section>
   </main>

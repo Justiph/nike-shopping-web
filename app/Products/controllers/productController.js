@@ -15,16 +15,37 @@ exports.getShoppingPage = async (req, res) => {
     }
 
     if (size) {
-      const sizeArray = Array.isArray(size) ? size : size.split(','); // Kiểm tra nếu size là mảng hoặc chuỗi
-      filterConditions.sizes = { $in: sizeArray }; // size là mảng, vì có thể chọn nhiều kích cỡ
+      const sizeArray = Array.isArray(size) ? size : size.split(','); 
+      filterConditions.sizes = { $in: sizeArray }; 
     }
 
-    if (price) {
-      if (price === 'under100') filterConditions.price = { $lt: 100 };
-      else if (price === '100to200') filterConditions.price = { $gte: 100, $lte: 200 };
-      else if (price === '200to300') filterConditions.price = { $gte: 200, $lte: 300 };
-      else if (price === 'over300') filterConditions.price = { $gt: 300 };
+    if (category) {
+      const categoryArray = Array.isArray(category) ? category : category.split(',');
+      filterConditions.category = { $in: categoryArray }; 
     }
+
+    //console.log('Price Query:', price);
+    if (price) {
+      const priceArray = Array.isArray(price) ? price : price.split(',');
+    
+      // Initialize an empty array to store price conditions
+      const priceConditions = [];
+    
+      // Iterate through each price range and push the corresponding filter condition
+      priceArray.forEach((range) => {
+        if (range === 'under100') priceConditions.push({ price: { $lt: 100 } });
+        else if (range === '100to200') priceConditions.push({ price: { $gte: 100, $lte: 200 } });
+        else if (range === '200to300') priceConditions.push({ price: { $gte: 200, $lte: 300 } });
+        else if (range === 'over300') priceConditions.push({ price: { $gt: 300 } });
+      });
+    
+      
+      if (priceConditions.length > 0) {
+        filterConditions.$or = priceConditions;
+      }
+    }
+
+    console.log('Filter Conditions:', filterConditions);
 
     const filteredData = await Product.find(filterConditions);
     const men = '/assets/men.png';
@@ -58,7 +79,7 @@ exports.getProductDetails = async (req, res) => {
       return res.status(404).send('Product not found');
     }
 
-    res.render('Shop/product-details', {title: 'product.name', product });
+    res.render('Shop/product-details', {title: `${product.name}`, product });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');

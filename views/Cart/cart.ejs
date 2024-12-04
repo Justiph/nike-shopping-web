@@ -1,9 +1,88 @@
+<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+  <div class="mx-auto  max-w-screen-xl px-4 2xl:px-0">
+    <% if (!user) { %>
+      <div class="min-h-screen items-center flex flex-col justify-center">
+      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white text-center">You need to log in to view your cart.</h1>
+      </div>
+    <% } else { %>
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl mb-6">Your Cart</h2>
+      <div class="lg:flex lg:gap-8">
+        <!-- Main Cart Section -->
+        <div class="w-full lg:w-2/3 space-y-6">
+          <% if (cart.products.length === 0) { %>
+            <p class="text-lg text-gray-700 dark:text-gray-400">Your cart is empty.</p>
+            <div class="min-h-screen items-center flex flex-col justify-center"></div>
+          <% } else { %>
+            <% cart.products.forEach((item) => { %>
+              <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="flex items-center justify-between">
+                  <!-- Product Image -->
+                  <!-- <a href="#" class="w-20">
+                    <img src="<%= item.productId.image || 'default-product.jpg' %>" alt="<%= item.productId.name %>" class="h-20 w-20 rounded-md">
+                  </a> -->
+                  <!-- Product Details -->
+                  <div class="flex-1 ml-4">
+                    <p class="text-base font-medium text-gray-900 dark:text-white"><%= item.productId.name %></p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Size: <%= item.size %></p>
+                    <p class="mt-2 text-base font-bold text-gray-900 dark:text-white">$<%= item.productId.price %></p>
+                  </div>
+                  <!-- Quantity Selector -->
+                  <div class="flex items-center">
+                    <form method="POST" action="/cart/update" class="flex items-center">
+                      <input type="hidden" name="productId" value="<%= item.productId._id %>">
+                      <input type="hidden" name="size" value="<%= item.size %>">
+                      <input type="hidden" name="quantity" value="<%= item.quantity - 1 %>">
+                      <button type="submit" class="h-8 w-8 border border-gray-300 bg-gray-100 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 rounded">-</button>
+                    </form>
+                    <p class="w-12 text-center text-gray-900 dark:text-white"><%= item.quantity %></p>
+                    <form method="POST" action="/cart/update" class="flex items-center">
+                      <input type="hidden" name="productId" value="<%= item.productId._id %>">
+                      <input type="hidden" name="size" value="<%= item.size %>">
+                      <input type="hidden" name="quantity" value="<%= item.quantity + 1 %>">
+                      <button type="submit" class="h-8 w-8 border border-gray-300 bg-gray-100 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 rounded">+</button>
+                    </form>
+                  </div>
+                  <!-- Remove Button -->
+                  <form method="POST" action="/cart/remove" class="ml-4">
+                    <input type="hidden" name="productId" value="<%= item.productId._id %>">
+                    <input type="hidden" name="size" value="<%= item.size %>">
+                    <button type="submit" class="text-sm font-medium text-red-600 dark:text-red-500">Remove</button>
+                  </form>
+                </div>
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
 
-  <div class='flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white'>
-    <% if (user) { %>
-        <h1>Welcome to your cart, <%= user.username %></h1>
-        <!-- Display cart items here -->
-      <% } else { %>
-        <h1>You need to log in to view your cart.</h1>
-      <% } %>
+        <% if (cart.products.length > 0) { %>
+        <!-- Order Summary Section -->
+        <div class="w-full lg:w-1/3 mt-6 lg:mt-0 space-y-6">
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <p class="text-xl font-semibold text-gray-900 dark:text-white">Order Summary</p>
+            <dl class="mt-4">
+              <div class="flex justify-between">
+                <dt class="text-base text-gray-500 dark:text-gray-400">Original price</dt>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">$<%= cart.products.reduce((total, item) => total + item.quantity * item.productId.price, 0).toFixed(2) %></dd>
+              </div>
+              <div class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2">
+                <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                <dd class="text-base font-bold text-gray-900 dark:text-white">$<%= cart.products.reduce((total, item) => total + item.quantity * item.productId.price, 0).toFixed(2) %></dd>
+              </div>
+            </dl>
+            <form method="GET" action="/cart/checkout" class="mt-4">
+              <button class="w-full bg-green-500 text-white px-4 py-2 rounded-lg">Proceed to Checkout</button>
+            </form>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <form>
+              <label for="voucher" class="block text-sm font-medium text-gray-900 dark:text-white">Do you have a voucher or gift card?</label>
+              <input type="text" id="voucher" class="mt-2 block w-full rounded-md border-gray-300 bg-gray-50 p-2.5 dark:border-gray-600 dark:bg-gray-700 dark:text-white" placeholder="Enter code">
+              <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 mt-4 rounded-lg">Apply Code</button>
+            </form>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    <% } %>
   </div>
+</section>

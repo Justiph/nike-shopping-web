@@ -1,23 +1,126 @@
-
-  
-  <div class="container mx-auto p-4 bg-white">
-
-    <div class="max-w-3xl mx-auto p-5">
-      <h1 class="text-3xl text-black font-bold mb-4"><%= product.name %></h1>
+<div class="container mx-auto p-4 bg-white">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Left: Product Image -->
+    <div class="p-4">
       <img 
-          src="<%= product.img %>"
-          alt={product.name} 
-          class="w-full h-auto rounded-lg mb-4 shadow-lg" 
+        src="<%= product.img %>" 
+        alt="<%= product.name %>" 
+        class="w-full h-auto rounded-lg shadow-lg mb-4"
       />
-      <p class="text-lg text-gray-700 mb-2"><%= product.desc %></p>
-      <p class="text-xl font-bold text-gray-800 mb-2">Price: $<%= product.price %> USD</p>
-      <p class="text-md text-gray-600">Gender: <span class="font-semibold"><%= product.gender %></span></p>
-      <div class="mt-4">
-          <button class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-200">
-              Add to Cart
-          </button>
-      </div>
     </div>
 
-  </div>
+    <!-- Right: Product Details -->
+    <div class="p-4">
+      <h1 class="text-4xl font-semibold text-gray-900"><%= product.name %></h1>
+      
+      <p class="text-2xl font-extrabold text-gray-800 mb-2">Price: $<%= product.price %> USD</p>
+      <p class="text-md text-gray-600 mb-4">Gender: <span class="font-semibold"><%= product.gender %></span></p>
+      
+      <% if (product.sizes && product.sizes.length > 0) { %>
+        <!-- Size Selection -->
+        <div class="mt-4 text-black">
+          <label class="block font-semibold text-gray-800 mb-2">Select Size:</label>
+          <div class="flex gap-2">
+            <% product.sizes.forEach(size => { %>
+              <button 
+                type="button" 
+                class="px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200 focus:bg-gray-400 focus:text-white transition"
+                data-size="<%= size %>"
+                aria-label="Select size <%= size %>"
+              >
+                <%= size %>
+              </button>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
 
+      <!-- Quantity Selection
+      <div class="mt-4 text-black">
+        <label class="block font-semibold text-gray-800 mb-2">Quantity:</label>
+        <div class="flex items-center gap-2">
+          <button 
+            type="button" 
+            class="px-3 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200 focus:bg-gray-400 focus:text-white transition"
+            id="decreaseQty"
+          >
+            -
+          </button>
+          <input 
+            type="number" 
+            name="quantity" 
+            id="quantity" 
+            value="1" 
+            min="1" 
+            class="w-16 text-center border border-gray-300 rounded-lg"
+            readonly
+          />
+          <button 
+            type="button" 
+            class="px-3 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-200 focus:bg-gray-400 focus:text-white transition"
+            id="increaseQty"
+          >
+            +
+          </button>
+        </div>
+      </div> -->
+
+      <!-- Add to Cart Form -->
+      <form action="/cart/add" method="POST" class="mt-4" id="addToCartForm">
+        <input type="hidden" name="productId" value="<%= product._id %>" />
+        <!-- Hidden input to hold the selected size -->
+        <input type="hidden" name="size" id="selectedSize" />
+        <button 
+          type="submit" 
+          class="bg-green-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-600 transition duration-200"
+        >
+          Add to Cart
+        </button>
+      </form>
+
+      <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+
+      <p class="text-lg text-gray-700 mb-4"><%= product.desc %></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // JavaScript to handle size selection, quantity adjustment, and form validation
+  document.querySelectorAll("[data-size]").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll("[data-size]").forEach(btn => btn.classList.remove("bg-gray-400", "text-white"));
+      button.classList.add("bg-gray-400", "text-white");
+
+      // Set the selected size to the hidden input field
+      const selectedSize = button.getAttribute("data-size");
+      document.getElementById("selectedSize").value = selectedSize;
+    });
+  });
+
+  // const quantityInput = document.getElementById("quantity");
+  // document.getElementById("decreaseQty").addEventListener("click", () => {
+  //   if (quantityInput.value > 1) quantityInput.value--;
+  // });
+  // document.getElementById("increaseQty").addEventListener("click", () => {
+  //   quantityInput.value++;
+  // });
+
+  // Form validation before submission (check if a size is selected)
+  document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("addToCartForm");
+  if (form) {
+    form.addEventListener("submit", (event) => {
+      const selectedSize = document.getElementById("selectedSize").value;
+      console.log("Form submitted with size:", selectedSize);
+      if (!selectedSize) {
+        alert("Please select a size before adding to cart.");
+        event.preventDefault(); // Prevent form submission
+      }
+    });
+  } else {
+    console.error("Form element #addToCartForm not found!");
+  }
+});
+
+</script>

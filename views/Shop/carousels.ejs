@@ -7,6 +7,7 @@
     </div>
 </div>
 
+<!-- Slick Carousel Configuration -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 <link
@@ -29,7 +30,15 @@
             slidesToShow: 1,
             slidesToScroll: 1,
             autoplay: true,
-            autoplaySpeed: 7000,
+            autoplaySpeed: 5000,
+            responsive: [
+                {
+                    breakpoint: 768, // Adjust for tablets
+                    settings: {
+                        arrows: false, // Remove arrows on smaller screens
+                    },
+                },
+            ],
         });
     });
 </script>
