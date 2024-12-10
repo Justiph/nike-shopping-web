@@ -2,7 +2,9 @@ const Product = require('../models/productModel');
 
 exports.getShoppingPage = async (req, res) => {
   try {
-    const { searchQuery, gender, size, category, price } = req.query;
+    const { searchQuery, gender, size, category, price, page = 1 } = req.query;
+    const ITEMS_PER_PAGE = 8;
+
     let filterConditions = {};
 
     if (searchQuery) {
@@ -46,8 +48,21 @@ exports.getShoppingPage = async (req, res) => {
     }
 
     //console.log('Filter Conditions:', filterConditions);
+    const totalItems = await Product.countDocuments(filterConditions);
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    const filteredData = await Product.find(filterConditions)
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE);
 
-    const filteredData = await Product.find(filterConditions);
+    if (req.xhr) {
+      // Respond with JSON for AJAX requests
+      return res.json({
+        products: filteredData,
+        totalPages,
+        currentPage: Number(page),
+      });
+    }
+    
     const men = '/assets/men.png';
     const women = '/assets/women.png';
     const kid = '/assets/kids.png';
@@ -55,6 +70,8 @@ exports.getShoppingPage = async (req, res) => {
     res.render('Shop/main-shopping', {
       title: 'Shop',
       filteredData,
+      totalPages,
+      currentPage: Number(page),
       men,
       women,
       kid,

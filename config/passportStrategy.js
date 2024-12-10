@@ -6,7 +6,7 @@ const User = require('../app/Auth/models/userModel');
 // Configure Passport Local Strategy
 passport.use(
   new LocalStrategy({usernameField: "email"}  ,async (email, password, done) => {
-    console.log(`Authenticating user: ${email}`);
+    //console.log(`Authenticating user: ${email}`);
     try {
       const user = await User.findOne({ email });
       if (!user) {
@@ -20,7 +20,7 @@ passport.use(
         return done(null, false, { message: 'Invalid password.' });
       }
 
-      console.log('User authenticated successfully:', user.username);
+      //console.log('User authenticated successfully:', user.username);
       return done(null, user);
     } catch (err) {
       console.error('Error during authentication:', err);
