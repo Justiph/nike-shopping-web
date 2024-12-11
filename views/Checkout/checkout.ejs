@@ -1,27 +1,27 @@
-<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+<section class="py-8 antialiased bg-gray-900 md:py-16">
   <form action="/cart/checkout" method="POST" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
     <div class="lg:flex lg:gap-16">
       
       <!-- Left: Delivery Details and Payment Method -->
       <div class="lg:w-1/2">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Delivery Details</h2>
+        <h2 class="text-xl font-semibold text-white sm:text-2xl">Delivery Details</h2>
         
         <div class="space-y-4 mt-6">
           <!-- Delivery Details Form -->
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label for="your_name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Your name</label>
-              <input type="text" id="your_name" name="name" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="Bonnie Green" required />
+              <label for="your_name" class="mb-2 block text-sm font-medium text-white">Your name</label>
+              <input type="text" id="your_name" name="name" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="Bonnie Green" required />
             </div>
 
             <div>
-              <label for="your_email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Your email*</label>
-              <input type="email" id="your_email" name="email" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="name@flowbite.com" required />
+              <label for="your_email" class="mb-2 block text-sm font-medium text-white">Your email*</label>
+              <input type="email" id="your_email" name="email" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="name@flowbite.com" required />
             </div>
 
             <div>
-              <label for="select-country-input-3" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Country*</label>
-              <select id="select-country-input-3" name="country" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+              <label for="select-country-input-3" class="mb-2 block text-sm font-medium text-white">Country*</label>
+              <select id="select-country-input-3" name="country" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
                 <option selected>United States</option>
                 <option value="AU">Australia</option>
                 <option value="FR">France</option>
@@ -31,8 +31,8 @@
             </div>
 
             <div>
-              <label for="select-city-input-3" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">City*</label>
-              <select id="select-city-input-3" name="city" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
+              <label for="select-city-input-3" class="mb-2 block text-sm font-medium text-white">City*</label>
+              <select id="select-city-input-3" name="city" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
                 <option selected>San Francisco</option>
                 <option value="NY">New York</option>
                 <option value="LA">Los Angeles</option>
@@ -42,45 +42,45 @@
             </div>
 
             <div>
-              <label for="phone-input-3" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Phone Number*</label>
-              <input type="text" id="phone-input-3" name="phone" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="123-456-7890" required />
+              <label for="phone-input-3" class="mb-2 block text-sm font-medium text-white">Phone Number*</label>
+              <input type="text" id="phone-input-3" name="phone" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="123-456-7890" required />
             </div>
 
             <div>
-              <label for="company_name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Company name</label>
-              <input type="text" id="company_name" name="company" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="Flowbite LLC" required />
+              <label for="company_name" class="mb-2 block text-sm font-medium text-white">Company name</label>
+              <input type="text" id="company_name" name="company" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="Flowbite LLC" required />
             </div>
 
             <div>
-              <label for="vat_number" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">VAT number</label>
-              <input type="text" id="vat_number" name="vat" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" placeholder="DE42313253" required />
+              <label for="vat_number" class="mb-2 block text-sm font-medium text-white">VAT number</label>
+              <input type="text" id="vat_number" name="vat" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="DE42313253" required />
             </div>
           </div>
         </div>
 
         <div class="space-y-4 mt-8">
-          <h3 class="block text-sm font-medium text-gray-900 dark:text-white">Delivery Method</h3>
+          <h3 class="block text-sm font-medium text-white">Delivery Method</h3>
           <div class="space-y-4">
-            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+            <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
               <div class="flex items-start">
                 <div class="flex h-5 items-center">
-                  <input id="dhl" aria-describedby="dhl-text" type="radio" name="deliveryMethod" value="DHL Fast Delivery" class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked />
+                  <input id="dhl" aria-describedby="dhl-text" type="radio" name="deliveryMethod" value="DHL Fast Delivery" class="h-4 w-4 text-primary-600 focus:ring-2 focus:ring-primary-600 border-gray-600 bg-gray-700 ring-offset-gray-800" checked />
                 </div>
                 <div class="ms-4 text-sm">
-                  <label for="dhl" class="font-medium leading-none text-gray-900 dark:text-white">DHL Fast Delivery</label>
-                  <p id="dhl-text" class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">Next day delivery - $15</p>
+                  <label for="dhl" class="font-medium leading-none text-white">DHL Fast Delivery</label>
+                  <p id="dhl-text" class="mt-1 text-xs font-normal text-gray-400">Next day delivery - $15</p>
                 </div>
               </div>
             </div>
 
-            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+            <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
               <div class="flex items-start">
                 <div class="flex h-5 items-center">
-                  <input id="fedex" aria-describedby="fedex-text" type="radio" name="deliveryMethod" value="FedEx Free Deliver" class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+                  <input id="fedex" aria-describedby="fedex-text" type="radio" name="deliveryMethod" value="FedEx Free Deliver" class="h-4 w-4 text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" />
                 </div>
                 <div class="ms-4 text-sm">
-                  <label for="fedex" class="font-medium leading-none text-gray-900 dark:text-white">FedEx Free Delivery</label>
-                  <p id="fedex-text" class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">Delivery in a few days</p>
+                  <label for="fedex" class="font-medium leading-none text-white">FedEx Free Delivery</label>
+                  <p id="fedex-text" class="mt-1 text-xs font-normal text-gray-400">Delivery in a few days</p>
                 </div>
               </div>
             </div>
@@ -89,27 +89,27 @@
 
         <!-- Payment Method -->
         <div class="space-y-4 mt-8">
-          <h3 class="block text-sm font-medium text-gray-900 dark:text-white">Payment Method</h3>
-          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+          <h3 class="block text-sm font-medium text-white">Payment Method</h3>
+          <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
             <div class="flex items-start">
               <div class="flex h-5 items-center">
-                <input id="credit-card" aria-describedby="credit-card-text" type="radio" name="paymentMethod" value="Credit card" class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" checked />
+                <input id="credit-card" aria-describedby="credit-card-text" type="radio" name="paymentMethod" value="Credit card" class="h-4 w-4 text-primary-600 focus:ring-2  border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" checked />
               </div>
               <div class="ms-4 text-sm">
-                <label for="credit-card" class="font-medium leading-none text-gray-900 dark:text-white">Credit Card</label>
-                <p id="credit-card-text" class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">Pay with your credit card</p>
+                <label for="credit-card" class="font-medium leading-none text-white">Credit Card</label>
+                <p id="credit-card-text" class="mt-1 text-xs font-normal text-gray-400">Pay with your credit card</p>
               </div>
             </div>
           </div>
 
-          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+          <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
             <div class="flex items-start">
               <div class="flex h-5 items-center">
-                <input id="paypal" aria-describedby="paypal-text" type="radio" name="paymentMethod" value="PayPal" class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+                <input id="paypal" aria-describedby="paypal-text" type="radio" name="paymentMethod" value="PayPal" class="h-4 w-4 text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" />
               </div>
               <div class="ms-4 text-sm">
-                <label for="paypal" class="font-medium leading-none text-gray-900 dark:text-white">PayPal</label>
-                <p id="paypal-text" class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">Pay using PayPal</p>
+                <label for="paypal" class="font-medium leading-none text-white">PayPal</label>
+                <p id="paypal-text" class="mt-1 text-xs font-normal text-gray-400">Pay using PayPal</p>
               </div>
             </div>
           </div>
@@ -118,12 +118,12 @@
 
       <!-- Right: Order Summary -->
       <div class="lg:w-1/2 mt-8 lg:mt-0">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Order Summary</h2>
+        <h2 class="text-xl font-semibold text-white sm:text-2xl">Order Summary</h2>
 
         <div class="mt-6 sm:mt-8">
-          <div class="relative overflow-x-auto border-b border-gray-200 dark:border-gray-800">
-            <table class="w-full text-left font-medium text-gray-900 dark:text-white md:table-fixed">
-              <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+          <div class="relative overflow-x-auto border-b border-gray-800">
+            <table class="w-full text-left font-medium text-white md:table-fixed">
+              <tbody class="divide-y divide-gray-800">
                 <% cart.products.forEach(item => { %>
                 <tr>
                   <td class="whitespace-nowrap py-4 md:w-[384px]">
@@ -136,9 +136,9 @@
                     </div>
                   </td>
 
-                  <td class="p-4 text-base font-normal text-gray-900 dark:text-white">x<%= item.quantity %></td>
+                  <td class="p-4 text-base font-normal text-white">x<%= item.quantity %></td>
 
-                  <td class="p-4 text-right text-base font-bold text-gray-900 dark:text-white">$<%= (item.productId.price * item.quantity).toFixed(2) %></td>
+                  <td class="p-4 text-right text-base font-bold text-white">$<%= (item.productId.price * item.quantity).toFixed(2) %></td>
                 </tr>
                 <% }) %>
               </tbody>
@@ -146,48 +146,48 @@
           </div>
 
           <div class="mt-4 space-y-6">
-            <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Order Summary</h4>
+            <h4 class="text-xl font-semibold text-white">Order Summary</h4>
 
             <div class="space-y-4">
               <div class="space-y-2">
                 <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-gray-500 dark:text-gray-400">Original price</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">$<%= cart.products.reduce((sum, item) => sum + item.productId.price * item.quantity, 0).toFixed(2) %></dd>
+                  <dt class="text-gray-400">Original price</dt>
+                  <dd class="text-base font-medium text-white">$<%= cart.products.reduce((sum, item) => sum + item.productId.price * item.quantity, 0).toFixed(2) %></dd>
                 </dl>
 
                 <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-gray-500 dark:text-gray-400">Savings</dt>
+                  <dt class="text-gray-400">Savings</dt>
                   <dd class="text-base font-medium text-green-500">-$0.00</dd>
                 </dl>
 
                 <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-gray-500 dark:text-gray-400">Store Pickup</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                  <dt class="text-gray-400">Store Pickup</dt>
+                  <dd class="text-base font-medium text-white">$0</dd>
                 </dl>
 
                 <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-gray-500 dark:text-gray-400">Tax</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                  <dt class="text-gray-400">Tax</dt>
+                  <dd class="text-base font-medium text-white">$0</dd>
                 </dl>
               </div>
 
-              <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                <dt class="text-lg font-bold text-gray-900 dark:text-white">Total</dt>
-                <dd class="text-lg font-bold text-gray-900 dark:text-white">$<%= cart.products.reduce((sum, item) => sum + item.productId.price * item.quantity, 0).toFixed(2) %></dd>
+              <dl class="flex items-center justify-between gap-4 border-t pt-2 border-gray-700">
+                <dt class="text-lg font-bold text-white">Total</dt>
+                <dd class="text-lg font-bold text-white">$<%= cart.products.reduce((sum, item) => sum + item.productId.price * item.quantity, 0).toFixed(2) %></dd>
               </dl>
             </div>
 
             <div class="flex items-start sm:items-center">
-              <input id="terms-checkbox-2" type="checkbox" value="" class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" required />
-              <label for="terms-checkbox-2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                I agree with the <a href="#" class="text-primary-700 underline hover:no-underline dark:text-primary-500">Terms and Conditions</a> of use of the marketplace
+              <input id="terms-checkbox-2" type="checkbox" value="" class="h-4 w-4 rounded text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" required />
+              <label for="terms-checkbox-2" class="ms-2 text-sm font-medium text-gray-300">
+                I agree with the <a href="#" class="underline hover:no-underline text-primary-500">Terms and Conditions</a> of use of the marketplace
               </label>
             </div>
 
             <div class="gap-4 sm:flex sm:items-center">
-              <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800"><a href="/shopping">Return to Shopping</a></button>
+              <button type="button" class="w-full rounded-lg border px-5 py-2.5 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 border-gray-600 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-gray-700 focus:ring-offset-gray-800"><a href="/shopping">Return to Shopping</a></button>
 
-              <button type="submit" class="bg-blue-500 mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">Send the order</button>
+              <button type="submit" class="bg-blue-500 mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 sm:mt-0">Send the order</button>
             </div>
           </div>
         </div>
