@@ -45,7 +45,7 @@
         <div class="summary-wrapper w-full lg:w-1/3 mt-6 lg:mt-0 space-y-6">
           <div class="rounded-lg border p-4 shadow-sm border-gray-700 bg-gray-800">
             <p class="text-xl font-semibold text-white">Order Summary</p>
-            <dl class="mt-4">
+            <dl class="mt-4 space-y-2">
               <div class="flex justify-between">
                 <dt class="text-base text-gray-400">Original price</dt>
                 <dd class="text-base font-medium text-white original-price">$<%= cart.products.reduce((total, item) => total + item.quantity * item.productId.price, 0).toFixed(2) %></dd>
@@ -60,9 +60,9 @@
             </form>
           </div>
           <div class="rounded-lg border p-4 shadow-sm border-gray-700 bg-gray-800">
-            <form>
+            <form class=""space-y-2>
               <label for="voucher" class="block text-sm font-medium text-white">Do you have a voucher or gift card?</label>
-              <input type="text" id="voucher" class="mt-2 block w-full rounded-md p-2.5 border-gray-600 bg-gray-700 dark:text-white" placeholder="Enter code">
+              <input type="text" id="voucher" class="mt-2 block w-full rounded-md p-2.5 border-gray-600 bg-gray-700 text-white" placeholder="Enter code">
               <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 mt-4 rounded-lg">Apply Code</button>
             </form>
           </div>
