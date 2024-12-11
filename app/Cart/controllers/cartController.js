@@ -40,7 +40,7 @@ exports.addToCart = async (req, res) => {
     //console.log(`Cart: ${cart.products}`);
 
     await cart.save();
-    console.log('Cart updated successfully');
+    //console.log('Cart updated successfully');
     res.redirect('/cart'); // Stay on product page
   } catch (err) {
     console.error(err);
@@ -50,47 +50,90 @@ exports.addToCart = async (req, res) => {
 
 exports.updateCartItem = async (req, res) => {
   const { productId, size, quantity } = req.body;
+  //console.log('Request body:', req.body);
+
+  // Validate input
+  if (!productId || !size || isNaN(quantity)) {
+    return res.status(400).json({ success: false, message: "Invalid update input data" });
+  }
+
   try {
     const cart = await Cart.findOne({ userId: req.user._id });
-    if (cart) {
-      // Find the product in the cart
-      const productIndex = cart.products.findIndex(
-        (p) => p.productId.toString() === productId && p.size === size
-      );
 
-      if (productIndex !== -1) {
-        if (quantity <= 0) {
-          // Remove the product if quantity is <= 0
-          cart.products.splice(productIndex, 1);
-        } else {
-          // Update the quantity if > 0
-          cart.products[productIndex].quantity = quantity;
-        }
-        await cart.save();
-      }
+    if (!cart) {
+      return res.status(404).json({ success: false, message: "Cart not found" });
     }
-    res.redirect('/cart');
+
+    // Find the product in the cart
+    const productIndex = cart.products.findIndex(
+      (p) => p.productId.toString() === productId && p.size === size
+    );
+
+    if (productIndex === -1) {
+      return res.status(404).json({ success: false, message: "Product not found in cart" });
+    }
+
+    // Calculate the new quantity
+    const newQuantity = cart.products[productIndex].quantity + parseInt(quantity, 10);
+
+    if (newQuantity <= 0) {
+      // Remove the product if quantity becomes zero or negative
+      cart.products.splice(productIndex, 1);
+    } else {
+      // Update the product quantity
+      cart.products[productIndex].quantity = newQuantity;
+    }
+
+    // Save the updated cart
+    await cart.save();
+
+    // Populate product information in the updated cart
+    const updatedCart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
+
+    res.json({ success: true, cart: updatedCart});
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error updating cart');
+    console.error("Error updating cart:", err);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
 
 exports.removeFromCart = async (req, res) => {
   const { productId, size } = req.body;
+
+  // Validate input
+  if (!productId || !size) {
+    return res.status(400).json({ success: false, message: "Invalid remove input data" });
+  }
+
   try {
     const cart = await Cart.findOne({ userId: req.user._id });
-    if (cart) {
-      cart.products = cart.products.filter(
-        (p) => !(p.productId.toString() === productId && p.size === size)
-      );
-      await cart.save();
+
+    if (!cart) {
+      return res.status(404).json({ success: false, message: "Cart not found" });
     }
-    res.redirect('/cart');
+
+    // Filter out the product to remove
+    const updatedProducts = cart.products.filter(
+      (p) => !(p.productId.toString() === productId && p.size === size)
+    );
+
+    if (updatedProducts.length === cart.products.length) {
+      return res.status(404).json({ success: false, message: "Product not found in cart" });
+    }
+
+    cart.products = updatedProducts;
+
+    // Save the updated cart
+    await cart.save();
+    
+    // Populate product information in the updated cart
+    const updatedCart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
+
+    res.json({ success: true, cart: updatedCart});
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Error removing from cart');
+    console.error("Error removing from cart:", err);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 

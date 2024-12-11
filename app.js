@@ -9,6 +9,8 @@ const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const passport = require('./config/passportStrategy');
+const multer = require('multer');
+const upload = multer();
 const app = express();
 
 // Routes
@@ -42,7 +44,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(upload.none());
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
