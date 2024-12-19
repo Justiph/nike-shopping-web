@@ -136,7 +136,7 @@
             <div class="flex flex-col p-5 bg-[#222933] rounded-lg shadow-lg hover:shadow-2xl transition-shadow transform hover:-translate-y-1">
               <div class="flex justify-center items-center h-64 w-full overflow-hidden rounded-lg mb-4">
                 <img 
-                  src="<%= product.img %>" 
+                  src="<%= product.img[0] %>" 
                   alt="<%= product.name %>" 
                   class="h-full object-cover"
                 />
@@ -251,7 +251,7 @@
             <div class="flex flex-col p-5 bg-[#222933] rounded-lg shadow-lg hover:shadow-2xl transition-shadow transform hover:-translate-y-1">
                 <div class="flex justify-center items-center h-64 w-full overflow-hidden rounded-lg mb-4">
                   <img 
-                    src="${product.img}" 
+                    src="${product.img[0]}" 
                     alt="${product.name}" 
                     class="h-full object-cover"
                   />

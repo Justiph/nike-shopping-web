@@ -54,6 +54,8 @@ exports.getShoppingPage = async (req, res) => {
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
+    //console.log('Data:', filteredData);
+
     if (req.xhr) {
       // Respond with JSON for AJAX requests
       return res.json({

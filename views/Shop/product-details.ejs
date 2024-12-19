@@ -1,12 +1,16 @@
 <div class="container mx-auto p-4 bg-white">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Left: Product Image -->
-    <div class="p-4">
-      <img 
-        src="<%= product.img %>" 
-        alt="<%= product.name %>" 
-        class="w-full h-auto rounded-lg shadow-lg mb-4"
-      />
+    <div class="w-full px-4 mb-8">
+        <img src="<%= product.img[0] %>" alt="<%= product.name %>"
+                    class="w-full h-auto rounded-lg shadow-md mb-4" id="mainImage">
+        <div class="flex gap-4 py-4 justify-center overflow-x-auto">
+          <% product.img.forEach(function(thumbnail, index) { %>
+            <img src="<%= thumbnail %>" alt="Thumbnail 1"
+                          class="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300 thumbnail"
+            >
+          <% }); %>
+        </div>
     </div>
 
     <!-- Right: Product Details -->
@@ -85,7 +89,19 @@
   </div>
 </div>
 
+<%- include('review') %>
+
+
+
 <script>
+  const mainImage = document.getElementById('mainImage');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', function() {
+      mainImage.src = this.src;
+    });
+  });
   // JavaScript to handle size selection, quantity adjustment, and form validation
   document.querySelectorAll("[data-size]").forEach(button => {
     button.addEventListener("click", () => {
