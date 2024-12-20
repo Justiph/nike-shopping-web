@@ -16,6 +16,7 @@ const app = express();
 // Routes
 const homeRoutes = require('./app/Home/routes/homeRoutes');
 const productRoutes = require('./app/Products/routes/productRoutes');
+const reviewRoutes = require('./app/Review/routes/reviewRoutes');
 const authRoutes = require('./app/Auth/routes/authRoutes');
 const cartRoutes = require('./app/Cart/routes/cartRoutes');
 const aboutRoutes = require('./app/About/routes/aboutRoutes');
@@ -84,6 +85,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/', homeRoutes);
 app.use(productRoutes);
+app.use('/review', reviewRoutes);
 app.use('/auth', authRoutes);
 app.use('/cart', cartRoutes);
 app.use(aboutRoutes);

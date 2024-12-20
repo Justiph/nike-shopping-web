@@ -14,7 +14,8 @@ router.post('/checkout', ensureAuth, cartController.processCheckout);
 
 router.get('/order/confirmation', ensureAuth, (req, res) => {
     res.render('Checkout/order-confirmation', { title: 'Order Confirmation' });
-  });
+  }
+);
   
 
 module.exports = router;
