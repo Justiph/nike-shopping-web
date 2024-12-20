@@ -188,15 +188,24 @@
       event.preventDefault(); // Prevent form from refreshing the page
 
       const formData = new FormData(form);
+      console.log('Form Data:', [...formData.entries()]);
 
       // Send AJAX POST request using Fetch API
       fetch('/review/add', {
         method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest', // ✅ This sets req.xhr = true
+          'Accept': 'application/json',         // ✅ This makes req.headers.accept include "json"
+        },
         body: formData
       })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.status === 401) {
+          //console.log('User is not authenticated. Redirecting to login page...');
+          window.location.href = '/auth/login'; // Redirect to login page
+          return Promise.reject('Unauthorized'); // Explicit rejection
+        } else if (!response.ok) {
+          throw new Error('Something went wrong.');
         }
         return response.json();
       })
@@ -210,6 +219,7 @@
         }
       })
       .catch(error => {
+        if (error === 'Unauthorized') return; // Don't alert or log the error
         console.error('Error:', error);
         alert('An error occurred. Please try again.');
       });

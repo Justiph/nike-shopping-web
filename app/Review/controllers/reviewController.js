@@ -2,9 +2,9 @@ const Review = require('../models/reviewModel');
 
 // Add a review to a product
 exports.addReview = async (req, res) => {
-    const { productId, description } = req.body;
+    const { productId, rating, description } = req.body;
     const userId = req.user._id; // Assuming you have user authentication in place
-    const rating = req.body.rating || 5; 
+    console.log('Received Data:', { productId, rating, description, userId });
     try {
         const review = await Review.create({ productId, userId, rating, description });
         //console.log('Review: ', review);
