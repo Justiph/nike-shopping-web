@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
       { expiresIn: "72h" }
     );
 
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    //res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
 
     // Redirect to login page after successful registration
     return res.redirect('/auth/login');
@@ -63,28 +63,39 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
-    //console.log('Authenticate callback:', { err, user, info });
-  
     if (err) {
-      return next(err);
+      console.error('Error during authentication:', err);
+      if (req.xhr) {
+        return res.status(500).json({ error: "Internal server error" });
+      }
+      //return next(err);
     }
-  
+
     if (!user) {
       console.log('No user found:', info);
-      return res.status(401).render('Auth/login', { 
-        title: 'Login', 
-        error: info.message 
-      });
+      if (req.xhr) {
+        return res.status(401).json({ error: info.message });
+      }
+      // return res.status(401).render('Auth/login', { 
+      //   title: 'Login', 
+      //   error: info.message 
+      // });
     }
-  
+
     req.login(user, (err) => {
       if (err) {
         console.error('Error during login:', err);
+        if (req.xhr) {
+          return res.status(500).json({ error: "Internal server error" });
+        }
         return next(err);
       }
-  
+
       console.log('Login successful');
-      return res.redirect('/');
+      if (req.xhr) {
+        return res.status(200).json({ success: true, redirectUrl: '/' });
+      }
+      //return res.redirect('/');
     });
   })(req, res, next);
 };
@@ -100,9 +111,16 @@ exports.renderLoginPage = (req, res) => {
 exports.logout = (req, res) => {
   req.logout((err) => {
     if (err) {
-      console.error('Logout Error:', err);
-      return res.status(500).send('Logout failed');
+      return next(err);
     }
-    res.redirect('/auth/login'); // Redirect to login page after logout
+
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Logout failed');
+      }
+
+      res.clearCookie('connect.sid');
+      res.redirect('/auth/login'); // Redirect to login page after logout
+    });
   });
 }
