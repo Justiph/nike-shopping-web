@@ -6,7 +6,7 @@ const passport = require('passport');
 exports.register = async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
 
-  console.log("register", username, email, password, confirmPassword);
+  //console.log("register", username, email, password, confirmPassword);
 
   if (password !== confirmPassword) {
     return res.status(400).render('Auth/register', {
@@ -26,11 +26,11 @@ exports.register = async (req, res) => {
       role: role || "user",
     });
 
-    const token = jwt.sign(
-      { userId: newUser._id, role: newUser.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "72h" }
-    );
+    // const token = jwt.sign(
+    //   { userId: newUser._id, role: newUser.role },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: "72h" }
+    // );
 
     //res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
 
