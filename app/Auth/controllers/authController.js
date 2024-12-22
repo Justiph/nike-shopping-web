@@ -9,10 +9,9 @@ exports.register = async (req, res) => {
   //console.log("register", username, email, password, confirmPassword);
 
   if (password !== confirmPassword) {
-    return res.status(400).render('Auth/register', {
-      title: 'Register',
+    return res.status(400).json({
+      success: false,
       error: "Passwords do not match",
-      formData: { username, email } // Pass form data back to prefill the form
     });
   }
 
@@ -26,36 +25,29 @@ exports.register = async (req, res) => {
       role: role || "user",
     });
 
-    // const token = jwt.sign(
-    //   { userId: newUser._id, role: newUser.role },
-    //   process.env.JWT_SECRET,
-    //   { expiresIn: "72h" }
-    // );
-
-    //res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-
-    // Redirect to login page after successful registration
-    return res.redirect('/auth/login');
+    // Respond with success message for AJAX
+    return res.status(200).json({
+      success: true,
+      message: "Registration successful! Redirecting to login...",
+      redirectUrl: "/auth/login",
+    });
   } catch (error) {
     if (error.code === 11000 && error.keyValue.username) {
-      return res.status(400).render('Auth/register', {
-        title: 'Register',
+      return res.status(400).json({
+        success: false,
         error: "Username already exists",
-        formData: { email } // Prefill the email field only
       });
     }
     if (error.code === 11000 && error.keyValue.email) {
-      return res.status(400).render('Auth/register', {
-        title: 'Register',
+      return res.status(400).json({
+        success: false,
         error: "Email already exists",
-        formData: { username } // Prefill the username field only
       });
     }
     // Handle other errors
-    return res.status(500).render('Auth/register', {
-      title: 'Register',
+    return res.status(500).json({
+      success: false,
       error: "Server error: " + error.message,
-      formData: { username, email }
     });
   }
 };

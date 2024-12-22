@@ -1,10 +1,10 @@
 <div class='flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white'>
   <div class="max-w-md w-full rounded-xl shadow-lg p-8 bg-gray-800">
     <h2 class="text-3xl font-bold mb-6 text-center">Register</h2>
-    <form action="/auth/register" method="POST" novalidate class="group">
-      <% if (typeof error !== 'undefined' && error) { %>
-        <p style="color: red;"><%= error %></p>
-      <% } %>
+    <form id="register-form" novalidate class="group">
+      
+      <p id="error-message" class="text-red-600 text-sm font-medium mb-4 hidden mt-2"></p>
+      
 
       <!-- Username Input -->
       <div class="mb-4">
@@ -80,3 +80,43 @@
   </div>
 </div>
 
+<script>
+  document.querySelector("#register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const formObject = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formObject),
+      });
+
+      if (response.status !== 200) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const result = await response.json();
+          // Display JSON error
+          document.querySelector('#error-message').textContent = result.error;
+          document.querySelector('#error-message').classList.remove('hidden');
+        } else {
+          // Handle unexpected non-JSON response
+          console.error('Unexpected response format:', await response.text());
+          alert('An unexpected error occurred. Please try again later.');
+        }
+      } else {
+        const result = await response.json();
+        window.location.href = result.redirectUrl;
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
+      alert('An unexpected error occurred. Please try again later.');
+    }
+  })
+</script>
