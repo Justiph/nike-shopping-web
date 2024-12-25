@@ -145,7 +145,7 @@ exports.activateAccount = async (req, res) => {
     user.activationToken = null; // Clear the token
     await user.save();
 
-    res.send('Account activated successfully. You can now log in.');
+    res.render('Auth/activate-success', { title: 'Account Activated' });
   } catch (error) {
     res.status(400).send('Invalid or expired activation token.');
   }
@@ -165,6 +165,7 @@ async function sendActivationEmail(email, token) {
   });
 
   const activationLink = `https://nikeyyy.onrender.com/auth/activate/${token}`;
+  //const activationLink = `http://localhost:5000/auth/activate/${token}`;
 
   const mailOptions = {
     from: '"Nikeyyy" <your-email@gmail.com>',

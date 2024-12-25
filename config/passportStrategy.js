@@ -11,14 +11,24 @@ passport.use(
       const user = await User.findOne({ email });
       if (!user) {
         console.log('User not found');
-        return done(null, false, { message: 'Invalid username.' });
+        return done(null, false, { message: 'Invalid email or password.' });
       }
 
       const isMatch = await bcryptjs.compare(password, user.password);
       if (!isMatch) {
         console.log('Password mismatch');
-        return done(null, false, { message: 'Invalid password.' });
+        return done(null, false, { message: 'Invalid email or password.' });
       }
+
+      if (!user.isActivated) {
+        console.log('Account not activated');
+        return done(null, false, { message: 'Account not activated. Please check your email.' });
+      }
+
+      if (user.status === 'inactive') {
+        console.log('Account is inactive');
+        return done(null, false, { message: 'Account is inactive. Please contact support.' });
+      }      
 
       //console.log('User authenticated successfully:', user.username);
       return done(null, user);
@@ -28,6 +38,8 @@ passport.use(
     }
   })
 );
+
+
 // Serialize user for session management
 passport.serializeUser((user, done) => {
   done(null, user.id);
