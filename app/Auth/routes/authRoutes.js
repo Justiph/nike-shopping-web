@@ -17,4 +17,6 @@ router.post('/login', authController.login);
 // Route for handling logout (GET request)
 router.get('/logout', authController.logout);
 
+router.get('/activate/:token', authController.activateAccount);
+
 module.exports = router;

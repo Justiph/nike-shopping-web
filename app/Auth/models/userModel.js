@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  isActivated: { type: Boolean, default: false }, // Track activation
+  activationToken: { type: String }, // Store activation token
 });
 
 module.exports = mongoose.model('User', userSchema);
