@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcryptjs = require('bcryptjs');
 const passport = require('passport');
 const User = require('../app/Auth/models/userModel'); 
@@ -39,6 +40,56 @@ passport.use(
   })
 );
 
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: '/auth/google/callback',
+      passReqToCallback: true, // Allows passing `req` to the callback
+    },
+    async (req, accessToken, refreshToken, profile, done) => {
+      try {
+        // Check if the user is trying to link an account
+        if (req.user) {
+          // Logged-in user is trying to link Google account
+          const currentUser = req.user;
+          
+          // Ensure no other account is already using the same Google ID
+          const existingGoogleAccount = await User.findOne({ googleID: profile.id });
+          if (existingGoogleAccount) {
+            return done(null, false, { message: 'Google account is already linked to another user.' });
+          }
+
+          // Link Google account to the current user
+          currentUser.googleID = profile.id;
+          await currentUser.save();
+
+          return done(null, currentUser); // Successfully linked
+        }
+
+        // If not linking, proceed with normal Google Sign-In flow
+        const existingUser = await User.findOne({ googleID: profile.id });
+
+        if (existingUser) {
+          return done(null, existingUser); // Log in existing user
+        }
+
+        // Create a new user if none exists
+        const newUser = await User.create({
+          googleID: profile.id,
+          username: profile.displayName,
+          email: profile.emails[0].value, // Use primary email
+          isActivated: true, // Google email is verified
+        });
+
+        return done(null, newUser);
+      } catch (err) {
+        return done(err, false);
+      }
+    }
+  )
+);
 
 // Serialize user for session management
 passport.serializeUser((user, done) => {
