@@ -47,6 +47,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
       passReqToCallback: true, // Allows passing `req` to the callback
+      prompt: 'consent', // Force re-prompt for permissions
     },
     async (req, accessToken, refreshToken, profile, done) => {
       console.log('Access token:', accessToken);
