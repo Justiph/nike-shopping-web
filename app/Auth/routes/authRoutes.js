@@ -26,9 +26,14 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 // Google Callback
 router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
+    passport.authenticate('google', { failureRedirect: '/auth/login' }),
     (req, res) => {
-      res.redirect('/'); // Redirect to a dashboard or home page
+        try {
+            res.redirect('/'); // Successful login
+        } catch (err) {
+            console.error('Callback error:', err);
+            res.status(500).send('Internal Server Error'); // Generic error message
+        }
     }
 );
 

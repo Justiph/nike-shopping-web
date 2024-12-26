@@ -75,6 +75,10 @@ passport.use(
           return done(null, existingUser); // Log in existing user
         }
 
+        if (!profile.emails || profile.emails.length === 0) {
+          throw new Error('No email returned by Google');
+        }
+
         // Create a new user if none exists
         const newUser = await User.create({
           username: profile.displayName,
