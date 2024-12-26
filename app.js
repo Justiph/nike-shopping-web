@@ -91,5 +91,9 @@ app.use('/cart', cartRoutes);
 app.use(aboutRoutes);
 app.use(contactRoutes);
 
+//test
+app.get('/api/current_user', (req, res) => {
+  res.send(req.user);
+});
 
 module.exports = app;

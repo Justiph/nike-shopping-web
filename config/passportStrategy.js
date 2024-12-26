@@ -49,6 +49,7 @@ passport.use(
       passReqToCallback: true, // Allows passing `req` to the callback
     },
     async (req, accessToken, refreshToken, profile, done) => {
+      console.log('Access token:', accessToken);
       try {
         // Check if the user is trying to link an account
         if (req.user) {
