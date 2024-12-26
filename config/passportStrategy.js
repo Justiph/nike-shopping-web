@@ -77,10 +77,14 @@ passport.use(
 
         // Create a new user if none exists
         const newUser = await User.create({
-          googleID: profile.id,
           username: profile.displayName,
-          email: profile.emails[0].value, // Use primary email
+          email: null,
+          password: null,
+          googleID: profile.id,
           isActivated: true, // Google email is verified
+          activationToken: null,
+          status: 'active',
+          registrationDate: new Date(),
         });
 
         return done(null, newUser);

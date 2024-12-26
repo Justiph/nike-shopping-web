@@ -25,10 +25,14 @@ exports.register = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
+      avatar: null,
+      googleID: null,
       password: hashedPassword,
       role: role || "user",
       isActivated: false, // Not activated yet
       activationToken,
+      status: "active",
+      registrationDate: new Date(),
     });
 
     // Send activation email
