@@ -82,7 +82,7 @@ passport.use(
 
         // Create a new user if none exists
         const newUser = await User.create({
-          username: profile.displayName || 'Google User',
+          username: profile.displayName || `GoogleUser${Date.now()}`,
           email: null,
           password: null,
           googleID: profile.id,
