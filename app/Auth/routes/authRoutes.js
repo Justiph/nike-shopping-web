@@ -32,7 +32,7 @@ router.get(
             res.redirect('/'); // Successful login
         } catch (err) {
             console.error('Callback error:', err);
-            res.redirect('/auth/register?error=GoogleSignUpFailed');
+            res.status(500).send('Internal Server Error'); // Generic error message
         }
     }
 );

@@ -3,13 +3,7 @@
     <h2 class="text-3xl font-bold mb-6 text-center">Register</h2>
     <form id="register-form" novalidate class="group">
       
-      <p id="error-message" class="text-red-600 text-sm font-medium mb-4 hidden mt-2"></p>
-      <% if (error) { %>
-        <div class="alert alert-danger">
-          <%= error === 'GoogleSignUpFailed' ? 'Failed to sign up with Google. Please try again.' : '' %>
-        </div>
-      <% } %>
-      
+      <p id="error-message" class="text-red-600 text-sm font-medium mb-4 hidden mt-2"></p> 
 
       <!-- Username Input -->
       <div class="mb-4">
