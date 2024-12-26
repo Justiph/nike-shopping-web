@@ -54,7 +54,7 @@ passport.use(
         if (req.user) {
           // Logged-in user is trying to link Google account
           const currentUser = req.user;
-          
+          console.log('current user:', currentUser);
           // Ensure no other account is already using the same Google ID
           const existingGoogleAccount = await User.findOne({ googleID: profile.id });
           if (existingGoogleAccount) {
@@ -81,7 +81,7 @@ passport.use(
 
         // Create a new user if none exists
         const newUser = await User.create({
-          username: profile.displayName,
+          username: profile.displayName || 'Google User',
           email: null,
           password: null,
           googleID: profile.id,

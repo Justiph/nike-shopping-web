@@ -4,6 +4,11 @@
     <form id="register-form" novalidate class="group">
       
       <p id="error-message" class="text-red-600 text-sm font-medium mb-4 hidden mt-2"></p>
+      <% if (error) { %>
+        <div class="alert alert-danger">
+          <%= error === 'GoogleSignUpFailed' ? 'Failed to sign up with Google. Please try again.' : '' %>
+        </div>
+      <% } %>
       
 
       <!-- Username Input -->
