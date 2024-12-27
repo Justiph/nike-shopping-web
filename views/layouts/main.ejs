@@ -75,14 +75,16 @@
                       
                         <div id="userDropdown1" class="hidden absolute z-50 divide-y overflow-hidden overflow-y-auto rounded-lg antialiased shadow divide-gray-600 bg-gray-700 mt-2 right-0 min-w-[12rem]">
                           <ul class="p-2 text-start text-sm font-medium text-white">
-                            <% const menuItems = ['My Account', 'My Orders']; %>
-                            <% menuItems.forEach(function(item) { %>
-                              <li>
-                                <a href="#" title="<%= item %>" class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-600">
-                                  <%= item %>
+                            <li>
+                                <a href="/profile" title="My Account" class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-600">
+                                    My Account
                                 </a>
-                              </li>
-                            <% }); %>
+                            </li>
+                            <li>
+                                <a href="#" title="My Orders" class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-600">
+                                    My Orders
+                                </a>
+                            </li>
                           </ul>
                           
                           <div class="p-2 text-sm font-medium text-white">
@@ -99,7 +101,7 @@
     
 
     <!-- Main Content -->
-    <div class="container mx-auto">
+    <div class="mx-auto">
         <%- body %> <!-- This is where the page-specific content will be inserted -->
     </div>
 

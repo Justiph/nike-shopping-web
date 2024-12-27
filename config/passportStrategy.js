@@ -86,6 +86,7 @@ passport.use(
           username: profile.displayName || `GoogleUser${Date.now()}`,
           email: null,
           password: null,
+          avatar: profile.photos?.[0]?.value || null,
           googleID: profile.id,
           isActivated: true, // Google email is verified
           activationToken: null,

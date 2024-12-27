@@ -21,6 +21,7 @@ const authRoutes = require('./app/Auth/routes/authRoutes');
 const cartRoutes = require('./app/Cart/routes/cartRoutes');
 const aboutRoutes = require('./app/About/routes/aboutRoutes');
 const contactRoutes = require('./app/Contact/routes/contactRoutes');
+const accountRoutes = require('./app/Account/routes/accountRoutes');
 
 // Middlewares
 app.use(express.static('src'));
@@ -90,6 +91,7 @@ app.use('/auth', authRoutes);
 app.use('/cart', cartRoutes);
 app.use(aboutRoutes);
 app.use(contactRoutes);
+app.use(accountRoutes);
 
 //test
 app.get('/api/current_user', (req, res) => {

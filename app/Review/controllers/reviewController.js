@@ -4,7 +4,7 @@ const Review = require('../models/reviewModel');
 exports.addReview = async (req, res) => {
     const { productId, rating, description } = req.body;
     const userId = req.user._id; // Assuming you have user authentication in place
-    console.log('Received Data:', { productId, rating, description, userId });
+    //console.log('Received Data:', { productId, rating, description, userId });
     try {
         const review = await Review.create({ productId, userId, rating, description });
         //console.log('Review: ', review);
@@ -26,6 +26,10 @@ exports.addReview = async (req, res) => {
         // product.reviewCount = reviewCount;
         // product.averageRating = averageRating;
         // await product.save();
+
+        const user = await User.findById(userId);
+        const avatar = user.avatar || 'default.jpg';
+        
     
         res.status(200).json({ success: true, message: 'Review added successfully', review });
     } catch (error) {

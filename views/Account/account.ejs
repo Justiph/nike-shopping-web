@@ -1,0 +1,134 @@
+<div class="mx-auto bg-gray-900 text-white max-w-screen-md px-6">
+  <div class="pt-3">
+    <div class="overflow-hidden">
+      <div class="flex flex-col items-center justify-center space-y-5 sm:flex-row sm:space-y-0 mt-4">
+        <img class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
+            src="<%= user.avater || default-avatar.jpg %>"
+            alt="Bordered avatar"
+        >
+        <div class="flex flex-col space-y-5 sm:ml-8">
+            <button type="button"
+                class="py-3.5 px-7 text-base font-medium text-indigo-100 focus:outline-none bg-[#202142] rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200">
+                Change picture
+            </button>
+            <button type="button"
+                class="py-3.5 px-7 text-base font-medium text-indigo-900 focus:outline-none bg-white rounded-lg border border-indigo-200 hover:bg-indigo-100 hover:text-[#202142] focus:z-10 focus:ring-4 focus:ring-indigo-200">
+                Delete picture
+            </button>
+        </div>
+      </div>
+
+      <p class="py-2 mt-6 text-xl font-semibold">Email Address</p>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <% if (user.email) { %>
+          <p class="text-gray-300">Your email address is <strong><%= user.email %></strong></p>
+          <button class="inline-flex text-sm font-semibold text-blue-600 underline decoration-2">Change</button>
+        <% } else { %>
+          <p class="text-gray-300">You have not set an email address.</p>
+        <% } %>
+      </div>
+      <hr class="mt-4 mb-8" />
+
+      <p class="py-2 text-xl font-semibold">Password</p>
+      <% if (user.email) { %>
+        <div class="flex items-center space-x-3">
+          <label class="flex-grow" for="login-password">
+            <span class="text-sm text-gray-300">Current Password</span>
+            <div class="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+              <input
+                type="password"
+                id="login-password"
+                class="password-field w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                placeholder="***********"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="show-password-icon absolute right-3 top-3 h-5 w-5 cursor-pointer text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242"
+                />
+              </svg>
+            </div>
+          </label>
+          <label class="flex-grow" for="new-password">
+            <span class="text-sm text-gray-300">New Password</span>
+            <div class="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+              <input
+                type="password"
+                id="new-password"
+                class="password-field w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                placeholder="***********"
+              />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="show-password-icon absolute right-3 top-3 h-5 w-5 cursor-pointer text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242"
+                />
+              </svg>
+            </div>
+          </label>
+        </div>
+        <p class="mt-2 text-sm text-gray-300">
+          Can't remember your current password?
+          <a class="font-semibold text-blue-600 underline" href="#">Recover Account</a>
+        </p>
+        <button class="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white">Save Password</button>
+      <% } else { %>
+        <p class="text-sm text-gray-300">
+          You cannot change the password because your account does not support passwords.
+        </p>
+      <% } %>      
+      <hr class="mt-4 mb-8" />
+
+      <div class="mb-10">
+        <p class="py-2 text-xl font-semibold">Delete Account</p>
+        <p class="inline-flex items-center rounded-full bg-rose-100 px-4 py-1 text-rose-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          Proceed with caution
+        </p>
+        <p class="mt-2">Make sure you have taken backup of your account in case you ever need to get access to your data. We will completely wipe your data. There is no way to access your account after this action.</p>
+        <button class="ml-auto mt-2 text-sm font-semibold text-rose-600 underline decoration-2">Continue with deletion</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Select all password fields and icons
+    const passwordFields = document.querySelectorAll('.password-field');
+    const toggleIcons = document.querySelectorAll('.show-password-icon');
+
+    toggleIcons.forEach((icon, index) => {
+      icon.addEventListener('click', () => {
+        const field = passwordFields[index];
+        const isPassword = field.type === 'password';
+
+        // Toggle password visibility
+        field.type = isPassword ? 'text' : 'password';
+
+        // Change icon style
+        icon.classList.toggle('text-gray-400', !isPassword);
+        icon.classList.toggle('text-blue-600', isPassword);
+      });
+    });
+  });
+</script>
