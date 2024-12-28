@@ -7,14 +7,20 @@
             alt="Bordered avatar"
         >
         <div class="flex flex-col space-y-5 sm:ml-8">
-            <button type="button"
+          <form action="/upload-avatar" method="POST" enctype="multipart/form-data">
+            <input type="file" id="avatar-upload" name="avatar" accept="image/*" style="display: none;" />
+            <button type="button" onclick="document.getElementById('avatar-upload').click()"
                 class="py-3.5 px-7 text-base font-medium text-indigo-100 focus:outline-none bg-[#202142] rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200">
                 Change picture
             </button>
-            <button type="button"
+          </form>
+          
+          <form action="/delete-avatar" method="POST" id="delete-avatar-form">
+            <button type="submit"
                 class="py-3.5 px-7 text-base font-medium text-indigo-900 focus:outline-none bg-white rounded-lg border border-indigo-200 hover:bg-indigo-100 hover:text-[#202142] focus:z-10 focus:ring-4 focus:ring-indigo-200">
                 Delete picture
             </button>
+          </form>
         </div>
       </div>
 
@@ -129,6 +135,22 @@
         icon.classList.toggle('text-gray-400', !isPassword);
         icon.classList.toggle('text-blue-600', isPassword);
       });
+    });
+
+    document.getElementById('avatar-upload').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        console.log('selected:', file.name);
+        
+        this.closest('form').submit();
+      }
+    });
+
+    document.getElementById('delete-avatar-form').addEventListener('submit', function (e) {
+      const confirmDelete = confirm('Are you sure you want to delete your avatar?');
+      if (!confirmDelete) {
+        e.preventDefault(); // Prevent form submission
+      }
     });
   });
 </script>

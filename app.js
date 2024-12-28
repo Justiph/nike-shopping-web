@@ -10,7 +10,13 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session')
 const passport = require('./config/passportStrategy');
 const multer = require('multer');
-const upload = multer();
+//const upload = multer();
+
+// const { v2: cloudinary } = require("cloudinary");
+// const { CloudinaryStorage } = require("multer-storage-cloudinary");
+require("dotenv").config();
+
+
 const app = express();
 
 // Routes
@@ -46,7 +52,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(upload.none());
+//app.use(upload.none());
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
@@ -93,9 +99,40 @@ app.use(aboutRoutes);
 app.use(contactRoutes);
 app.use(accountRoutes);
 
+// Configure Cloudinary
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET,
+// });
+
+// Set up Multer with Cloudinary storage
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: "uploads", // Specify the folder name in Cloudinary
+//     allowed_formats: ["jpg", "jpeg", "png"], // Allowed file formats
+//   },
+// });
+
+// const upload = multer({ storage });
+
+// Handle image upload
+// app.post("/upload", upload.single("image"), (req, res) => {
+//   if (req.file) {
+//     res.json({
+//       message: "Image uploaded successfully!",
+//       imageUrl: req.file.path, // URL of the uploaded image in Cloudinary
+//     });
+//   } else {
+//     res.status(400).json({ error: "No file uploaded" });
+//   }
+// });
+
 //test
 app.get('/api/current_user', (req, res) => {
   res.send(req.user);
 });
+
 
 module.exports = app;
