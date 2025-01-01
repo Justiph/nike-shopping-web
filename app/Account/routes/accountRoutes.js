@@ -11,4 +11,6 @@ router.post('/upload-avatar', upload.single('avatar'), accountController.uploadA
 // Delete avatar route
 router.post('/delete-avatar', ensureAuth, accountController.deleteAvatar);
 
+router.post('/update-password', ensureAuth, accountController.updatePassword);
+
 module.exports = router;

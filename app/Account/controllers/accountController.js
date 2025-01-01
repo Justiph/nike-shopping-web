@@ -1,6 +1,8 @@
 const User = require('../../Auth/models/userModel');
 const cloudinary = require('../../../config/cloudinary');
 const path = require('path');
+const bcryptjs = require("bcryptjs");
+
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -63,3 +65,32 @@ exports.deleteAvatar = async (req, res) => {
     res.status(500).send('Error deleting avatar');
   }
 };
+
+exports.updatePassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user.id; // Assuming user is logged in and userId is available in the session
+
+  try {
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      return res.json({ success: false, message: 'User not found' });
+    }
+
+    // Compare current password
+    const isMatch = await bcryptjs.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.json({ success: false, message: 'Incorrect current password' });
+    }
+
+    // Hash the new password and save
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: 'An error occurred. Please try again later.' });
+  }
+}
