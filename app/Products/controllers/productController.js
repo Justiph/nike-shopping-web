@@ -1,4 +1,5 @@
 const Product = require('../models/productModel');
+const { findRelatedProducts } = require('../services/relatedProductService');
 
 exports.getShoppingPage = async (req, res) => {
   try {
@@ -98,7 +99,16 @@ exports.getProductDetails = async (req, res) => {
       return res.status(404).send('Product not found');
     }
 
-    res.render('Shop/product-details', {title: `${product.name}`, product });
+    // Fetch all products for similarity calculation
+    const allProducts = await Product.find({});
+    // Find related products
+    const relatedProductIds = findRelatedProducts(allProducts, productId);
+    // Get detailed info of related products
+    const relatedProducts = await Product.find({
+      _id: { $in: relatedProductIds.map((item) => item.productId) },
+    });
+
+    res.render('Shop/product-details', {title: `${product.name}`, product, relatedProducts });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
