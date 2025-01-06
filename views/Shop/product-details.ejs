@@ -70,9 +70,8 @@
       </div> -->
 
       <!-- Add to Cart Form -->
-      <form action="/cart/add" method="POST" class="mt-4" id="addToCartForm">
+      <form class="mt-4" id="addToCartForm">
         <input type="hidden" name="productId" value="<%= product._id %>" />
-        <!-- Hidden input to hold the selected size -->
         <input type="hidden" name="size" id="selectedSize" />
         <button 
           type="submit" 
@@ -122,22 +121,37 @@
   // document.getElementById("increaseQty").addEventListener("click", () => {
   //   quantityInput.value++;
   // });
-
-  // Form validation before submission (check if a size is selected)
   document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("addToCartForm");
-  if (form) {
-    form.addEventListener("submit", (event) => {
-      const selectedSize = document.getElementById("selectedSize").value;
-      console.log("Form submitted with size:", selectedSize);
-      if (!selectedSize) {
+    document.getElementById("addToCartForm").addEventListener("click", async () => {
+      const productId = document.querySelector("input[name='productId']").value;
+      const size = document.getElementById("selectedSize").value;
+
+      if (!size) {
         alert("Please select a size before adding to cart.");
-        event.preventDefault(); // Prevent form submission
+        return;
+      }
+
+      try {
+        console.log(JSON.stringify({ productId, size }))
+        const response = await fetch("/cart/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ productId, size }),
+        });
+
+        console.log("Response status:", response.status);
+        const data = await response.json();
+        console.log("Response data:", data);
+
+        if (!response.ok) {
+          throw new Error(data.message || "Failed to add to cart");
+        }
+        console.log("Product added to cart successfully!");
+      } catch (err) {
+        console.error("Error adding to cart:", error.message, error.stack);
       }
     });
-  } else {
-    console.error("Form element #addToCartForm not found!");
-  }
-});
-
+  });
 </script>

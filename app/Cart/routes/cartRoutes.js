@@ -6,9 +6,9 @@ const cartController = require('../controllers/cartController'); // Import the c
 
 // Protected route for the cart page
 router.get('/', cartController.viewCart);
-router.post('/add', ensureAuth, cartController.addToCart);
-router.post('/update', ensureAuth, cartController.updateCartItem);
-router.post('/remove', ensureAuth, cartController.removeFromCart);
+router.post('/add', cartController.addToCart);
+router.post('/update', cartController.updateCartItem);
+router.post('/remove', cartController.removeFromCart);
 router.get('/checkout', ensureAuth, cartController.checkout);
 router.post('/checkout', ensureAuth, cartController.processCheckout); 
 

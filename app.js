@@ -134,5 +134,10 @@ app.get('/api/current_user', (req, res) => {
   res.send(req.user);
 });
 
+app.get('/test-session', (req, res) => {
+  console.log('Session Cart:', req.session.cart);
+  res.send('Session test complete');
+});
+
 
 module.exports = app;

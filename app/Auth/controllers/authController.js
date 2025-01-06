@@ -2,6 +2,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const passport = require('passport');
+const { mergeCart } = require('../../Cart/controllers/cartController');
 const nodemailer = require('nodemailer');
 
 exports.register = async (req, res) => {
@@ -73,7 +74,6 @@ exports.login = async (req, res, next) => {
       if (req.xhr) {
         return res.status(500).json({ error: "Internal server error" });
       }
-      //return next(err);
     }
 
     if (!user) {
@@ -81,13 +81,12 @@ exports.login = async (req, res, next) => {
       if (req.xhr) {
         return res.status(401).json({ error: info.message });
       }
-      // return res.status(401).render('Auth/login', { 
-      //   title: 'Login', 
-      //   error: info.message 
-      // });
     }
 
-    req.login(user, (err) => {
+    // Preserve the session cart before logging in
+    const sessionCart = req.session.cart;
+
+    req.login(user, async (err) => {
       if (err) {
         console.error('Error during login:', err);
         if (req.xhr) {
@@ -97,10 +96,15 @@ exports.login = async (req, res, next) => {
       }
 
       console.log('Login successful');
+      
+      // If there's a session cart, merge it with the user's cart
+      if (sessionCart && sessionCart.products.length > 0) {
+        await mergeCart(req, res, sessionCart);
+      }
+
       if (req.xhr) {
         return res.status(200).json({ success: true, redirectUrl: '/' });
       }
-      //return res.redirect('/');
     });
   })(req, res, next);
 };
