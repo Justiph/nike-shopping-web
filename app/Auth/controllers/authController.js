@@ -96,7 +96,7 @@ exports.login = async (req, res, next) => {
       }
 
       console.log('Login successful');
-      
+
       // If there's a session cart, merge it with the user's cart
       if (sessionCart && sessionCart.products.length > 0) {
         await mergeCart(req, res, sessionCart);
@@ -108,6 +108,35 @@ exports.login = async (req, res, next) => {
     });
   })(req, res, next);
 };
+
+exports.googleCallback = async (req, res, next) => {
+  try {
+    // Same logic for handling Google callback after Passport authenticates
+    const sessionCart = req.session.cart;
+
+    passport.authenticate('google', { failureRedirect: '/auth/login' }, async (err, user, info) => {
+      if (err || !user) {
+        return res.redirect('/auth/login');
+      }
+
+      req.login(user, async (err) => {
+        if (err) {
+          return res.status(500).json({ error: "Internal server error" });
+        }
+
+        // Merge the session cart with the logged-in user's cart
+        if (sessionCart) {
+          await mergeCart(req); // Merge logic
+        }
+
+        res.redirect('/'); // After merging
+      });
+    })(req, res, next);
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 
 exports.renderRegisterPage = (req, res) => {
   res.render('Auth/register', { title: 'Register' });

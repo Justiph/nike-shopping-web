@@ -24,31 +24,32 @@ router.get('/activate/:token', authController.activateAccount);
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Google Callback
-// Google Callback
-router.get(
-    '/google/callback',
-    passport.authenticate('google', { failureRedirect: '/auth/login' }),
-    async (req, res) => {
-        try {
-            // Preserve session cart before login
-            const sessionCart = req.session.cart;
+router.get('/google/callback', authController.googleCallback); // Google callback
+// router.get(
+//     '/google/callback',
+//     passport.authenticate('google', { failureRedirect: '/auth/login' }),
+//     async (req, res) => {
+//         try {
+//             // Preserve session cart before login
+//             const sessionCart = req.session.cart;
         
-            // If there's a session cart, merge it with the user's cart
-            if (sessionCart && sessionCart.products.length > 0) {
-                await mergeCart(req, res, sessionCart);
-            }
+//             // If there's a session cart, merge it with the user's cart
+//             if (sessionCart && sessionCart.products.length > 0) {
+//                 await mergeCart(req, res, sessionCart);
+//             }
         
-            // Clear the session cart after merging
-            req.session.cart = null;
+//             // Clear the session cart after merging
+//             req.session.cart = null;
         
-            // Redirect to homepage or dashboard after successful login
-            res.redirect('/');
-        } catch (err) {
-            console.error('Callback error:', err);
-            res.status(500).send('Internal Server Error');
-        }
-    }
-);
+//             // Redirect to homepage or dashboard after successful login
+//             res.redirect('/');
+//         } catch (err) {
+//             console.error('Callback error:', err);
+//             res.status(500).send('Internal Server Error');
+//         }
+//     }
+// );
+
 
 // Link Google Account to Existing User
 router.get(

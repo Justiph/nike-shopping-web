@@ -50,7 +50,7 @@ passport.use(
       prompt: 'consent', // Force re-prompt for permissions
     },
     async (req, accessToken, refreshToken, profile, done) => {
-      console.log('Access token:', accessToken);
+      //console.log('Access token:', accessToken);
       try {
         // Check if the user is trying to link an account
         if (req.user) {
