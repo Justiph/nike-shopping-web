@@ -113,6 +113,7 @@ exports.googleCallback = async (req, res, next) => {
   try {
     // Same logic for handling Google callback after Passport authenticates
     const sessionCart = req.session.cart;
+    console.log('sessionCart:', sessionCart);
 
     passport.authenticate('google', { failureRedirect: '/auth/login' }, async (err, user, info) => {
       if (err || !user) {
@@ -126,7 +127,7 @@ exports.googleCallback = async (req, res, next) => {
 
         // Merge the session cart with the logged-in user's cart
         if (sessionCart) {
-          await mergeCart(req); // Merge logic
+          await mergeCart(req, res, sessionCart); // Merge logic
         }
 
         res.redirect('/'); // After merging
