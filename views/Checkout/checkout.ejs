@@ -1,5 +1,5 @@
 <section class="py-8 antialiased bg-gray-900 md:py-16">
-  <form action="/cart/checkout" method="POST" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+  <form action="/order/checkout" method="POST" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
     <div class="lg:flex lg:gap-16">
       
       <!-- Left: Delivery Details and Payment Method -->
@@ -20,9 +20,9 @@
             </div>
 
             <div>
-              <label for="select-country-input-3" class="mb-2 block text-sm font-medium text-white">Country*</label>
-              <select id="select-country-input-3" name="country" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
-                <option selected>United States</option>
+              <label for="select-province-input-3" class="mb-2 block text-sm font-medium text-white">Province*</label>
+              <select id="select-province-input-3" name="province" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
+                <option selected>TPHCM</option>
                 <option value="AU">Australia</option>
                 <option value="FR">France</option>
                 <option value="ES">Spain</option>
@@ -31,9 +31,9 @@
             </div>
 
             <div>
-              <label for="select-city-input-3" class="mb-2 block text-sm font-medium text-white">City*</label>
-              <select id="select-city-input-3" name="city" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
-                <option selected>San Francisco</option>
+              <label for="select-district-input-3" class="mb-2 block text-sm font-medium text-white">District*</label>
+              <select id="select-district-input-3" name="district" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
+                <option selected>Quan 1</option>
                 <option value="NY">New York</option>
                 <option value="LA">Los Angeles</option>
                 <option value="CH">Chicago</option>
@@ -42,18 +42,24 @@
             </div>
 
             <div>
+              <label for="select-commune-input-3" class="mb-2 block text-sm font-medium text-white">Commune*</label>
+              <select id="select-commune-input-3" name="commune" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
+                <option selected>Tam Phuoc</option>
+                <option value="NY">Phuoc Tan</option>
+                <option value="LA">Los Angeles</option>
+                <option value="CH">Chicago</option>
+                <option value="HU">Houston</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="street-input" class="mb-2 block text-sm font-medium text-white">Street</label>
+              <input type="text" id="street" name="street" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="Vo Thi Sau Street/51A" required />
+            </div>
+
+            <div>
               <label for="phone-input-3" class="mb-2 block text-sm font-medium text-white">Phone Number*</label>
               <input type="text" id="phone-input-3" name="phone" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="123-456-7890" required />
-            </div>
-
-            <div>
-              <label for="company_name" class="mb-2 block text-sm font-medium text-white">Company name</label>
-              <input type="text" id="company_name" name="company" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="Flowbite LLC" required />
-            </div>
-
-            <div>
-              <label for="vat_number" class="mb-2 block text-sm font-medium text-white">VAT number</label>
-              <input type="text" id="vat_number" name="vat" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400" placeholder="DE42313253" required />
             </div>
           </div>
         </div>

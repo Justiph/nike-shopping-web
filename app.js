@@ -28,6 +28,7 @@ const cartRoutes = require('./app/Cart/routes/cartRoutes');
 const aboutRoutes = require('./app/About/routes/aboutRoutes');
 const contactRoutes = require('./app/Contact/routes/contactRoutes');
 const accountRoutes = require('./app/Account/routes/accountRoutes');
+const orderRoutes = require('./app/Order/routes/orderRoutes');
 
 // Middlewares
 app.use(express.static('src'));
@@ -98,7 +99,7 @@ app.use('/cart', cartRoutes);
 app.use(aboutRoutes);
 app.use(contactRoutes);
 app.use(accountRoutes);
-
+app.use('/order', orderRoutes);
 // Configure Cloudinary
 // cloudinary.config({
 //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

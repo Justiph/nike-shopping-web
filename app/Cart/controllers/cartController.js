@@ -297,17 +297,7 @@ exports.processCheckout = async (req, res) => {
     }
 
     // Create an order (example schema: userId, products, total, paymentMethod, shippingMethod)
-    // const order = new Order({
-    //   userId: req.user._id,
-    //   products: cart.products,
-    //   total: cart.products.reduce(
-    //     (sum, item) => sum + item.productId.price * item.quantity,
-    //     0
-    //   ),
-    //   paymentMethod,
-    //   shippingMethod,
-    //   createdAt: new Date(),
-    // });
+    // const order = new Order
     // await order.save();
 
     // Clear the cart
