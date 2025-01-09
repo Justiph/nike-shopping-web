@@ -12,6 +12,8 @@ router.get('/login', authController.renderLoginPage);
 // Route for handling the registration form submission (POST request)
 router.post('/register', authController.register);
 
+router.get('/waiting-activation', authController.waitingActivation);
+
 // Route for handling the login form submission (POST request)
 router.post('/login', authController.login);
 

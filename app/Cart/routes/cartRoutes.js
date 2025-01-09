@@ -10,7 +10,7 @@ router.post('/add', cartController.addToCart);
 router.post('/update', cartController.updateCartItem);
 router.post('/remove', cartController.removeFromCart);
 router.get('/checkout', ensureAuth, cartController.checkout);
-router.post('/checkout', ensureAuth, cartController.processCheckout); 
+//router.post('/checkout', ensureAuth, cartController.processCheckout); 
 
 router.get('/order/confirmation', ensureAuth, (req, res) => {
     res.render('Checkout/order-confirmation', { title: 'Order Confirmation' });

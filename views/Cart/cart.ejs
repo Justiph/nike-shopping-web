@@ -11,8 +11,23 @@
           <% cart.products.forEach((item) => { %>
             <div class="rounded-lg border p-4 shadow-sm border-gray-700 bg-gray-800 cart-item">
               <div class="flex items-center justify-between">
+                <a 
+                  onclick="window.location.href='/product-details/<%= item.productId._id %>'" 
+                  class="flex ml-4 shrink-0"
+                >
+                  <img 
+                    class="h-20 w-20 rounded-md border-2 border-gray-300 shadow-md hover:shadow-lg hover:scale-105 hover:bg-gray-100 hover:border-gray-400 cursor-pointer transition duration-300" 
+                    src="<%= item.productId.img %>" 
+                    alt="imac image" 
+                  />
+                </a>
+                
                 <div class="flex-1 ml-4">
-                  <p class="text-base font-medium text-white"><%= item.productId.name %></p>
+                  <p 
+                    onclick="window.location.href='/product-details/<%= item.productId._id %>'" 
+                    class="text-base font-medium text-white cursor-pointer transition duration-300">
+                    <%= item.productId.name %>
+                  </p>
                   <p class="text-sm text-gray-400">Size: <%= item.size %></p>
                   <p class="mt-2 text-base font-bold text-white">$<%= item.productId.price %></p>
                 </div>

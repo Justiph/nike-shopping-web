@@ -43,7 +43,7 @@ exports.register = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Registration successful! Redirecting to login...",
-      redirectUrl: "/auth/login",
+      redirectUrl: "/auth/waiting-activation",
     });
   } catch (error) {
     if (error.code === 11000 && error.keyValue.username) {
@@ -142,6 +142,10 @@ exports.googleCallback = async (req, res, next) => {
 exports.renderRegisterPage = (req, res) => {
   res.render('Auth/register', { title: 'Register' });
 }  
+
+exports.waitingActivation = (req, res) => {
+  res.render('Auth/waiting-activation', { title: 'Waiting for Activation' });
+}
 
 exports.renderLoginPage = (req, res) => {
   res.render('Auth/login', { title: 'Login' });

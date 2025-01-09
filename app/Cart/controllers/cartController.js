@@ -63,8 +63,10 @@ exports.addToCart = async (req, res) => {
       cart = req.session.cart;
     }
 
+    //console.log(cart);
+
     const productIndex = cart.products.findIndex(
-      (p) => p.productId === productId && p.size === size
+      (p) => p.productId.equals(productId) && p.size === size
     );
 
     if (productIndex > -1) {
@@ -286,33 +288,3 @@ exports.checkout = async (req, res) => {
   }
 };
 
-exports.processCheckout = async (req, res) => {
-  const orderData = req.body;
-  console.log(orderData);
-
-  try {
-    const cart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
-    if (!cart || cart.products.length === 0) {
-      return res.redirect('/cart');
-    }
-
-    // Create an order (example schema: userId, products, total, paymentMethod, shippingMethod)
-    // const order = new Order
-    // await order.save();
-
-    // Clear the cart
-    cart.products = [];
-    await cart.save();
-
-    orderData.date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
-
-    // Redirect to order confirmation or success page
-    res.render('Checkout/order-confirmation', {
-      title: 'Order confirmation',
-      orderData,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error processing checkout');
-  }
-};
