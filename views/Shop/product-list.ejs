@@ -7,18 +7,15 @@
       <div class="mb-6">
         <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Gender</h4>
         <div class="flex flex-col gap-2 ">
-          <% ['MEN', 'WOMEN', 'KIDS'].forEach((option) => { %>
+          <% ['MEN', 'WOMEN' , 'KIDS' ].forEach((option)=> { %>
             <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
-              <input 
-                type="checkbox" 
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
-                name="gender" 
-                value="<%= option %>" 
-                <%= gender && gender.includes(option) ? 'checked' : '' %> 
-              /> 
+              <input type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                name="gender" value="<%= option %>" <%=gender && gender.includes(option) ? 'checked' : '' %>
+              />
               <%= option.charAt(0) + option.slice(1).toLowerCase() %>
             </label>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
 
@@ -26,18 +23,16 @@
       <div class="mb-6">
         <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Size</h4>
         <div class="flex flex-col gap-2">
-          <% [40, 41, 42, 43, 44, 45].forEach((sizeOption) => { %>
+          <% [40, 41, 42, 43, 44, 45].forEach((sizeOption)=> { %>
             <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
-              <input 
-                type="checkbox" 
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
-                name="size" 
-                value="<%= sizeOption %>" 
-                <%= size && size.includes(sizeOption.toString()) ? 'checked' : '' %> 
+              <input type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                name="size" value="<%= sizeOption %>" <%=size && size.includes(sizeOption.toString()) ? 'checked' : ''
+                %>
               />
               <%= sizeOption %>
             </label>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
 
@@ -45,18 +40,16 @@
       <div class="mb-6">
         <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Category</h4>
         <div class="flex flex-col gap-2">
-          <% ['Running', 'Basketball', 'Lifestyle', 'Soccer'].forEach((categoryOption) => { %>
+          <% ['Running', 'Basketball' , 'Lifestyle' , 'Soccer' ].forEach((categoryOption)=> { %>
             <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
-              <input 
-                type="checkbox" 
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
-                name="category" 
-                value="<%= categoryOption %>" 
-                <%= category && category.includes(categoryOption.toString()) ? 'checked' : '' %> 
+              <input type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                name="category" value="<%= categoryOption %>" <%=category &&
+                category.includes(categoryOption.toString()) ? 'checked' : '' %>
               />
               <%= categoryOption %>
             </label>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
 
@@ -64,33 +57,20 @@
       <div class="mb-6">
         <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Price</h4>
         <div class="flex flex-col gap-2">
-          <% [
-              { label: 'Under $100', value: 'under100' },
-              { label: '$100 - $200', value: '100to200' },
-              { label: '$200 - $300', value: '200to300' },
-              { label: 'Over $300', value: 'over300' },
-            ].forEach((priceOption) => { %>
+          <% [ { label: 'Under $100' , value: 'under100' }, { label: '$100 - $200' , value: '100to200' }, {
+            label: '$200 - $300' , value: '200to300' }, { label: 'Over $300' , value: 'over300' },
+            ].forEach((priceOption)=> { %>
             <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
-              <input 
-                type="checkbox" 
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
-                name="price" 
-                value="<%= priceOption.value %>" 
-                <%= price && price.includes(priceOption.value) ? 'checked' : '' %> 
+              <input type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                name="price" value="<%= priceOption.value %>" <%=price && price.includes(priceOption.value) ? 'checked'
+                : '' %>
               />
               <%= priceOption.label %>
             </label>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
-
-      <!-- Apply Filters Button -->
-      <!-- <button 
-        type="submit" 
-        class="w-full bg-orange-500 text-white py-2 rounded-lg transition-colors hover:bg-orange-600"
-      >
-        Apply Filters
-      </button> -->
     </form>
   </aside>
 
@@ -99,17 +79,10 @@
     <!-- Search Bar -->
     <div class="flex justify-center mb-12">
       <form id="search-form" class="w-1/2 flex border rounded-lg overflow-hidden shadow-md">
-        <input
-          type="text"
-          name="searchQuery"
-          value="<%= searchQuery %>"
-          placeholder="Search for products..."
-          class="px-4 py-2 w-full border-none outline-none text-black"
-        />
-        <button
-          type="submit"
-          class="bg-orange-500 text-white px-4 py-2 rounded-r-lg transition-colors hover:bg-orange-600"
-        >
+        <input type="text" name="searchQuery" value="<%= searchQuery %>" placeholder="Search for products..."
+          class="px-4 py-2 w-full border-none outline-none text-black" />
+        <button type="submit"
+          class="bg-orange-500 text-white px-4 py-2 rounded-r-lg transition-colors hover:bg-orange-600">
           Search
         </button>
       </form>
@@ -117,96 +90,91 @@
 
     <!-- Product Categories -->
     <div class="flex gap-5 items-center justify-center px-4">
-      <% [men, women, kid].forEach((img, index) => { %>
-        <img
-          src="<%= img %>"
-          alt="product-type-<%= index %>"
-          class="product-type h-24 w-24 rounded-full border-4 border-gray-300 transition-transform transform hover:scale-110"
-        />
-      <% }) %>
+      <% [men, women, kid].forEach((img, index)=> { %>
+        <img src="<%= img %>" alt="product-type-<%= index %>"
+          class="product-type h-24 w-24 rounded-full border-4 border-gray-300 transition-transform transform hover:scale-110" />
+        <% }) %>
     </div>
 
     <!-- Product List -->
     <section class="py-8 antialiased bg-gray-900 md:py-12">
       <div id="product-list" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <% if (filteredData.length === 0) { %>
+        <% if (filteredData.length===0) { %>
           <p class="text-center text-gray-500 col-span-full">No products found.</p>
-        <% } else { %>
-          <% filteredData.forEach((product) => { %>
-            <div class="flex flex-col p-5 bg-[#222933] rounded-lg shadow-lg hover:shadow-2xl transition-shadow transform hover:-translate-y-1">
-              <div class="flex justify-center items-center h-64 w-full overflow-hidden rounded-lg mb-4">
-                <img 
-                  src="<%= product.img[0] %>" 
-                  alt="<%= product.name %>" 
-                  class="h-full object-cover"
-                />
+          <% } else { %>
+            <% filteredData.forEach((product)=> { %>
+              <div
+                class="flex flex-col p-5 bg-[#222933] rounded-lg shadow-lg hover:shadow-2xl transition-shadow transform hover:-translate-y-1">
+                <div class="flex justify-center items-center h-64 w-full overflow-hidden rounded-lg mb-4">
+                  <img src="<%= product.img[0] %>" alt="<%= product.name %>" class="h-full object-cover" />
+                </div>
+                <div class="flex flex-col flex-grow gap-2">
+                  <h3 class="text-xl font-semibold text-white text-center">
+                    <%= product.name %>
+                  </h3>
+                  <p class="text-sm text-gray-400 text-center">
+                    <%= product.gender %>
+                  </p>
+                  <p class="text-lg font-bold text-orange-400 text-center">$<%= product.price %> USD</p>
+                </div>
+                <div class="mt-3">
+                  <button onclick="window.location.href='/product-details/<%= product._id %>'"
+                    class="w-full py-2 bg-orange-500 text-white font-medium rounded-lg transition-colors hover:bg-orange-600">
+                    View Product
+                  </button>
+                </div>
               </div>
-              <div class="flex flex-col flex-grow gap-2">
-                <h3 class="text-xl font-semibold text-white text-center"><%= product.name %></h3>
-                <p class="text-sm text-gray-400 text-center"><%= product.gender %></p>
-                <p class="text-lg font-bold text-orange-400 text-center">$<%= product.price %> USD</p>
-              </div>
-              <div class="mt-3">
-                <button 
-                  onclick="window.location.href='/product-details/<%= product._id %>'"
-                  class="w-full py-2 bg-orange-500 text-white font-medium rounded-lg transition-colors hover:bg-orange-600"
-                >
-                  View Product
-                </button>
-              </div>
-            </div>
-          <% }); %>
-        <% } %>
+              <% }); %>
+                <% } %>
       </div>
     </section>
 
     <section id="pagination" class="mt-6 flex items-center justify-center sm:mt-8">
       <ul class="flex items-center space-x-2 text-sm">
-        <% if (currentPage > 1) { %>
+        <% if (currentPage> 1) { %>
           <!-- Previous Button -->
           <li>
-            <button 
+            <button
               class="page-link flex items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              data-page="<%= currentPage - 1 %>"
-            >
+              data-page="<%= currentPage - 1 %>">
               <span class="sr-only">Previous</span>
-              <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
           </li>
         <% } %>
-    
+
         <!-- Page Numbers -->
-        <% for (let i = 1; i <= totalPages; i++) { %>
+        <% for (let i=1; i <=totalPages; i++) { %>
           <li>
-            <button 
-              class="page-link flex items-center justify-center h-8 w-8 rounded-full transition border <%= i === currentPage ? 'bg-primary-500 text-white border-primary-500 cursor-not-allowed' : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' %>"
-              data-page="<%= i %>"
-              <%= i === currentPage ? 'disabled' : '' %>
-            >
+            <button
+              class="page-link flex items-center justify-center h-8 w-8 rounded-full transition border <%= i === currentPage ? 'bg-blue-500 border-blue-500 cursor-not-allowed' : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' %>"
+              data-page="<%= i %>" <%=i===currentPage ? 'disabled' : '' %>
+              >
               <%= i %>
             </button>
           </li>
         <% } %>
-    
+
         <% if (currentPage < totalPages) { %>
-          <!-- Next Button -->
-          <li>
-            <button 
-              class="page-link flex items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              data-page="<%= currentPage + 1 %>"
-            >
-              <span class="sr-only">Next</span>
-              <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </li>
+                  <!-- Next Button -->
+                  <li>
+                    <button
+                      class="page-link flex items-center justify-center h-8 w-8 rounded-full bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                      data-page="<%= currentPage + 1 %>">
+                      <span class="sr-only">Next</span>
+                      <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </li>
         <% } %>
       </ul>
     </section>
-    
+
   </main>
 </section>
 
@@ -246,8 +214,8 @@
     function renderProducts(products) {
       productList.innerHTML = products.length
         ? products
-            .map(
-              (product) => `
+          .map(
+            (product) => `
             <div class="flex flex-col p-5 bg-[#222933] rounded-lg shadow-lg hover:shadow-2xl transition-shadow transform hover:-translate-y-1">
                 <div class="flex justify-center items-center h-64 w-full overflow-hidden rounded-lg mb-4">
                   <img 
@@ -270,8 +238,8 @@
                   </button>
                 </div>
               </div>`
-            )
-            .join('')
+          )
+          .join('')
         : '<p class="text-center text-gray-500 col-span-full">No products found.</p>';
     }
 
@@ -280,9 +248,8 @@
       const pagination = document.getElementById('pagination');
       pagination.innerHTML = `
         <ul class="flex items-center space-x-2 text-sm">
-          ${
-            currentPage > 1
-              ? `
+          ${currentPage > 1
+          ? `
               <!-- Previous Button -->
               <li>
                 <button 
@@ -296,19 +263,17 @@
                 </button>
               </li>
               `
-              : ''
-          }
-          ${
-            Array.from({ length: totalPages }, (_, i) => i + 1)
-              .map(
-                (page) => `
+          : ''
+        }
+          ${Array.from({ length: totalPages }, (_, i) => i + 1)
+          .map(
+            (page) => `
                 <li>
                   <button 
-                    class="page-link flex items-center justify-center h-8 w-8 rounded-full transition border ${
-                      page === currentPage
-                        ? 'bg-primary-500 text-white border-primary-500 cursor-not-allowed'
-                        : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-                    }"
+                    class="page-link flex items-center justify-center h-8 w-8 rounded-full transition border ${page === currentPage
+                ? 'bg-primary-500 text-white border-primary-500 cursor-not-allowed'
+                : 'bg-white text-gray-500 border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+              }"
                     data-page="${page}"
                     ${page === currentPage ? 'disabled' : ''}
                   >
@@ -316,12 +281,11 @@
                   </button>
                 </li>
                 `
-              )
-              .join('')
-          }
-          ${
-            currentPage < totalPages
-              ? `
+          )
+          .join('')
+        }
+          ${currentPage < totalPages
+          ? `
               <!-- Next Button -->
               <li>
                 <button 
@@ -335,8 +299,8 @@
                 </button>
               </li>
               `
-              : ''
-          }
+          : ''
+        }
         </ul>
       `;
     }
@@ -373,7 +337,7 @@
     });
 
     // Initial fetch
-    fetchProducts(window.location.search.substring(1));
+    //fetchProducts(window.location.search.substring(1));
   });
 
 </script>

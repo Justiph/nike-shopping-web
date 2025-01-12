@@ -9,4 +9,10 @@ router.get('/confirmation', ensureAuth, (req, res) => {
   }
 );
 
+router.get('/orders', ensureAuth, orderController.getOrders);
+
+router.get('/order-detail/:id', ensureAuth, orderController.getOrderDetail);
+
+router.post('/cancel/:orderId', ensureAuth, orderController.cancelOrder);
+
 module.exports = router;

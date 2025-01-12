@@ -1,0 +1,529 @@
+<section class="py-8 antialiased bg-gray-900 md:py-16">
+  <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <div class="mx-auto max-w-5xl">
+      <div class="gap-4 sm:flex sm:items-center sm:justify-between">
+        <h2 class="text-xl font-semibold text-white sm:text-2xl">My orders</h2>
+
+        <form id="filter-form">
+          <div class="mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+            <div>
+              <label for="order-type"
+                class="sr-only mb-2 block text-sm font-mediumtext-white">Select order type</label>
+              <select id="order-type" name="orderType"
+                class="block w-full min-w-[8rem] rounded-lg border p-2.5 text-sm border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500">
+                <option selected>All orders</option>
+                <option value="Pending">Pending</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+
+            <span class="inline-block text-gray-400"> from </span>
+
+            <div>
+              <label for="duration" class="sr-only mb-2 block text-sm font-medium text-white">Select
+                duration</label>
+              <select id="duration" name="duration"
+                class="block w-full min-w-[8rem] rounded-lg border p-2.5 text-sm border-gray-600 bg-gray-700 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500">
+                <option selected>All orders</option>
+                <option value="this week">this week</option>
+                <option value="this month">this month</option>
+                <option value="last 3 months">the last 3 months</option>
+                <option value="lats 6 months">the last 6 months</option>
+                <option value="this year">this year</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="mt-6 flow-root sm:mt-8">
+        <div id="order-container" class="divide-y divide-gray-700 min-h-[20rem]">
+          <% if (orders.length===0) { %>
+            <p class="text-center text-gray-500 col-span-full">No oders found.</p>
+            <div class="min-h-screen items-center flex flex-col justify-center"></div>
+            <% } else { %>
+              <% orders.forEach((item)=> { %>
+                <div id="order-<%= item._id %>" class="flex flex-wrap items-center gap-y-4 py-6">
+                  <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                    <dt class="text-base font-medium text-gray-400">Order ID:</dt>
+                    <dd class="mt-1.5 text-base font-semibold text-white">
+                      <a href="#" class="hover:underline">
+                        <%= item.id %>
+                      </a>
+                    </dd>
+                  </dl>
+
+                  <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                    <dt class="text-base font-medium text-gray-400">Date:</dt>
+                    <dd class="mt-1.5 text-base font-semibold text-white">
+                      <%= item.date %>
+                    </dd>
+                  </dl>
+
+                  <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                    <dt class="text-base font-medium text-gray-400">Price:</dt>
+                    <dd class="mt-1.5 text-base font-semibold text-white">$<%= item.total %>
+                    </dd>
+                  </dl>
+
+                  <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                    <dt class="text-base font-medium text-gray-400">Status:</dt>
+                    <% if (item.status=='Pending' ) { %>
+                      <dd
+                        class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-blue-900 text-blue-300">
+                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                          height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                        </svg>
+                        Pending
+                      </dd>
+                      <% } else if (item.status=='Shipped' ) { %>
+                        <dd
+                          class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-yellow-900 text-yellow-300">
+                          <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                          </svg>
+                          Shipped
+                        </dd>
+                      <% } else if (item.status=='Delivered' ) { %>
+                          <dd
+                            class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-green-900 text-green-300">
+                            <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                              height="24" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                            </svg>
+                            Delivered
+                          </dd>
+                      <% } else if (item.status=='Canceled' ) { %>
+                            <dd
+                              class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-red-900 text-red-300">
+                              <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                              </svg>
+                              Canceled
+                            </dd>
+                      <% } %>
+                  </dl>
+
+                  <div class="action-buttons w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
+                    <% if (item.status=='Pending' || item.status=='Shipped' ) { %>
+                      <button type="button" data-order-id="<%= item._id %>" onclick="openModal('<%= item._id %>')"
+                        class="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 border-red-500 text-red-500 hover:bg-red-600 hover:text-white focus:ring-red-900 lg:w-auto">Cancel
+                        order</button>
+                    <% } else if (item.status=='Delivered' || item.status=='Canceled') { %>
+                        <button type="button"
+                          class="w-full rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:ring-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 lg:w-auto">Order
+                          again</button>
+                    <% } %>
+                    <a href="/order/order-detail/<%= item._id %>"
+                      class="w-full inline-flex justify-center rounded-lg border px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 border-gray-600 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-gray-700 lg:w-auto">View
+                      details</a>
+                  </div>
+                </div>
+              <% }); %>
+            <% } %>
+        </div>
+
+        <div id="cancel-modal" class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+          <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
+      
+              <div class="flex justify-end p-2">
+                  <button onclick="closeModal()" type="button"
+                      class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd"
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clip-rule="evenodd"></path>
+                      </svg>
+                  </button>
+              </div>
+      
+              <div class="p-6 pt-0 text-center">
+                  <svg class="w-20 h-20 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to cancel this order?</h3>
+                  <a  id="confirm-cancel-btn"
+                      class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+                      Yes, I'm sure
+                  </a>
+                  <a  onclick="closeModal()"
+                      class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+                      data-modal-toggle="delete-user-modal">
+                      No, close
+                  </a>
+              </div>
+      
+          </div>
+        </div>
+      </div>
+
+      <nav class="mt-6 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
+        <ul id="pagination" class="flex h-8 items-center -space-x-px text-sm">
+          <!-- Previous Button -->
+          <li>
+            <a href="<%= currentPage > 1 ? `?page=${currentPage - 1}` : '#' %>"
+              class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 <%= currentPage > 1 ? 'hover:bg-gray-100 hover:text-gray-700' : 'cursor-not-allowed opacity-50' %> dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              <span class="sr-only">Previous</span>
+              <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m15 19-7-7 7-7" />
+              </svg>
+            </a>
+          </li>
+
+          <!-- Page Numbers -->
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li>
+              <a href="?page=<%= i %>"
+                class="flex h-8 items-center justify-center border border-gray-300 px-3 leading-tight <%= i === currentPage ? 'bg-primary-50 text-primary-600 border-primary-300 hover:bg-primary-100 hover:text-primary-700' : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700' %> dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                <%= i %>
+              </a>
+            </li>
+          <% } %>
+
+          <!-- Next Button -->
+          <li>
+            <a href="<%= currentPage < totalPages ? `?page=${currentPage + 1}` : '#' %>"
+              class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 <%= currentPage < totalPages ? 'hover:bg-gray-100 hover:text-gray-700' : 'cursor-not-allowed opacity-50' %> dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              <span class="sr-only">Next</span>
+              <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m9 5 7 7-7 7" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterForm = document.getElementById('filter-form');
+    const orderContainer = document.getElementById('order-container');
+    const pagination = document.getElementById('pagination');
+
+    async function fetchProducts(params, updateUrl = true) {
+      try {
+        const response = await fetch(`/order/orders?${params}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        const data = await response.json();
+        console.log(data);
+
+        renderOrders(data.orders);
+        renderPagination(data.currentPage, data.totalPages);
+
+        if (updateUrl) {
+          updateBrowserUrl(params);
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        orderContainer.innerHTML = '<p class="text-center text-red-500">Failed to load orders. Please try again later.</p>';
+      }
+    }
+
+    // Update the browser URL
+    function updateBrowserUrl(params) {
+      const newUrl = `${window.location.origin}/order/orders?${params}`;
+      window.history.pushState(null, '', newUrl);
+    }
+
+    function getStatusHTML(status) {
+      if (status === 'Pending') {
+        return `
+          <dd class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-blue-900 text-blue-300">
+            <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+            </svg>
+            Pending
+          </dd>
+        `;
+      } else if (status === 'Shipped') {
+        return `
+            <dd class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-yellow-900 text-yellow-300">
+              <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+              </svg>
+              Shipped
+            </dd>
+          `;
+      } else if (status === 'Delivered') {
+        return `
+            <dd class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-green-900 text-green-300">
+              <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+              </svg>
+              Delivered
+            </dd>
+          `;
+      } else if (status === 'Canceled') {
+        return `
+            <dd class="status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-red-900 text-red-300">
+              <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+              </svg>
+              Canceled
+            </dd>
+          `;
+      } else {
+        return '';
+      }
+    }
+
+    function getActionButtonHTML(status, id) {
+      if (status === 'Pending' || status === 'Shipped') {
+        return `
+      <button type="button" data-order-id="${ id }$>" onclick="openModal('${ id }$')" class="w-full rounded-lg border px-3 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 border-red-500 text-red-500 hover:bg-red-600 hover:text-white focus:ring-red-900 lg:w-auto">
+        Cancel order
+      </button>
+    `;
+      } else if (status === 'Delivered' || status === 'Canceled') {
+        return `
+      <button type="button" class="w-full rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:ring-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 lg:w-auto">
+        Order again
+      </button>
+    `;
+      } else {
+        return ''; // No button for other statuses
+      }
+    }
+
+    function renderOrders(orders) {
+      orderContainer.innerHTML = orders.length
+        ? orders
+          .map(
+            (item) => `
+              <div id="order-${ item._id }$" class="flex flex-wrap items-center gap-y-4 py-6">
+                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                  <dt class="text-base font-medium text-gray-400">Order ID:</dt>
+                  <dd class="mt-1.5 text-base font-semibold text-white">
+                    <a href="#" class="hover:underline">${item.id}</a>
+                  </dd>
+                </dl>
+            
+                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                  <dt class="text-base font-medium text-gray-400">Date:</dt>
+                  <dd class="mt-1.5 text-base font-semibold text-white">${item.date}</dd>
+                </dl>
+            
+                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                  <dt class="text-base font-medium text-gray-400">Price:</dt>
+                  <dd class="mt-1.5 text-base font-semibold text-white">$${item.total}</dd>
+                </dl>
+            
+                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                  <dt class="text-base font-medium text-gray-400">Status:</dt>
+                  ${getStatusHTML(item.status)}
+                </dl>
+            
+                <div class="action-buttons w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
+                  ${getActionButtonHTML(item.status, item._id)}
+                  <a href="/order/order-detail/${item._id}$" class="w-full inline-flex justify-center rounded-lg  border px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 border-gray-600 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-gray-700 lg:w-auto">View details</a>
+                </div>
+              </div>
+                `
+          )
+          .join('')
+        : `<p class="text-center text-gray-500 col-span-full">No orders found.</p>
+          <div class="min-h-screen items-center flex flex-col justify-center"></div>`;
+    }
+
+    function renderPagination(currentPage, totalPages) {
+      const pagination = [];
+
+      // Previous Button
+      pagination.push(`
+        <li>
+          <a href="${currentPage > 1 ? `?page=${currentPage - 1}` : '#'}"
+            class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 ${currentPage > 1 ? 'hover:bg-gray-100 hover:text-gray-700' : 'cursor-not-allowed opacity-50'} dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span class="sr-only">Previous</span>
+            <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+            </svg>
+          </a>
+        </li>
+      `);
+
+      // Page Numbers
+      for (let i = 1; i <= totalPages; i++) {
+        pagination.push(`
+          <li>
+            <a href="?page=${i}"
+              class="flex h-8 items-center justify-center border border-gray-300 px-3 leading-tight ${i === currentPage ? 'bg-primary-50 text-primary-600 border-primary-300 hover:bg-primary-100 hover:text-primary-700' : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700'} dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              ${i}
+            </a>
+          </li>
+        `);
+      }
+
+      // Next Button
+      pagination.push(`
+        <li>
+          <a href="${currentPage < totalPages ? `?page=${currentPage + 1}` : '#'}"
+            class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 ${currentPage < totalPages ? 'hover:bg-gray-100 hover:text-gray-700' : 'cursor-not-allowed opacity-50'} dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span class="sr-only">Next</span>
+            <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+            </svg>
+          </a>
+        </li>
+      `);
+
+      return pagination.join('');
+    }
+
+
+    if (filterForm) {
+      // Handle filter form submission
+      filterForm.addEventListener('change', () => {
+        const orderType = document.getElementById('order-type').value;
+        const duration = document.getElementById('duration').value;
+
+        const params = new URLSearchParams({ orderType, duration });
+        fetchProducts(params.toString());
+      });
+    }
+
+    // Handle back/forward browser navigation
+    window.addEventListener('popstate', () => {
+      // Reload filters and pagination state from the current URL
+      const params = window.location.search.substring(1);
+      fetchProducts(params, false);
+    });
+
+    let currentOrderId = null;
+
+    window.openModal = function(orderId) {
+      currentOrderId = orderId;
+      document.getElementById('cancel-modal').style.display = 'block'
+      document.getElementsByTagName('body')[0].classList.add('overflow-y-hidden')
+    }
+
+    window.closeModal = function() {
+      currentOrderId = null;
+      document.getElementById('cancel-modal').style.display = 'none'
+      document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+    }
+
+    document.getElementById('confirm-cancel-btn').addEventListener('click', function() {
+      if (currentOrderId) {
+        // AJAX request to cancel the order
+        fetch(`/order/cancel/${currentOrderId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          //console.log(data);
+          if (data.success) {
+            const orderElement = document.getElementById(`order-${currentOrderId}`);
+            const statusBadge = orderElement.querySelector(".status-badge");
+            statusBadge.className = "status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-red-900 text-red-300";
+            if (statusBadge) {
+              statusBadge.className = 
+                "status-badge me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium bg-red-900 text-red-300";
+              statusBadge.innerHTML = `
+                <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                </svg>
+                Canceled
+              `;
+            }
+            
+            // Update the action buttons
+            const actionContainer = orderElement.querySelector(".action-buttons");
+            if (actionContainer) {
+              actionContainer.innerHTML = `
+                <button type="button" class="w-full rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:ring-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800 lg:w-auto">
+                  Order again
+                </button>
+                <a href="/order/order-detail/${currentOrderId}" class="w-full inline-flex justify-center rounded-lg border px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 border-gray-600 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-gray-700 lg:w-auto">
+                  View details
+                </a>
+              `;
+            }
+
+            closeModal();
+            // Show a success popup
+            showPopup("Order canceled successfully!", "success");
+          } else {
+            showPopup("Failed to cancel the order. Please try again.", "error");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while processing your request.");
+        });
+      }
+    })
+
+    function showPopup(message, type = "success") {
+      const popupContainer = document.createElement("div");
+      popupContainer.className = "fixed inset-x-0 top-0 flex items-end justify-end px-4 py-6 z-50";
+
+      const popup = document.createElement("div");
+      popup.className = `max-w-sm w-full shadow-lg rounded px-4 py-3 relative ${
+        type === "success" ? "bg-green-400 border-l-4 border-green-700 text-white" : "bg-red-400 border-l-4 border-red-700 text-white"
+      }`;
+
+      popup.innerHTML = `
+        <div class="p-2">
+          <div class="flex items-start">
+            <div class="ml-3 w-0 flex-1 pt-0.5">
+              <p class="text-sm leading-5 font-medium">
+                ${message}
+              </p>
+            </div>
+            <div class="ml-4 flex-shrink-0 flex">
+              <button class="inline-flex text-white transition ease-in-out duration-150"
+                onclick="this.parentNode.parentNode.parentNode.parentNode.remove()"
+              >
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      popupContainer.appendChild(popup);
+      document.body.appendChild(popupContainer);
+
+      // Automatically remove the popup after 3 seconds
+      setTimeout(() => {
+        popupContainer.remove();
+      }, 3000);
+    }
+
+
+
+    // Close all modals when press ESC
+    document.onkeydown = function(event) {
+        event = event || window.event;
+        if (event.keyCode === 27) {
+            document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+            let modals = document.getElementsByClassName('modal');
+            Array.prototype.slice.call(modals).forEach(i => {
+                i.style.display = 'none'
+            })
+        }
+    };
+  });
+
+</script>

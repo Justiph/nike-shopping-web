@@ -18,22 +18,22 @@ exports.getShoppingPage = async (req, res) => {
     }
 
     if (size) {
-      const sizeArray = Array.isArray(size) ? size : size.split(','); 
-      filterConditions.sizes = { $in: sizeArray }; 
+      const sizeArray = Array.isArray(size) ? size : size.split(',');
+      filterConditions.sizes = { $in: sizeArray };
     }
 
     if (category) {
       const categoryArray = Array.isArray(category) ? category : category.split(',');
-      filterConditions.category = { $in: categoryArray }; 
+      filterConditions.category = { $in: categoryArray };
     }
 
     //console.log('Price Query:', price);
     if (price) {
       const priceArray = Array.isArray(price) ? price : price.split(',');
-    
+
       // Initialize an empty array to store price conditions
       const priceConditions = [];
-    
+
       // Iterate through each price range and push the corresponding filter condition
       priceArray.forEach((range) => {
         if (range === 'under100') priceConditions.push({ price: { $lt: 100 } });
@@ -41,8 +41,8 @@ exports.getShoppingPage = async (req, res) => {
         else if (range === '200to300') priceConditions.push({ price: { $gte: 200, $lte: 300 } });
         else if (range === 'over300') priceConditions.push({ price: { $gt: 300 } });
       });
-    
-      
+
+
       if (priceConditions.length > 0) {
         filterConditions.$or = priceConditions;
       }
@@ -65,7 +65,7 @@ exports.getShoppingPage = async (req, res) => {
         currentPage: Number(page),
       });
     }
-    
+
     const men = '/assets/men.png';
     const women = '/assets/women.png';
     const kid = '/assets/kids.png';
@@ -108,7 +108,7 @@ exports.getProductDetails = async (req, res) => {
       _id: { $in: relatedProductIds.map((item) => item.productId) },
     });
 
-    res.render('Shop/product-details', {title: `${product.name}`, product, relatedProducts });
+    res.render('Shop/product-details', { title: `${product.name}`, product, relatedProducts });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');

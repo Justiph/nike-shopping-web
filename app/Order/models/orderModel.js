@@ -27,7 +27,7 @@ const orderSchema = new mongoose.Schema({
         street: { type: String, required: true }, // Detailed address field
     },
     paymentStatus: { type: String, enum: ['Pending', 'Paid'], default: 'Pending' },
-    status: { type: String, enum: ['Pending', 'Processing', 'Shipped', 'Delivered'], default: 'Pending' },
+    status: { type: String, enum: ['Pending', 'Shipped', 'Delivered', 'Canceled'], default: 'Pending' },
     date: { type: Date, default: Date.now },
     deliverDate: { type: Date },
 });

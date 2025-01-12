@@ -100,35 +100,6 @@ app.use(aboutRoutes);
 app.use(contactRoutes);
 app.use(accountRoutes);
 app.use('/order', orderRoutes);
-// Configure Cloudinary
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
-
-// Set up Multer with Cloudinary storage
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//     folder: "uploads", // Specify the folder name in Cloudinary
-//     allowed_formats: ["jpg", "jpeg", "png"], // Allowed file formats
-//   },
-// });
-
-// const upload = multer({ storage });
-
-// Handle image upload
-// app.post("/upload", upload.single("image"), (req, res) => {
-//   if (req.file) {
-//     res.json({
-//       message: "Image uploaded successfully!",
-//       imageUrl: req.file.path, // URL of the uploaded image in Cloudinary
-//     });
-//   } else {
-//     res.status(400).json({ error: "No file uploaded" });
-//   }
-// });
 
 //test
 app.get('/api/current_user', (req, res) => {
