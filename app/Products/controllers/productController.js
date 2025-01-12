@@ -3,7 +3,7 @@ const { findRelatedProducts } = require('../services/relatedProductService');
 
 exports.getShoppingPage = async (req, res) => {
   try {
-    const { searchQuery, gender, size, category, price, page = 1 } = req.query;
+    const { searchQuery, gender, size, category, price, page = 1, sort } = req.query;
     const ITEMS_PER_PAGE = 8;
 
     let filterConditions = {};
@@ -48,10 +48,26 @@ exports.getShoppingPage = async (req, res) => {
       }
     }
 
+    // Determine sort order
+    let sortConditions = {};
+    if (sort) {
+      if (sort === 'newest') {
+        sortConditions = { createdAt: -1 }; // Sort by newest products
+      } else if (sort === 'increasing_price') {
+        sortConditions = { price: 1 }; // Sort by price (low to high)
+      } else if (sort === 'decreasing_price') {
+        sortConditions = { price: -1 }; // Sort by price (high to low)
+      }
+      // } else if (sort === 'reviews') {
+      //   sortConditions = { reviewsCount: -1 }; // Sort by number of reviews (assuming a `reviewsCount` field exists)
+      // }
+    }
+
     //console.log('Filter Conditions:', filterConditions);
     const totalItems = await Product.countDocuments(filterConditions);
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     const filteredData = await Product.find(filterConditions)
+      .sort(sortConditions)
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
@@ -82,7 +98,8 @@ exports.getShoppingPage = async (req, res) => {
       gender,
       size,
       category,
-      price
+      price,
+      sort,
     });
   } catch (err) {
     console.error(err);
