@@ -25,6 +25,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
+    "fs": "^0.0.1-security",
     "helmet": "^8.0.0",
     "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
@@ -36,8 +37,7 @@
     "nodemailer": "^6.9.16",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "passport-local": "^1.0.0",
-    "sqlite3": "^5.1.7"
+    "passport-local": "^1.0.0"
   },
   "engines": {
     "node": "18.x"

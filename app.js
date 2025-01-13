@@ -11,7 +11,7 @@ const session = require('express-session')
 const passport = require('./config/passportStrategy');
 const multer = require('multer');
 //const upload = multer();
-const sqlite3 = require('sqlite3').verbose();
+//const sqlite3 = require('sqlite3').verbose();
 
 // const { v2: cloudinary } = require("cloudinary");
 // const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -112,95 +112,107 @@ app.get('/api/current_user', (req, res) => {
 //   res.send('Session test complete');
 // });
 
-// Use absolute path to ensure SQLite can locate the database file correctly
-const dbPath = path.join(__dirname, 'public/assets/data/administrative.db');
+// Đường dẫn đến file JSON
+const jsonPath = path.join(__dirname, 'public/assets/data/administrative.json');
+let administrativeData;
 
-const db = new sqlite3.Database(dbPath, (err) => {
+// Load file JSON khi ứng dụng khởi động
+fs.readFile(jsonPath, 'utf-8', (err, data) => {
   if (err) {
-    console.error('Error opening database:', err.message);
+    console.error('Error reading JSON file:', err.message);
   } else {
-    console.log('Database opened successfully');
+    administrativeData = JSON.parse(data);
+    console.log('JSON data loaded successfully');
   }
 });
 
-// API to fetch provinces
 app.get('/api/provinces', (req, res) => {
   const { code } = req.query;
 
-  let query = 'SELECT code, name FROM provinces';
-  let params = [];
-
-  // If code is provided, modify the query to filter by code
-  if (code) {
-    query += ' WHERE code = ?';
-    params.push(code); // Add the code as a parameter
+  if (!administrativeData) {
+    return res.status(500).json({ error: 'Data not loaded yet' });
   }
 
-  // Execute the query with the conditional parameters
-  db.all(query, params, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      //console.log('Rows:', rows);
-      res.json(rows);
-    }
-  });
+  let provinces = administrativeData.filter(item => item.Type === 'province');
+
+  // Lọc theo `code` nếu có
+  if (code) {
+    provinces = provinces.filter(province => province.Code === code);
+  }
+
+  res.json(provinces);
 });
+
 
 
 // API to fetch districts based on province code
 app.get('/api/districts', (req, res) => {
-  const { code, provinceCode } = req.query;
+  const { provinceCode, code } = req.query;
 
-  let query = 'SELECT code, name FROM districts';
-  let params = [];
-
-  // If both 'code' and 'provinceCode' are provided, prioritize 'code'
-  if (code) {
-    query += ' WHERE code = ?';
-    params.push(code); // Use the 'code' query parameter
-  } else if (provinceCode) {
-    query += ' WHERE province_code = ?';
-    params.push(provinceCode); // Use the 'provinceCode' query parameter
+  if (!administrativeData) {
+    return res.status(500).json({ error: 'Data not loaded yet' });
   }
 
-  // Execute the query based on the given condition
-  db.all(query, params, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      //console.log('Rows:', rows);
-      res.json(rows);
+  let districts = [];
+
+  if (provinceCode) {
+    const province = administrativeData.find(item => item.Type === 'province' && item.Code === provinceCode);
+    if (province) {
+      districts = province.District;
     }
-  });
+  } else if (code) {
+    // Search for the district directly by code if no provinceCode is provided
+    administrativeData.forEach(province => {
+      const foundDistrict = province.District.find(district => district.Code === code);
+      if (foundDistrict) {
+        districts = [foundDistrict]; // Return only the matching district
+      }
+    });
+  }
+
+  res.json(districts);
 });
+
+
 
 
 // API to fetch wards based on district code
 app.get('/api/wards', (req, res) => {
-  const { code, districtCode } = req.query;
+  const { districtCode, code } = req.query;
 
-  let query = 'SELECT code, name FROM wards';
-  let params = [];
-
-  // If both 'code' and 'districtCode' are provided, prioritize 'code'
-  if (code) {
-    query += ' WHERE code = ?';
-    params.push(code); // Use the 'code' query parameter
-  } else if (districtCode) {
-    query += ' WHERE district_code = ?';
-    params.push(districtCode); // Use the 'districtCode' query parameter
+  if (!administrativeData) {
+    return res.status(500).json({ error: 'Data not loaded yet' });
   }
 
-  // Execute the query based on the given condition
-  db.all(query, params, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(rows);
-    }
-  });
+  let wards = [];
+
+  if (districtCode) {
+    // Find wards by districtCode
+    administrativeData.forEach(province => {
+      province.District.forEach(district => {
+        if (district.Code === districtCode) {
+          wards = district.Ward;
+        }
+      });
+    });
+  } else if (code) {
+    // Search for ward directly by code
+    administrativeData.forEach(province => {
+      province.District.forEach(district => {
+        // Kiểm tra nếu district.Ward là một mảng trước khi gọi .find()
+        if (Array.isArray(district.Ward)) {
+          const foundWard = district.Ward.find(ward => ward.Code === code);
+          if (foundWard) {
+            wards = [foundWard]; // Return only the matching ward
+          }
+        }
+      });
+    });
+  }
+
+  res.json(wards);
 });
+
 
 
 module.exports = app;

@@ -218,7 +218,7 @@
       .then((response) => response.json())
       .then((provinces) => {
         provinceSelect.innerHTML = provinces
-          .map((province) => `<option value="${province.code}">${province.name}</option>`)
+          .map((province) => `<option value="${province.Code}">${province.Name}</option>`)
           .join('');
         
         // Auto-select the first option
@@ -237,7 +237,7 @@
         .then((response) => response.json())
         .then((districts) => {
           districtSelect.innerHTML = districts
-            .map((district) => `<option value="${district.code}">${district.name}</option>`)
+            .map((district) => `<option value="${district.Code}">${district.Name}</option>`)
             .join('');
           // Auto-select the first district if any
           if (districts.length > 0) {
@@ -257,7 +257,7 @@
         .then((response) => response.json())
         .then((wards) => {
           communeSelect.innerHTML = wards
-            .map((ward) => `<option value="${ward.code}">${ward.name}</option>`)
+            .map((ward) => `<option value="${ward.Code}">${ward.Name}</option>`)
             .join('');
           // Auto-select the first ward if any
           if (wards.length > 0) {
@@ -280,18 +280,18 @@
       fetch(`/api/provinces?code=${selectedProvinceCode}`)
         .then(response => response.json())
         .then(province => {
-          document.getElementById('province_name').value = province[0].name; // Set province name in hidden input
+          document.getElementById('province_name').value = province[0].Name; // Set province name in hidden input
           console.log(province.name);
 
           fetch(`/api/districts?code=${selectedDistrictCode}`)
             .then(response => response.json())
             .then(district => {
-              document.getElementById('district_name').value = district[0].name; // Set district name in hidden input
+              document.getElementById('district_name').value = district[0].Name; // Set district name in hidden input
 
               fetch(`/api/wards?code=${selectedCommuneCode}`)
                 .then(response => response.json())
                 .then(ward => {
-                  document.getElementById('commune_name').value = ward[0].name; // Set commune name in hidden input
+                  document.getElementById('commune_name').value = ward[0].Name; // Set commune name in hidden input
 
                   // Now submit the form with the name values
                   this.submit();
