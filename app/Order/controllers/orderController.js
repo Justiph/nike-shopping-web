@@ -2,8 +2,8 @@ const Order = require('../models/orderModel');
 const Cart = require('../../Cart/models/cartModel');
 
 exports.processCheckout = async (req, res) => {
-  const { name, email, phone, paymentMethod, deliveryMethod, province, district, commune, street } = req.body;
-
+  const { name, email, phone, paymentMethod, deliveryMethod, province_name, district_name, commune_name, street } = req.body;
+  //console.log(province_name, district_name, commune_name, street);
   try {
     const cart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
     if (!cart || cart.products.length === 0) {
@@ -32,9 +32,9 @@ exports.processCheckout = async (req, res) => {
       email,
       phone,
       address: {
-        province: province,
-        district: district,
-        commune: commune,
+        province: province_name,
+        district: district_name,
+        commune: commune_name,
         street: street,
       },
       date: new Date(),
@@ -55,9 +55,9 @@ exports.processCheckout = async (req, res) => {
         phone,
         paymentMethod,
         deliveryMethod,
-        province,
-        district,
-        commune,
+        province_name,
+        district_name,
+        commune_name,
         street,
         total,
         orderId: order._id,

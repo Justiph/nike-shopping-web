@@ -125,7 +125,75 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 // API to fetch provinces
 app.get('/api/provinces', (req, res) => {
-  db.all('SELECT code, name FROM provinces', (err, rows) => {
+  const { code } = req.query;
+
+  let query = 'SELECT code, name FROM provinces';
+  let params = [];
+
+  // If code is provided, modify the query to filter by code
+  if (code) {
+    query += ' WHERE code = ?';
+    params.push(code); // Add the code as a parameter
+  }
+
+  // Execute the query with the conditional parameters
+  db.all(query, params, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      //console.log('Rows:', rows);
+      res.json(rows);
+    }
+  });
+});
+
+
+// API to fetch districts based on province code
+app.get('/api/districts', (req, res) => {
+  const { code, provinceCode } = req.query;
+
+  let query = 'SELECT code, name FROM districts';
+  let params = [];
+
+  // If both 'code' and 'provinceCode' are provided, prioritize 'code'
+  if (code) {
+    query += ' WHERE code = ?';
+    params.push(code); // Use the 'code' query parameter
+  } else if (provinceCode) {
+    query += ' WHERE province_code = ?';
+    params.push(provinceCode); // Use the 'provinceCode' query parameter
+  }
+
+  // Execute the query based on the given condition
+  db.all(query, params, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      //console.log('Rows:', rows);
+      res.json(rows);
+    }
+  });
+});
+
+
+// API to fetch wards based on district code
+app.get('/api/wards', (req, res) => {
+  const { code, districtCode } = req.query;
+
+  let query = 'SELECT code, name FROM wards';
+  let params = [];
+
+  // If both 'code' and 'districtCode' are provided, prioritize 'code'
+  if (code) {
+    query += ' WHERE code = ?';
+    params.push(code); // Use the 'code' query parameter
+  } else if (districtCode) {
+    query += ' WHERE district_code = ?';
+    params.push(districtCode); // Use the 'districtCode' query parameter
+  }
+
+  // Execute the query based on the given condition
+  db.all(query, params, (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -134,36 +202,5 @@ app.get('/api/provinces', (req, res) => {
   });
 });
 
-// API to fetch districts based on province code
-app.get('/api/districts', (req, res) => {
-  const { provinceCode } = req.query;
-  db.all(
-    'SELECT code, name FROM districts WHERE province_code = ?',
-    [provinceCode],
-    (err, rows) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.json(rows);
-      }
-    }
-  );
-});
-
-// API to fetch wards based on district code
-app.get('/api/wards', (req, res) => {
-  const { districtCode } = req.query;
-  db.all(
-    'SELECT code, name FROM wards WHERE district_code = ?',
-    [districtCode],
-    (err, rows) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.json(rows);
-      }
-    }
-  );
-});
 
 module.exports = app;

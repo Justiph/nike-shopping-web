@@ -1,5 +1,5 @@
 <section class="py-8 antialiased bg-gray-900 md:py-16">
-  <form action="/order/checkout" method="POST" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+  <form id="checkout-form" action="/order/checkout" method="POST" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
     <div class="lg:flex lg:gap-16">
       
       <!-- Left: Delivery Details and Payment Method -->
@@ -28,6 +28,8 @@
                 <option value="ES">Spain</option>
                 <option value="UK">United Kingdom</option> -->
               </select>
+              <!-- Hidden input to store the province name -->
+              <input type="hidden" name="province_name" id="province_name">
             </div>
 
             <div>
@@ -39,6 +41,8 @@
                 <option value="CH">Chicago</option>
                 <option value="HU">Houston</option> -->
               </select>
+              <!-- Hidden input to store the district name -->
+              <input type="hidden" name="district_name" id="district_name">
             </div>
 
             <div>
@@ -50,6 +54,8 @@
                 <option value="CH">Chicago</option>
                 <option value="HU">Houston</option> -->
               </select>
+              <!-- Hidden input to store the commune name -->
+              <input type="hidden" name="commune_name" id="commune_name">
             </div>
 
             <div>
@@ -257,6 +263,40 @@
           if (wards.length > 0) {
             communeSelect.selectedIndex = 0;
           }
+        });
+    });
+
+    // Update hidden input fields with the names before form submission
+    document.getElementById('checkout-form').addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent default form submission
+
+      const selectedProvinceCode = provinceSelect.value;
+      const selectedDistrictCode = districtSelect.value;
+      const selectedCommuneCode = communeSelect.value;
+
+      //console.log('1111: ', selectedProvinceCode, selectedDistrictCode, selectedCommuneCode);
+
+      // Fetch the names based on the codes for the hidden inputs
+      fetch(`/api/provinces?code=${selectedProvinceCode}`)
+        .then(response => response.json())
+        .then(province => {
+          document.getElementById('province_name').value = province[0].name; // Set province name in hidden input
+          console.log(province.name);
+
+          fetch(`/api/districts?code=${selectedDistrictCode}`)
+            .then(response => response.json())
+            .then(district => {
+              document.getElementById('district_name').value = district[0].name; // Set district name in hidden input
+
+              fetch(`/api/wards?code=${selectedCommuneCode}`)
+                .then(response => response.json())
+                .then(ward => {
+                  document.getElementById('commune_name').value = ward[0].name; // Set commune name in hidden input
+
+                  // Now submit the form with the name values
+                  this.submit();
+                });
+            });
         });
     });
   });
