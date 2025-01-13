@@ -22,33 +22,33 @@
             <div>
               <label for="select-province-input-3" class="mb-2 block text-sm font-medium text-white">Province*</label>
               <select id="select-province-input-3" name="province" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
-                <option selected>TPHCM</option>
+                <!-- <option selected>TPHCM</option>
                 <option value="AU">Australia</option>
                 <option value="FR">France</option>
                 <option value="ES">Spain</option>
-                <option value="UK">United Kingdom</option>
+                <option value="UK">United Kingdom</option> -->
               </select>
             </div>
 
             <div>
               <label for="select-district-input-3" class="mb-2 block text-sm font-medium text-white">District*</label>
               <select id="select-district-input-3" name="district" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
-                <option selected>Quan 1</option>
+                <!-- <option selected>Quan 1</option>
                 <option value="NY">New York</option>
                 <option value="LA">Los Angeles</option>
                 <option value="CH">Chicago</option>
-                <option value="HU">Houston</option>
+                <option value="HU">Houston</option> -->
               </select>
             </div>
 
             <div>
               <label for="select-commune-input-3" class="mb-2 block text-sm font-medium text-white">Commune*</label>
               <select id="select-commune-input-3" name="commune" class="block w-full rounded-lg border p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 border-gray-600 bg-gray-700 text-white placeholder:text-gray-400">
-                <option selected>Tam Phuoc</option>
+                <!-- <option selected>Tam Phuoc</option>
                 <option value="NY">Phuoc Tan</option>
                 <option value="LA">Los Angeles</option>
                 <option value="CH">Chicago</option>
-                <option value="HU">Houston</option>
+                <option value="HU">Houston</option> -->
               </select>
             </div>
 
@@ -184,7 +184,7 @@
             <div class="flex items-start sm:items-center">
               <input id="terms-checkbox-2" type="checkbox" value="" class="h-4 w-4 rounded text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" required />
               <label for="terms-checkbox-2" class="ms-2 text-sm font-medium text-gray-300">
-                I agree with the <a href="#" class="underline hover:no-underline text-primary-500">Terms and Conditions</a> of use of the marketplace
+                I agree with the <a href="/terms-conditions" class="underline hover:no-underline text-primary-500">Terms and Conditions</a> of use of the marketplace
               </label>
             </div>
 
@@ -199,3 +199,65 @@
     </div>
   </form>
 </section>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const provinceSelect = document.getElementById('select-province-input-3');
+    const districtSelect = document.getElementById('select-district-input-3');
+    const communeSelect = document.getElementById('select-commune-input-3');
+
+    // Fetch provinces and populate the province select
+    fetch('/api/provinces')
+      .then((response) => response.json())
+      .then((provinces) => {
+        provinceSelect.innerHTML = provinces
+          .map((province) => `<option value="${province.code}">${province.name}</option>`)
+          .join('');
+        
+        // Auto-select the first option
+        if (provinces.length > 0) {
+          provinceSelect.selectedIndex = 0; // Select the first option by default
+          // Optionally trigger the change event to load districts
+          provinceSelect.dispatchEvent(new Event('change'));
+        }
+      });
+
+    // Fetch districts based on selected province
+    provinceSelect.addEventListener('change', () => {
+      const provinceCode = provinceSelect.value;
+
+      fetch(`/api/districts?provinceCode=${provinceCode}`)
+        .then((response) => response.json())
+        .then((districts) => {
+          districtSelect.innerHTML = districts
+            .map((district) => `<option value="${district.code}">${district.name}</option>`)
+            .join('');
+          // Auto-select the first district if any
+          if (districts.length > 0) {
+            districtSelect.selectedIndex = 0;
+            // Optionally trigger the change event to load wards
+            districtSelect.dispatchEvent(new Event('change'));
+          }
+          communeSelect.innerHTML = ''; // Clear wards when province changes
+        });
+    });
+
+    // Fetch wards based on selected district
+    districtSelect.addEventListener('change', () => {
+      const districtCode = districtSelect.value;
+
+      fetch(`/api/wards?districtCode=${districtCode}`)
+        .then((response) => response.json())
+        .then((wards) => {
+          communeSelect.innerHTML = wards
+            .map((ward) => `<option value="${ward.code}">${ward.name}</option>`)
+            .join('');
+          // Auto-select the first ward if any
+          if (wards.length > 0) {
+            communeSelect.selectedIndex = 0;
+          }
+        });
+    });
+  });
+</script>

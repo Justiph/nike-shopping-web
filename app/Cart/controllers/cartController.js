@@ -1,5 +1,9 @@
 const Cart = require('../models/cartModel');
 const Product = require('../../Products/models/productModel');
+const Redis = require("ioredis");
+
+// Initialize ioredis client
+const redis = new Redis();
 
 exports.viewCart = async (req, res) => {
   try {
@@ -7,11 +11,13 @@ exports.viewCart = async (req, res) => {
 
     if (req.user) {
       // Logged-in user: fetch the cart from the database
-      cart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
+      cart = await Cart.findOne({ userId: req.user._id }).populate("products.productId");
       cart = cart || { products: [] }; // If no cart exists, return an empty cart
     } else {
-      // Guest user: use the cart from the session
-      const sessionCart = req.session.cart || { products: [] };
+      // Guest user: fetch the cart from Redis
+      const redisKey = `guestCart:${req.sessionID}`;
+      const cartData = await redis.get(redisKey);
+      const sessionCart = cartData ? JSON.parse(cartData) : { products: [] };
 
       // Populate the session cart
       const productIds = sessionCart.products.map((item) => item.productId);
@@ -25,21 +31,22 @@ exports.viewCart = async (req, res) => {
       cart = { products: populatedProducts };
     }
 
-    res.render('Cart/cart', {
-      title: 'Your Cart',
+    // Render the cart page
+    res.render("Cart/cart", {
+      title: "Your Cart",
       cart,
     });
   } catch (err) {
     console.error("Error fetching cart:", err);
-    res.status(500).send('Error fetching cart');
+    res.status(500).send("Error fetching cart");
   }
 };
 
 
 exports.addToCart = async (req, res) => {
-
   try {
     const { productId, size } = req.body;
+
     if (!productId) {
       return res.status(400).json({ error: "Product ID is required" });
     }
@@ -56,17 +63,20 @@ exports.addToCart = async (req, res) => {
         cart = new Cart({ userId: req.user._id, products: [] });
       }
     } else {
-      // Guest cart stored in session
-      if (!req.session.cart) {
-        req.session.cart = { products: [] };
+      // Guest cart stored in Redis
+      const guestCartKey = `guestCart:${req.sessionID}`; // Use sessionID or a unique identifier
+      const storedCart = await redis.get(guestCartKey);
+
+      if (storedCart) {
+        cart = JSON.parse(storedCart);
+      } else {
+        cart = { products: [] };
       }
-      cart = req.session.cart;
     }
 
-    //console.log(cart);
-
+    // Check if the product already exists in the cart
     const productIndex = cart.products.findIndex(
-      (p) => p.productId.equals(productId) && p.size === size
+      (p) => p.productId === productId && p.size === size
     );
 
     if (productIndex > -1) {
@@ -75,11 +85,14 @@ exports.addToCart = async (req, res) => {
       cart.products.push({ productId, size, quantity: 1 });
     }
 
-    // Save to DB for logged-in users, or update session for guests
+    // Save the cart
     if (req.user) {
+      // Save to database for logged-in users
       await cart.save();
     } else {
-      req.session.cart = cart;
+      // Save to Redis for guests
+      const guestCartKey = `guestCart:${req.sessionID}`;
+      await redis.set(guestCartKey, JSON.stringify(cart), "EX", 3600); // Set expiration to 1 day (86400 seconds)
     }
 
     res.json({ message: "Product added to cart successfully!" });
@@ -140,7 +153,6 @@ exports.mergeCart = async (req, res, sessionCart) => {
 
 
 exports.updateCartItem = async (req, res) => {
-  //console.log("Request body:", req.body);
   const { productId, size, quantity } = req.body;
 
   if (!productId || !size || isNaN(quantity)) {
@@ -153,18 +165,19 @@ exports.updateCartItem = async (req, res) => {
     if (req.user) {
       // Logged-in user
       cart = await Cart.findOne({ userId: req.user._id });
+      if (!cart) {
+        return res.status(404).json({ success: false, message: "Cart not found" });
+      }
     } else {
       // Guest user
-      cart = req.session.cart || { products: [] };
-    }
-
-    if (!cart) {
-      return res.status(404).json({ success: false, message: "Cart not found" });
+      const redisKey = `guestCart:${req.sessionID}`;
+      const cartData = await redis.get(redisKey);
+      cart = cartData ? JSON.parse(cartData) : { products: [] };
     }
 
     // Find the product in the cart
     const productIndex = cart.products.findIndex(
-      (p) => p.productId.toString() === productId && p.size === size
+      (p) => p.productId === productId && p.size === size
     );
 
     if (productIndex === -1) {
@@ -182,15 +195,21 @@ exports.updateCartItem = async (req, res) => {
       cart.products[productIndex].quantity = newQuantity;
     }
 
-    // Create a populated cart for the response (do not modify session cart)
-    let populatedCart = { products: [] };
-
+    // Save updated cart
     if (req.user) {
-      // Save the updated cart for logged-in users
-      await cart.save();
-      populatedCart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
+      await cart.save(); // Save the updated cart for logged-in users
     } else {
-      // Populate guest cart products without modifying session
+      const redisKey = `guestCart:${req.sessionID}`;
+      await redis.set(redisKey, JSON.stringify(cart), "EX", 60 * 60); // Set expiry to 24 hours
+    }
+
+    // Populate the cart for the response
+    let populatedCart = { products: [] };
+    if (req.user) {
+      // Fetch and populate the cart for logged-in users
+      populatedCart = await Cart.findOne({ userId: req.user._id }).populate("products.productId");
+    } else {
+      // Populate guest cart products from Redis
       populatedCart.products = await Promise.all(
         cart.products.map(async (item) => {
           const product = await Product.findById(item.productId);
@@ -201,7 +220,7 @@ exports.updateCartItem = async (req, res) => {
       ).then((products) => products.filter(Boolean)); // Remove null items
     }
 
-    // Return the populated cart response
+    // Return the updated cart
     res.json({ success: true, cart: populatedCart });
   } catch (err) {
     console.error("Error updating cart:", err);
@@ -220,21 +239,27 @@ exports.removeFromCart = async (req, res) => {
 
   try {
     let cart;
-    if (req.user) {
-      // Logged-in user
-      cart = await Cart.findOne({ userId: req.user._id });
-    } else {
-      // Guest user
-      cart = req.session.cart || { products: [] };
-    }
 
-    if (!cart) {
-      return res.status(404).json({ success: false, message: "Cart not found" });
+    if (req.user) {
+      // Logged-in user: Fetch the user's cart from the database
+      cart = await Cart.findOne({ userId: req.user._id });
+      if (!cart) {
+        return res.status(404).json({ success: false, message: "Cart not found" });
+      }
+    } else {
+      // Guest user: Fetch the cart from Redis
+      const redisKey = `guestCart:${req.sessionID}`;
+      const cartData = await redis.get(redisKey);
+      cart = cartData ? JSON.parse(cartData) : { products: [] };
+
+      if (!cart.products || cart.products.length === 0) {
+        return res.status(404).json({ success: false, message: "Cart not found" });
+      }
     }
 
     // Filter out the product to remove
     const updatedProducts = cart.products.filter(
-      (p) => !(p.productId.toString() === productId && p.size === size)
+      (p) => !(p.productId === productId && p.size === size)
     );
 
     if (updatedProducts.length === cart.products.length) {
@@ -243,15 +268,24 @@ exports.removeFromCart = async (req, res) => {
 
     cart.products = updatedProducts;
 
-    // Create a populated cart for the response (do not modify session cart)
+    // Save the updated cart
+    if (req.user) {
+      // For logged-in users, save to the database
+      await cart.save();
+    } else {
+      // For guest users, save to Redis
+      const redisKey = `guestCart:${req.sessionID}`;
+      await redis.set(redisKey, JSON.stringify(cart), "EX", 60 * 60 * 24); // Set expiry to 24 hours
+    }
+
+    // Populate the cart for the response
     let populatedCart = { products: [] };
 
     if (req.user) {
-      // Save the updated cart for logged-in users
-      await cart.save();
-      populatedCart = await Cart.findOne({ userId: req.user._id }).populate('products.productId');
+      // Fetch and populate the cart for logged-in users
+      populatedCart = await Cart.findOne({ userId: req.user._id }).populate("products.productId");
     } else {
-      // Populate guest cart products without modifying session
+      // Populate guest cart products from Redis
       populatedCart.products = await Promise.all(
         cart.products.map(async (item) => {
           const product = await Product.findById(item.productId);
@@ -262,7 +296,7 @@ exports.removeFromCart = async (req, res) => {
       ).then((products) => products.filter(Boolean)); // Remove null items
     }
 
-    // Return the populated cart response
+    // Return the updated cart
     res.json({ success: true, cart: populatedCart });
   } catch (err) {
     console.error("Error removing from cart:", err);

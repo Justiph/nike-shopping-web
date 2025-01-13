@@ -11,6 +11,7 @@ const session = require('express-session')
 const passport = require('./config/passportStrategy');
 const multer = require('multer');
 //const upload = multer();
+const sqlite3 = require('sqlite3').verbose();
 
 // const { v2: cloudinary } = require("cloudinary");
 // const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -41,7 +42,7 @@ app.set('trust proxy', 1); // Trust the first proxy
 app.use(session({
   secret: 'your_secret_key', // Replace with a strong secret
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   store: MongoStore.create({
     mongoUrl: process.env.DB_URI, // MongoDB URI
   }),
@@ -106,10 +107,63 @@ app.get('/api/current_user', (req, res) => {
   res.send(req.user);
 });
 
-app.get('/test-session', (req, res) => {
-  console.log('Session Cart:', req.session.cart);
-  res.send('Session test complete');
+// app.get('/test-session', (req, res) => {
+//   console.log('Session Cart:', req.session.cart);
+//   res.send('Session test complete');
+// });
+
+// Use absolute path to ensure SQLite can locate the database file correctly
+const dbPath = path.join(__dirname, 'public/assets/data/administrative.db');
+
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error opening database:', err.message);
+  } else {
+    console.log('Database opened successfully');
+  }
 });
 
+// API to fetch provinces
+app.get('/api/provinces', (req, res) => {
+  db.all('SELECT code, name FROM provinces', (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
+// API to fetch districts based on province code
+app.get('/api/districts', (req, res) => {
+  const { provinceCode } = req.query;
+  db.all(
+    'SELECT code, name FROM districts WHERE province_code = ?',
+    [provinceCode],
+    (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.json(rows);
+      }
+    }
+  );
+});
+
+// API to fetch wards based on district code
+app.get('/api/wards', (req, res) => {
+  const { districtCode } = req.query;
+  db.all(
+    'SELECT code, name FROM wards WHERE district_code = ?',
+    [districtCode],
+    (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.json(rows);
+      }
+    }
+  );
+});
 
 module.exports = app;

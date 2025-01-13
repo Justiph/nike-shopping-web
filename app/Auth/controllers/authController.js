@@ -4,6 +4,9 @@ const User = require("../models/userModel");
 const passport = require('passport');
 const { mergeCart } = require('../../Cart/controllers/cartController');
 const nodemailer = require('nodemailer');
+const Redis = require('ioredis');
+const redis = new Redis();
+const crypto = require('crypto');
 
 exports.register = async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
@@ -68,42 +71,47 @@ exports.register = async (req, res) => {
 
 
 exports.login = async (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate("local", async (err, user, info) => {
     if (err) {
-      console.error('Error during authentication:', err);
+      console.error("Error during authentication:", err);
       if (req.xhr) {
         return res.status(500).json({ error: "Internal server error" });
       }
     }
 
     if (!user) {
-      console.log('No user found:', info);
+      console.log("No user found:", info);
       if (req.xhr) {
         return res.status(401).json({ error: info.message });
       }
     }
 
-    // Preserve the session cart before logging in
-    const sessionCart = req.session.cart;
+    // Retrieve the guest cart from Redis
+    const redisKey = `guestCart:${req.sessionID}`;
+    const sessionCartData = await redis.get(redisKey);
+    const sessionCart = sessionCartData ? JSON.parse(sessionCartData) : null;
 
     req.login(user, async (err) => {
       if (err) {
-        console.error('Error during login:', err);
+        console.error("Error during login:", err);
         if (req.xhr) {
           return res.status(500).json({ error: "Internal server error" });
         }
         return next(err);
       }
 
-      console.log('Login successful');
+      console.log("Login successful");
 
-      // If there's a session cart, merge it with the user's cart
+      // Merge the guest cart into the user's cart
       if (sessionCart && sessionCart.products.length > 0) {
         await mergeCart(req, res, sessionCart);
       }
 
+      // Clear the guest cart in Redis
+      await redis.del(redisKey);
+
       if (req.xhr) {
-        return res.status(200).json({ success: true, redirectUrl: '/' });
+        return res.status(200).json({ success: true, redirectUrl: "/" });
       }
     });
   })(req, res, next);
@@ -111,13 +119,15 @@ exports.login = async (req, res, next) => {
 
 exports.googleCallback = async (req, res, next) => {
   try {
-    // Same logic for handling Google callback after Passport authenticates
-    const sessionCart = req.session.cart;
-    console.log('sessionCart:', sessionCart);
+    // Fetch guest cart from Redis using session ID
+    const redisKey = `guestCart:${req.sessionID}`;
+    const cartData = await redis.get(redisKey);
+    const sessionCart = cartData ? JSON.parse(cartData) : { products: [] };
+    console.log("Redis sessionCart:", sessionCart);
 
-    passport.authenticate('google', { failureRedirect: '/auth/login' }, async (err, user, info) => {
+    passport.authenticate("google", { failureRedirect: "/auth/login" }, async (err, user, info) => {
       if (err || !user) {
-        return res.redirect('/auth/login');
+        return res.redirect("/auth/login");
       }
 
       req.login(user, async (err) => {
@@ -125,15 +135,19 @@ exports.googleCallback = async (req, res, next) => {
           return res.status(500).json({ error: "Internal server error" });
         }
 
-        // Merge the session cart with the logged-in user's cart
-        if (sessionCart) {
-          await mergeCart(req, res, sessionCart); // Merge logic
+        // Merge Redis cart with logged-in user's cart
+        if (sessionCart.products.length > 0) {
+          await mergeCart(req, res, sessionCart);
         }
 
-        res.redirect('/'); // After merging
+        // Remove guest cart from Redis after successful merge
+        await redis.del(redisKey);
+
+        res.redirect("/"); // Redirect after merging
       });
     })(req, res, next);
   } catch (err) {
+    console.error("Error in Google callback:", err);
     res.status(500).send("Internal Server Error");
   }
 };
@@ -149,6 +163,10 @@ exports.waitingActivation = (req, res) => {
 
 exports.renderLoginPage = (req, res) => {
   res.render('Auth/login', { title: 'Login' });
+}
+
+exports.renderForgotPasswordPage = (req, res) => {
+  res.render('Auth/forgot-password', { title: 'Forgot Password' });
 }
 
 exports.logout = (req, res) => {
@@ -227,3 +245,122 @@ async function sendActivationEmail(email, token) {
     console.error("Error sending email:", err);
   }
 }
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check if the user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    // Lưu token vào Redis với TTL (10 phút)
+    const userData = JSON.stringify({ userId: user.id, email: user.email });
+    await redis.setex(`resetToken:${hashedToken}`, 600, userData); // 600 giây = 10 phút
+
+
+    // Generate a reset token (JWT)
+    // const resetToken = jwt.sign(
+    //   { id: user._id }, // Payload contains user ID
+    //   process.env.JWT_SECRET, // Use a secret key
+    //   { expiresIn: '15m' } // Token expires in 15 minutes
+    // );
+
+    
+
+    // Send email with reset link
+    await sendPasswordResetEmail(email, resetToken, req);
+
+    res.status(200).json({ message: 'Password reset email sent.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error processing your request.' });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password, passwordConfirm } = req.body;
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    // Kiểm tra token trong Redis
+    const userData = await redis.get(`resetToken:${hashedToken}`);
+    if (!userData) {
+      return res.render("auth/reset-password", {
+        error: "Liên kết không hợp lệ hoặc đã hết hạn!",
+      });
+    }
+
+    const { userId } = JSON.parse(userData);
+
+    if (password !== passwordConfirm) {
+      return res.render("auth/reset-password", {
+        token,
+        error: "Mật khẩu không khớp!",
+      });
+    }
+
+    // Tìm người dùng và cập nhật mật khẩu
+    const user = await User.findOne({_id: userId});
+    if (!user) {
+      return res.render("auth/reset-password", {
+        error: "Người dùng không tồn tại!",
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    // Xóa token khỏi Redis
+    await redis.del(`resetToken:${hashedToken}`);
+
+    res.redirect("/auth/login");
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error processing your request.' });
+  }
+};
+
+const sendPasswordResetEmail = async (email, resetToken, req) => {
+  // Create reset URL
+  const resetURL = `${req.protocol}://${req.get(
+    'host'
+  )}/auth/reset-password/${resetToken}`;
+
+  // Send email
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+    tls: {
+      rejectUnauthorized: false, // Disable certificate validation
+    },
+  });
+
+  const message = {
+    to: email,
+    subject: 'Đặt lại mật khẩu của bạn',
+    html: `
+        <p>Xin chào,</p>
+        <p>Nhấn vào liên kết dưới đây để đặt lại mật khẩu:</p>
+        <a href="${resetURL}">${resetURL}</a>
+        <p>Liên kết sẽ hết hạn sau 10 phút.</p>
+      `,
+  };
+
+  await transporter.sendMail(message);
+};

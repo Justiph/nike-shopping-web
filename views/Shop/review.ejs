@@ -272,18 +272,7 @@
                         <p class="text-sm leading-normal opacity-75 mb-6">
                           ${review.description}
                         </p>
-                        <div class="flex justify-end">
-                          <button
-                            class="hover:text-blue-600 hover:bg-gray-200 rounded inline-flex justify-center items-center duration-300 px-3 py-2 mr-6"
-                          >
-                            <i class="far fa-thumbs-up fs-6 mr-2"></i> Like (${review.likes})
-                          </button>
-                          <button
-                            class="hover:text-blue-600 hover:bg-gray-200 rounded inline-flex justify-center items-center duration-300 px-3 py-2"
-                          >
-                            <i class="far fa-thumbs-down fs-6 mr-2"></i> Dislike (${review.dislikes})
-                          </button>
-                        </div>
+                        
                       </div>
                     `;
                     reviewsSection.insertAdjacentHTML('beforeend', reviewHTML);
@@ -309,3 +298,16 @@
     fetchReviews();
   });
 </script>
+
+<!-- <div class="flex justify-end">
+  <button
+    class="hover:text-blue-600 hover:bg-gray-200 rounded inline-flex justify-center items-center duration-300 px-3 py-2 mr-6"
+  >
+    <i class="far fa-thumbs-up fs-6 mr-2"></i> Like (${review.likes})
+  </button>
+  <button
+    class="hover:text-blue-600 hover:bg-gray-200 rounded inline-flex justify-center items-center duration-300 px-3 py-2"
+  >
+    <i class="far fa-thumbs-down fs-6 mr-2"></i> Dislike (${review.dislikes})
+  </button>
+</div> -->

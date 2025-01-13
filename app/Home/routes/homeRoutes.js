@@ -5,4 +5,6 @@ const homeController = require('../controllers/homeController.js');
 // Route to handle GET request for homepage
 router.get('/', homeController.renderHomepage);
 
+router.get('/terms-conditions', homeController.renderTermsConditions);
+
 module.exports = router;

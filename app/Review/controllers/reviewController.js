@@ -47,7 +47,8 @@ exports.getReviews = async (req, res) => {
 
     try {
         const reviews = await Review.find({ productId })
-            .sort({ likes: -1 }) // Sort by most likes
+            //.sort({ likes: -1 }) // Sort by most likes
+            .sort({ createdAt: -1 }) // Sort by most recent
             .skip(skip)
             .limit(limit);
 

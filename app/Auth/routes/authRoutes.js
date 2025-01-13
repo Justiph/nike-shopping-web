@@ -2,6 +2,9 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const Redis = require('ioredis');
+const redis = new Redis();
+const crypto = require('crypto');
 
 // Route to render the register page (GET request)
 router.get('/register', authController.renderRegisterPage);
@@ -73,5 +76,34 @@ router.get('/google/callback/link', async (req, res) => {
     }
 });
 
+router.get('/forgot-password', authController.renderForgotPasswordPage);
+
+// Forgot password route
+router.post('/forgot-password', authController.forgotPassword);
+
+router.get("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  //console.log(token);
+  try {
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const userData = await redis.get(`resetToken:${hashedToken}`);
+
+    if (!userData) {
+      return res.render("auth/reset-password", {
+        error: "Liên kết không hợp lệ hoặc đã hết hạn!",
+      });
+    }
+
+    res.render("auth/reset-password", { token, error: null, title: "Reset Password" });
+  } catch (err) {
+    console.error(err);
+    res.render("auth/reset-password", {
+      error: "Đã xảy ra lỗi. Vui lòng thử lại!",
+    });
+  }
+});
+
+// Reset password route
+router.post('/reset-password/:token', authController.resetPassword);
 
 module.exports = router;
