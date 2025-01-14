@@ -5,12 +5,8 @@ const passport = require('passport');
 const { mergeCart } = require('../../Cart/controllers/cartController');
 const nodemailer = require('nodemailer');
 const Redis = require('ioredis');
-// const redis = new Redis();
+const redis = new Redis();
 // const redis = new Redis({host : 'redisdb'});
-const redis = new Redis({
-  host: 'redisdb', // Hostname của dịch vụ Redis
-  port: 6379,      // Cổng Redis (mặc định là 6379)
-});
 const crypto = require('crypto');
 
 exports.register = async (req, res) => {
@@ -250,7 +246,10 @@ async function sendActivationEmail(email, token) {
     },
   });
 
-  const activationLink = `https://nikeyyy.onrender.com/auth/activate/${token}`;
+  const activationLink = `${req.protocol}://${req.get(
+    'host'
+  )}/auth/activate/${token}`;
+  //const activationLink = `https://nikeyyy.onrender.com/auth/activate/${token}`;
   //const activationLink = `http://nikeyyy.khacthienit.click/auth/activate/${token}`;
   //const activationLink = `http://localhost:5000/auth/activate/${token}`;
 
