@@ -1,5 +1,4 @@
-name: Deploy Application
-
+name: Build and Push Docker Image
 on:
   push:
     branches:
@@ -7,22 +6,13 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
-  deploy:
-    name: Deploy Application
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-
-      - name: Deploy App
-        run: |
-          pwd && ls
-          cd deployments
-          docker-compose down
-          docker-compose pull
-          docker-compose up -d
-
+  call_build_and_push:
+    uses: ./.github/workflows/build_and_push.yml
+    with:
+      service_name: 'nike_shopping'
+      dockerfile_path: 'Dockerfile'
+      context_path: './'
+    secrets: 
+      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+      DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
