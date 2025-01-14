@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  redisdb:
+    container_name: redisdb
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - networkapp
+  nikeyyy:
+    container_name: nikeyyy
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - networkapp
+    depends_on:
+      - redisdb
+networks:
+  networkapp:
+    driver: bridge

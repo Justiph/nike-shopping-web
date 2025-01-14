@@ -4,6 +4,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const Redis = require('ioredis');
 const redis = new Redis();
+// const redis = new Redis({host : 'redisdb'});
 const crypto = require('crypto');
 
 // Route to render the register page (GET request)

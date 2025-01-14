@@ -6,6 +6,7 @@ const { mergeCart } = require('../../Cart/controllers/cartController');
 const nodemailer = require('nodemailer');
 const Redis = require('ioredis');
 const redis = new Redis();
+// const redis = new Redis({host : 'redisdb'});
 const crypto = require('crypto');
 
 exports.register = async (req, res) => {
@@ -266,15 +267,6 @@ exports.forgotPassword = async (req, res) => {
     // Lưu token vào Redis với TTL (10 phút)
     const userData = JSON.stringify({ userId: user.id, email: user.email });
     await redis.setex(`resetToken:${hashedToken}`, 600, userData); // 600 giây = 10 phút
-
-
-    // Generate a reset token (JWT)
-    // const resetToken = jwt.sign(
-    //   { id: user._id }, // Payload contains user ID
-    //   process.env.JWT_SECRET, // Use a secret key
-    //   { expiresIn: '15m' } // Token expires in 15 minutes
-    // );
-
     
 
     // Send email with reset link
@@ -353,12 +345,12 @@ const sendPasswordResetEmail = async (email, resetToken, req) => {
 
   const message = {
     to: email,
-    subject: 'Đặt lại mật khẩu của bạn',
+    subject: 'Reset Your Password',
     html: `
-        <p>Xin chào,</p>
-        <p>Nhấn vào liên kết dưới đây để đặt lại mật khẩu:</p>
+        <p>Hi,</p>
+        <p>Click the below link to reset your password: </p>
         <a href="${resetURL}">${resetURL}</a>
-        <p>Liên kết sẽ hết hạn sau 10 phút.</p>
+        <p>The link will be expired in 10 mins.</p>
       `,
   };
 
