@@ -28,6 +28,17 @@ services:
     restart: always 
     networks:
       - PrviNetwork
+    labels:
+      - "traefik.http.routers.nike_shopping-secure.rule=Host(`nikeshopping.lptdevops.website`)"
+      - "traefik.http.routers.nike_shopping-secure.entrypoints=websecure"
+      - "traefik.http.routers.nike_shopping-secure.tls=true"
+      - "traefik.http.routers.nike_shopping-secure.tls.certresolver=leresolver"
+
+      - "traefik.http.routers.nike_shopping.rule=Host(`nikeshopping.lptdevops.website`)"
+      - "traefik.http.routers.nike_shopping.entrypoints=web"
+      - "traefik.http.routers.nike_shopping.middlewares=redirect-to-https"
+
+      - "traefik.http.services.nike_shopping.loadbalancer.server.port=7000"
 
 networks:
   PrviNetwork:

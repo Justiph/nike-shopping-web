@@ -3,8 +3,8 @@ const Product = require('../../Products/models/productModel');
 const Redis = require("ioredis");
 
 // Initialize ioredis client
-const redis = new Redis();
-// const redis = new Redis({host : 'redisdb'});
+// const redis = new Redis();
+const redis = new Redis({host : 'redisdb'});
 
 exports.viewCart = async (req, res) => {
   try {

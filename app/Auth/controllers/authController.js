@@ -5,8 +5,8 @@ const passport = require('passport');
 const { mergeCart } = require('../../Cart/controllers/cartController');
 const nodemailer = require('nodemailer');
 const Redis = require('ioredis');
-const redis = new Redis();
-// const redis = new Redis({host : 'redisdb'});
+// const redis = new Redis();
+const redis = new Redis({host : 'redisdb'});
 const crypto = require('crypto');
 
 exports.register = async (req, res) => {
