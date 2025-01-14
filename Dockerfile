@@ -11,4 +11,3 @@ COPY . .
 EXPOSE 5000
 
 ENTRYPOINT ["node","server"]
-
