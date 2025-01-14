@@ -89,12 +89,12 @@
     </div>
 
     <!-- Product Categories -->
-    <div class="flex gap-5 items-center justify-center px-4">
+    <!-- <div class="flex gap-5 items-center justify-center px-4">
       <% [men, women, kid].forEach((img, index)=> { %>
         <img src="<%= img %>" alt="product-type-<%= index %>"
           class="product-type h-24 w-24 rounded-full border-4 border-gray-300 transition-transform transform hover:scale-110" />
         <% }) %>
-    </div>
+    </div> -->
 
     <!-- Sort Dropdown -->
     <div class="relative flex items-center space-x-4">
@@ -397,6 +397,8 @@
     const sortButton = document.getElementById("sortDropdownButton");
     const sortDropdownMenu = document.getElementById("dropdownSort");
     const sortOptions = document.querySelectorAll(".sort-option");
+    let currentSortValue = "";
+    //currentSortValue = urlParams.get("sort") || ""; 
 
     if (!sortButton || !sortDropdownMenu || !sortOptions) {
       console.error("Sort dropdown elements not found.");
@@ -410,9 +412,8 @@
     // Event listener for selecting a sort option
     sortOptions.forEach((option) => {
       option.addEventListener("click", (event) => {
-        const selectedValue = event.target.dataset.value;
+        currentSortValue = event.target.dataset.value;
         const combinedParams = getCombinedParams();
-        combinedParams.set("sort", selectedValue);
         fetchProducts(combinedParams.toString());
         sortDropdownMenu.classList.add("hidden"); // Close dropdown
       });
@@ -435,6 +436,11 @@
       // Combine both sets of parameters
       for (const [key, value] of searchParams.entries()) {
         filterParams.append(key, value);
+      }
+
+      // Include the current sort value
+      if (currentSortValue) {
+        filterParams.set("sort", currentSortValue);
       }
 
       return filterParams;

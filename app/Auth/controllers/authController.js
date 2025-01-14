@@ -21,6 +21,13 @@ exports.register = async (req, res) => {
     });
   }
 
+  if (!isPasswordValid(password)) {
+    return res.status(400).json({
+      success: false,
+      error: "Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.",
+    });
+  }
+
   try {
     const hashedPassword = await bcryptjs.hash(password, 10);
 
@@ -69,6 +76,20 @@ exports.register = async (req, res) => {
     });
   }
 };
+
+function isPasswordValid(password) {
+  const minLength = 8; // Minimum length requirement
+  const hasUpperCase = /[A-Z]/.test(password); // At least one uppercase letter
+  const hasNumber = /[0-9]/.test(password); // At least one number
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password); // At least one special character
+
+  return (
+    password.length >= minLength &&
+    hasUpperCase &&
+    hasNumber &&
+    hasSpecialChar
+  );
+}
 
 
 exports.login = async (req, res, next) => {
@@ -226,6 +247,7 @@ async function sendActivationEmail(email, token) {
   });
 
   const activationLink = `https://nikeyyy.onrender.com/auth/activate/${token}`;
+  //const activationLink = `http://nikeyyy.khacthienit.click/auth/activate/${token}`;
   //const activationLink = `http://localhost:5000/auth/activate/${token}`;
 
   const mailOptions = {

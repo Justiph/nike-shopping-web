@@ -1,7 +1,4 @@
 module.exports = (req, res, next) => {
-    // console.log('ensureAuth middleware called');
-    // console.log('req.xhr:', req.xhr);
-    // console.log('req.headers.accept:', req.headers.accept);
     if (req.isAuthenticated()) {
         return next();
     } else {

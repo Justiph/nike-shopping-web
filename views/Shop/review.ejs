@@ -188,18 +188,23 @@
       event.preventDefault(); // Prevent form from refreshing the page
 
       const formData = new FormData(form);
-      console.log('Form Data:', [...formData.entries()]);
+      //console.log('Form Data:', [...formData.entries()]);
+      // Convert FormData to a plain object
+      const formObject = Object.fromEntries(formData.entries());
+      //console.log('Form Object:', formObject);
 
       // Send AJAX POST request using Fetch API
       fetch('/review/add', {
         method: 'POST',
         headers: {
-          'X-Requested-With': 'XMLHttpRequest', // ✅ This sets req.xhr = true
-          'Accept': 'application/json',         // ✅ This makes req.headers.accept include "json"
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json', // Critical for JSON parsing
         },
-        body: formData
+        body: JSON.stringify(formObject),   
       })
       .then((response) => {
+        //console.log('Response status:', response.status);
         if (response.status === 401) {
           //console.log('User is not authenticated. Redirecting to login page...');
           window.location.href = '/auth/login'; // Redirect to login page

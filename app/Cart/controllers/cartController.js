@@ -155,6 +155,8 @@ exports.mergeCart = async (req, res, sessionCart) => {
 
 exports.updateCartItem = async (req, res) => {
   const { productId, size, quantity } = req.body;
+  //console.log(req.user)
+  console.log("Update Cart Item:", { productId, size, quantity });
 
   if (!productId || !size || isNaN(quantity)) {
     console.error("Invalid input data:", { productId, size, quantity });
@@ -165,6 +167,7 @@ exports.updateCartItem = async (req, res) => {
     let cart;
     if (req.user) {
       // Logged-in user
+      console.log("Log In");
       cart = await Cart.findOne({ userId: req.user._id });
       if (!cart) {
         return res.status(404).json({ success: false, message: "Cart not found" });
@@ -178,8 +181,10 @@ exports.updateCartItem = async (req, res) => {
 
     // Find the product in the cart
     const productIndex = cart.products.findIndex(
-      (p) => p.productId === productId && p.size === size
+      (p) => p.productId.toString() === productId && p.size === size
     );
+    //console.log('Cart:', cart);
+    //console.log(productIndex);
 
     if (productIndex === -1) {
       return res.status(404).json({ success: false, message: "Product not found in cart" });
@@ -260,7 +265,7 @@ exports.removeFromCart = async (req, res) => {
 
     // Filter out the product to remove
     const updatedProducts = cart.products.filter(
-      (p) => !(p.productId === productId && p.size === size)
+      (p) => !(p.productId.toString() === productId && p.size === size)
     );
 
     if (updatedProducts.length === cart.products.length) {
