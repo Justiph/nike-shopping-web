@@ -6,14 +6,28 @@ const { mergeCart } = require('../../Cart/controllers/cartController');
 const nodemailer = require('nodemailer');
 const Redis = require('ioredis');
 // const redis = new Redis();
-// const redis = new Redis({host : 'redisdb'});
+//const redis = new Redis({host : 'redisdb'});
+
+// const redis = new Redis({
+//   host: 'redisdb', // Hostname của dịch vụ Redis
+//   port: 6379,      // Cổng Redis (mặc định là 6379)
+// });
 
 const redis = new Redis({
-  host: 'redisdb', // Hostname của dịch vụ Redis
-  port: 6379,      // Cổng Redis (mặc định là 6379)
+  host: 'redis.lptdevops.website',  // Đảm bảo tên miền đúng
+  db: 0,                            // Mặc định DB 0
 });
 
+redis.ping()
+  .then((result) => {
+    console.log('Redis is connected:', result);  // Kết quả sẽ là "PONG" nếu kết nối thành công
+  })
+  .catch((error) => {
+    console.error('Error connecting to Redis:', error);  // In ra lỗi nếu không kết nối được
+  });
+
 const crypto = require('crypto');
+const logger = require('../../Log/logger');
 
 exports.register = async (req, res) => {
   const { username, email, password, confirmPassword, role } = req.body;
@@ -24,13 +38,6 @@ exports.register = async (req, res) => {
     return res.status(400).json({
       success: false,
       error: "Passwords do not match",
-    });
-  }
-
-  if (!isPasswordValid(password)) {
-    return res.status(400).json({
-      success: false,
-      error: "Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.",
     });
   }
 
@@ -75,6 +82,7 @@ exports.register = async (req, res) => {
         error: "Email already exists",
       });
     }
+    console.log(res)
     // Handle other errors
     return res.status(500).json({
       success: false,
@@ -129,6 +137,7 @@ exports.login = async (req, res, next) => {
       }
 
       console.log("Login successful");
+      logger.info({ message: `Login successfully ` });
 
       // Merge the guest cart into the user's cart
       if (sessionCart && sessionCart.products.length > 0) {
@@ -252,11 +261,11 @@ async function sendActivationEmail(email, token) {
     },
   });
 
-  const activationLink = `${req.protocol}://${req.get(
-    'host'
-  )}/auth/activate/${token}`;
+  // const activationLink = `${req.protocol}://${req.get(
+  //   'host'
+  // )}/auth/activate/${token}`;
   //const activationLink = `https://nikeyyy.onrender.com/auth/activate/${token}`;
-  //const activationLink = `http://nikeyyy.khacthienit.click/auth/activate/${token}`;
+  const activationLink = `https://nikeshopping.lptdevops.website/auth/activate/${token}`;
   //const activationLink = `http://localhost:5000/auth/activate/${token}`;
 
   const mailOptions = {
@@ -281,6 +290,7 @@ async function sendActivationEmail(email, token) {
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log(email);
 
     // Check if the user exists
     const user = await User.findOne({ email });
@@ -358,9 +368,10 @@ exports.resetPassword = async (req, res) => {
 
 const sendPasswordResetEmail = async (email, resetToken, req) => {
   // Create reset URL
-  const resetURL = `${req.protocol}://${req.get(
-    'host'
-  )}/auth/reset-password/${resetToken}`;
+  // const resetURL = `${req.protocol}://${req.get(
+  //   'host'
+  // )}/auth/reset-password/${resetToken}`;
+  const resetURL = `https://nikeshopping.lptdevops.website/auth/reset-password/${resetToken}`;
 
   // Send email
   const transporter = nodemailer.createTransport({

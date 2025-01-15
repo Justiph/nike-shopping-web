@@ -4,18 +4,32 @@ services:
     image: redis
     ports:
       - "6379:6379"
+    restart: always
     networks:
       - PrviNetwork
     volumes:
       - redis_data:/data
+    labels:
+      - "traefik.http.routers.redis-secure.rule=Host(`redis.lptdevops.website`)"
+      - "traefik.http.routers.redis-secure.entrypoints=websecure"
+      - "traefik.http.routers.redis-secure.tls=true"
+      - "traefik.http.routers.redis-secure.tls.certresolver=leresolver"
+
+      - "traefik.http.routers.redis.rule=Host(`redis.lptdevops.website`)"
+      - "traefik.http.routers.redis.entrypoints=web"
+      - "traefik.http.routers.redis.middlewares=redirect-to-https"
+
+      - "traefik.http.services.redis.loadbalancer.server.port=6379"
 
   nike_shopping:
-    image: thien19012004/nike_shopping:latest 
+    image: thien19012004/nike_shopping:latest
     container_name: nike_shopping
     ports:
-      - "7000:5000" 
+      - "5005:5005"
+    env_file:
+      - .env
     environment:
-      - PORT=5000
+      - PORT=5005
       - DB_URI=mongodb+srv://ducthien19012004:thien19012004@cluster0.jafns.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       - JWT_SECRET=my-ultra-secure-and-ultra-long-secret
       - EMAIL_USER=phantaihbl9102018@gmail.com
@@ -25,9 +39,20 @@ services:
       - CLOUDINARY_CLOUD_NAME=dveziesz4
       - CLOUDINARY_API_KEY=123648789834145
       - CLOUDINARY_API_SECRET=rCi97XiatpKcPxvBMhiFwvq2UyU
-    restart: always 
+    restart: always
     networks:
       - PrviNetwork
+    labels:
+      - "traefik.http.routers.nike_shopping-secure.rule=Host(`nikeshopping.lptdevops.website`)"
+      - "traefik.http.routers.nike_shopping-secure.entrypoints=websecure"
+      - "traefik.http.routers.nike_shopping-secure.tls=true"
+      - "traefik.http.routers.nike_shopping-secure.tls.certresolver=leresolver"
+
+      - "traefik.http.routers.nike_shopping.rule=Host(`nikeshopping.lptdevops.website`)"
+      - "traefik.http.routers.nike_shopping.entrypoints=web"
+      - "traefik.http.routers.nike_shopping.middlewares=redirect-to-https"
+
+      - "traefik.http.services.nike_shopping.loadbalancer.server.port=5005"
 
 networks:
   PrviNetwork:

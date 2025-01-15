@@ -1,0 +1,24 @@
+name: Deploy Application
+
+on: 
+  workflow_run: 
+    workflows: ["Build and Push Docker Image"]
+    types: 
+      - completed
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy 
+        run: |
+          pwd && ls
+          cd deployments
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d

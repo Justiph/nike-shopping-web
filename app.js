@@ -13,8 +13,7 @@ const multer = require('multer');
 //const upload = multer();
 //const sqlite3 = require('sqlite3').verbose();
 
-// const { v2: cloudinary } = require("cloudinary");
-// const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
 require("dotenv").config();
 
 
