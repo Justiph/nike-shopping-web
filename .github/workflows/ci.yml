@@ -1,5 +1,4 @@
 name: Build and Push Docker Image
-
 on:
   push:
     branches:
@@ -7,7 +6,6 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
   call_build_and_push:
     uses: ./.github/workflows/build_and_push.yml
