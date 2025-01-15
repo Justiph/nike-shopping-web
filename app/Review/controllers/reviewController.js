@@ -38,17 +38,39 @@ exports.getReviews = async (req, res) => {
 
     try {
         const reviews = await Review.find({ productId })
-            //.sort({ likes: -1 }) // Sort by most likes
             .sort({ createdAt: -1 }) // Sort by most recent
             .skip(skip)
-            .limit(limit);
+            .limit(limit)
+            .populate('userId', 'username avatar'); // Fetch only username and avatar from User
 
         const totalReviews = await Review.countDocuments({ productId });
         const hasMore = totalReviews > page * limit;
-        //console.log(reviews);
 
-        res.json({ success: true, reviews, hasMore });
+        res.json({ 
+            success: true, 
+            reviews: reviews.map(review => ({
+                id: review._id,
+                productId: review.productId,
+                userId: review.userId._id,
+                username: review.userId.username,
+                avatar: review.userId.avatar,
+                rating: review.rating,
+                description: review.description,
+                likes: review.likes,
+                dislikes: review.dislikes,
+                createdAt: new Date(review.createdAt).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                })
+            })), 
+            hasMore 
+        });
     } catch (error) {
         res.json({ success: false, message: 'Failed to fetch reviews', error: error.message });
     }
 };
+

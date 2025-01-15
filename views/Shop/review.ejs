@@ -219,6 +219,7 @@
           alert('Review submitted successfully!');
           form.reset(); // Clear the form
           closeModal(); // Close the modal
+          location.reload(); // Reload the page to show the new review
         } else {
           alert('There was a problem submitting your review.');
         }
@@ -258,14 +259,14 @@
                         <div class="flex items-center mb-6">
                           <div class="w-12 h-12 rounded-full mr-2 overflow-hidden">
                             <img
-                              src="https://cdn.easyfrontend.com/pictures/users/user2.jpg"
+                              src="${review.avatar}"
                               alt=""
                               class="max-w-full h-auto mx-auto"
                             />
                           </div>
                           <div class="flex flex-grow justify-between">
                             <div>
-                              <h5 class="font-medium mb-1">Name</h5>
+                              <h5 class="font-medium mb-1"> ${review.username} </h5>
                               <p class="text-sm flex items-center">
                                 ${starsHTML}
                                 <span class="mx-1">${review.rating}</span>
