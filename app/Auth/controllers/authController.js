@@ -164,6 +164,7 @@ exports.googleCallback = async (req, res, next) => {
 
     passport.authenticate("google", { failureRedirect: "/auth/login" }, async (err, user, info) => {
       if (err || !user) {
+        console.error('Authentication error:', err || info);  // Log the error
         return res.redirect("/auth/login");
       }
 

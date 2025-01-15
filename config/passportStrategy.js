@@ -48,9 +48,13 @@ passport.use(
       callbackURL: '/auth/google/callback',
       passReqToCallback: false, // We don't need to pass req since account linking is not required
       prompt: 'consent', // Prompt for consent each time
+      scope: ['profile'],
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        // Log profile for debugging
+        console.log('Google profile:', profile);
+        
         // Check if a user with the Google ID already exists
         const existingUser = await User.findOne({ googleID: profile.id });
 
