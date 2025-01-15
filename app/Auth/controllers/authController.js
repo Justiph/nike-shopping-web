@@ -170,7 +170,7 @@ exports.googleCallback = async (req, res, next) => {
 
       req.login(user, async (err) => {
         if (err) {
-          return res.status(500).json({ error: "Internal server error" });
+          return res.status(500).json({ error: "Internal server error" + err.message});
         }
 
         // Merge Redis cart with logged-in user's cart
