@@ -7,7 +7,7 @@ const logger = createLogger({
     new transports.Console(),
     new LogstashTransport({
       //host: "logstash", //docker
-      host: "3.27.46.16", //dev
+      host: "13.55.24.6", //dev
       port: 5000,
       applicationName: "nikeyyyapp",
       debug: true,
