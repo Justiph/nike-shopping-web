@@ -3,13 +3,13 @@ const Product = require('../../Products/models/productModel');
 const Redis = require("ioredis");
 
 // Initialize ioredis client
-// const redis = new Redis();
+const redis = new Redis();
 //const redis = new Redis({host : 'redisdb'});
 
-const redis = new Redis({
-  host: 'redisdb', // Hostname của dịch vụ Redis
-  port: 6379,      // Cổng Redis (mặc định là 6379)
-});
+// const redis = new Redis({
+//   host: 'redisdb', // Hostname của dịch vụ Redis
+//   port: 6379,      // Cổng Redis (mặc định là 6379)
+// });
 
 exports.viewCart = async (req, res) => {
   try {
@@ -36,6 +36,7 @@ exports.viewCart = async (req, res) => {
 
       cart = { products: populatedProducts };
     }
+    console.log("Cart:", cart);
 
     // Render the cart page
     res.render("Cart/cart", {
@@ -161,7 +162,7 @@ exports.mergeCart = async (req, res, sessionCart) => {
 exports.updateCartItem = async (req, res) => {
   const { productId, size, quantity } = req.body;
   //console.log(req.user)
-  console.log("Update Cart Item:", { productId, size, quantity });
+  //console.log("Update Cart Item:", { productId, size, quantity });
 
   if (!productId || !size || isNaN(quantity)) {
     console.error("Invalid input data:", { productId, size, quantity });
@@ -172,7 +173,7 @@ exports.updateCartItem = async (req, res) => {
     let cart;
     if (req.user) {
       // Logged-in user
-      console.log("Log In");
+      //console.log("Log In");
       cart = await Cart.findOne({ userId: req.user._id });
       if (!cart) {
         return res.status(404).json({ success: false, message: "Cart not found" });
@@ -230,6 +231,8 @@ exports.updateCartItem = async (req, res) => {
         })
       ).then((products) => products.filter(Boolean)); // Remove null items
     }
+
+    console.log("Updated cart:", populatedCart);
 
     // Return the updated cart
     res.json({ success: true, cart: populatedCart });
