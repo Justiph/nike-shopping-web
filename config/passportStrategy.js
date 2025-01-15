@@ -60,14 +60,14 @@ passport.use(
         }
 
         // Ensure Google provides an email
-        if (!profile.emails || profile.emails.length === 0) {
-          throw new Error('No email returned by Google');
-        }
+        // if (!profile.emails || profile.emails.length === 0) {
+        //   throw new Error('No email returned by Google');
+        // }
 
         // Create a new user if none exists
         const newUser = await User.create({
           username: profile.displayName || `GoogleUser${Date.now()}`,
-          email: profile.emails[0].value, // Use the primary email returned by Google
+          email: null,//profile.emails[0].value, // Use the primary email returned by Google
           password: null, // Password not needed for Google-authenticated users
           avatar: profile.photos?.[0]?.value || null, // Use Google profile photo if available
           googleID: profile.id,
@@ -76,6 +76,8 @@ passport.use(
           status: 'active',
           registrationDate: new Date(),
         });
+
+        console.log('New user created:', newUser.username);
 
         return done(null, newUser);
       } catch (err) {
