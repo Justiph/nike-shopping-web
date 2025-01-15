@@ -54,7 +54,7 @@ passport.use(
       try {
         // Log profile for debugging
         console.log('Google profile:', profile);
-        
+
         // Check if a user with the Google ID already exists
         const existingUser = await User.findOne({ googleID: profile.id });
 
@@ -67,6 +67,11 @@ passport.use(
         // if (!profile.emails || profile.emails.length === 0) {
         //   throw new Error('No email returned by Google');
         // }
+        // Validate profile completeness
+        if (!profile.id) {
+          console.error('Incomplete Google profile data:', profile);
+          return done(new Error('Google profile is incomplete'), false);
+        }
 
         // Create a new user if none exists
         const newUser = await User.create({
