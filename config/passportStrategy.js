@@ -46,37 +46,20 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
-      passReqToCallback: true, // Allows passing `req` to the callback
-      prompt: 'consent', // Force re-prompt for permissions
+      passReqToCallback: false, // We don't need to pass req since account linking is not required
+      prompt: 'consent', // Prompt for consent each time
     },
-    async (req, accessToken, refreshToken, profile, done) => {
-      //console.log('Access token:', accessToken);
+    async (accessToken, refreshToken, profile, done) => {
       try {
-        // Check if the user is trying to link an account
-        if (req.user) {
-          // Logged-in user is trying to link Google account
-          const currentUser = req.user;
-          console.log('current user:', currentUser);
-          // Ensure no other account is already using the same Google ID
-          const existingGoogleAccount = await User.findOne({ googleID: profile.id });
-          if (existingGoogleAccount) {
-            return done(null, false, { message: 'Google account is already linked to another user.' });
-          }
-
-          // Link Google account to the current user
-          currentUser.googleID = profile.id;
-          await currentUser.save();
-
-          return done(null, currentUser); // Successfully linked
-        }
-
-        // If not linking, proceed with normal Google Sign-In flow
+        // Check if a user with the Google ID already exists
         const existingUser = await User.findOne({ googleID: profile.id });
 
         if (existingUser) {
-          return done(null, existingUser); // Log in existing user
+          // Log in the existing user
+          return done(null, existingUser);
         }
 
+        // Ensure Google provides an email
         if (!profile.emails || profile.emails.length === 0) {
           throw new Error('No email returned by Google');
         }
@@ -84,11 +67,11 @@ passport.use(
         // Create a new user if none exists
         const newUser = await User.create({
           username: profile.displayName || `GoogleUser${Date.now()}`,
-          email: null,
-          password: null,
-          avatar: profile.photos?.[0]?.value || null,
+          email: profile.emails[0].value, // Use the primary email returned by Google
+          password: null, // Password not needed for Google-authenticated users
+          avatar: profile.photos?.[0]?.value || null, // Use Google profile photo if available
           googleID: profile.id,
-          isActivated: true, // Google email is verified
+          isActivated: true, // Google emails are verified by default
           activationToken: null,
           status: 'active',
           registrationDate: new Date(),
@@ -101,6 +84,7 @@ passport.use(
     }
   )
 );
+
 
 // Serialize user for session management
 passport.serializeUser((user, done) => {

@@ -77,24 +77,24 @@ router.get('/google/callback', authController.googleCallback); // Google callbac
 
 
 // Link Google Account to Existing User
-router.get(
-    '/google/link',
-    passport.authenticate('google', { scope: ['profile', 'email'], state: 'link' })
-);
+// router.get(
+//     '/google/link',
+//     passport.authenticate('google', { scope: ['profile', 'email'], state: 'link' })
+// );
 
-router.get('/google/callback/link', async (req, res) => {
-    try {
-      const user = req.user; // Current logged-in user
-      const googleID = req.session.googleID; // Store Google ID in session during linking
+// router.get('/google/callback/link', async (req, res) => {
+//     try {
+//       const user = req.user; // Current logged-in user
+//       const googleID = req.session.googleID; // Store Google ID in session during linking
   
-      user.googleID = googleID;
-      await user.save();
+//       user.googleID = googleID;
+//       await user.save();
   
-      res.redirect('/profile'); // Redirect to profile page
-    } catch (err) {
-      res.status(500).send('Error linking Google account');
-    }
-});
+//       res.redirect('/profile'); // Redirect to profile page
+//     } catch (err) {
+//       res.status(500).send('Error linking Google account');
+//     }
+// });
 
 router.get('/forgot-password', authController.renderForgotPasswordPage);
 
