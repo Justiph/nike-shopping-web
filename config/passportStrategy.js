@@ -48,7 +48,7 @@ passport.use(
       callbackURL: '/auth/google/callback',
       passReqToCallback: false, // We don't need to pass req since account linking is not required
       prompt: 'consent', // Prompt for consent each time
-      scope: ['profile'],
+      //scope: ['profile'],
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -68,10 +68,10 @@ passport.use(
         //   throw new Error('No email returned by Google');
         // }
         // Validate profile completeness
-        if (!profile.id) {
-          console.error('Incomplete Google profile data:', profile);
-          return done(new Error('Google profile is incomplete'), false);
-        }
+        // if (!profile.id) {
+        //   console.error('Incomplete Google profile data:', profile);
+        //   return done(new Error('Google profile is incomplete'), false);
+        // }
 
         // Create a new user if none exists
         const newUser = await User.create({

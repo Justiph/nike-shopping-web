@@ -49,31 +49,46 @@ router.get('/activate/:token', authController.activateAccount);
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Google Callback
-router.get('/google/callback', authController.googleCallback); // Google callback
-// router.get(
-//     '/google/callback',
-//     passport.authenticate('google', { failureRedirect: '/auth/login' }),
-//     async (req, res) => {
-//         try {
-//             // Preserve session cart before login
-//             const sessionCart = req.session.cart;
-        
-//             // If there's a session cart, merge it with the user's cart
-//             if (sessionCart && sessionCart.products.length > 0) {
-//                 await mergeCart(req, res, sessionCart);
-//             }
-        
-//             // Clear the session cart after merging
-//             req.session.cart = null;
-        
-//             // Redirect to homepage or dashboard after successful login
-//             res.redirect('/');
-//         } catch (err) {
-//             console.error('Callback error:', err);
-//             res.status(500).send('Internal Server Error');
-//         }
-//     }
-// );
+//router.get('/google/callback', authController.googleCallback); // Google callback
+router.get(
+  '/google/callback',
+  async (req, res, next) => {
+    try {
+      // Fetch guest cart from Redis using session ID before passport authentication
+      const redisKey = `guestCart:${req.sessionID}`;
+      const cartData = await redis.get(redisKey);
+      const sessionCart = cartData ? JSON.parse(cartData) : { products: [] };
+      console.log("Redis sessionCart:", sessionCart);
+
+      // Continue with Google authentication
+      passport.authenticate('google', { failureRedirect: '/auth/login' })(req, res, next);
+    } catch (err) {
+      console.error('Error before passport authenticate:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  },
+  async (req, res) => {
+    try {
+      // Merge Redis cart with logged-in user's cart
+      const redisKey = `guestCart:${req.sessionID}`;
+      const cartData = await redis.get(redisKey);
+      const sessionCart = cartData ? JSON.parse(cartData) : { products: [] };
+
+      if (sessionCart.products.length > 0) {
+        await mergeCart(req, res, sessionCart);
+      }
+
+      // Remove guest cart from Redis after successful merge
+      await redis.del(redisKey);
+
+      res.redirect('/'); // Redirect after successful login and cart merge
+    } catch (err) {
+      console.error('Callback error:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+);
+
 
 
 // Link Google Account to Existing User
