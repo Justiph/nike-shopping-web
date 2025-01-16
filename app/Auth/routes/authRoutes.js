@@ -4,7 +4,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const Redis = require('ioredis');
 
-const redis = new Redis();
+//const redis = new Redis();
 //const redis = new Redis({host : 'redisdb'});
 
 // const redis = new Redis({
@@ -12,18 +12,18 @@ const redis = new Redis();
 //   port: 6379,      // Cổng Redis (mặc định là 6379)
 // });
 
-// const redis = new Redis({
-//   host: 'redis.lptdevops.website',  // Đảm bảo tên miền đúng
-//   db: 0,                            // Mặc định DB 0
-// });
+const redis = new Redis({
+  host: 'redis.lptdevops.website',  // Đảm bảo tên miền đúng
+  db: 0,                            // Mặc định DB 0
+});
 
-// redis.ping()
-//   .then((result) => {
-//     console.log('Redis is connected:', result);  // Kết quả sẽ là "PONG" nếu kết nối thành công
-//   })
-//   .catch((error) => {
-//     console.error('Error connecting to Redis:', error);  // In ra lỗi nếu không kết nối được
-//   });
+redis.ping()
+  .then((result) => {
+    console.log('Redis is connected:', result);  // Kết quả sẽ là "PONG" nếu kết nối thành công
+  })
+  .catch((error) => {
+    console.error('Error connecting to Redis:', error);  // In ra lỗi nếu không kết nối được
+  });
 
 const crypto = require('crypto');
 
