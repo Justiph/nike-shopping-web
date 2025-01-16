@@ -105,7 +105,7 @@
           <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
             <div class="flex items-start">
               <div class="flex h-5 items-center">
-                <input id="credit-card" aria-describedby="credit-card-text" type="radio" name="paymentMethod" value="Credit card" class="h-4 w-4 text-primary-600 focus:ring-2  border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" checked />
+                <input id="credit-card" aria-describedby="credit-card-text" type="radio" name="paymentMethod" value="Credit card" class="h-4 w-4 text-blue-600 focus:ring-2  border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-blue-600" checked />
               </div>
               <div class="ms-4 text-sm">
                 <label for="credit-card" class="font-medium leading-none text-white">Credit Card</label>
@@ -117,11 +117,23 @@
           <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
             <div class="flex items-start">
               <div class="flex h-5 items-center">
-                <input id="paypal" aria-describedby="paypal-text" type="radio" name="paymentMethod" value="PayPal" class="h-4 w-4 text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" />
+                <input id="paypal" aria-describedby="paypal-text" type="radio" name="paymentMethod" value="PayPal" class="h-4 w-4 text-blue-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-blue-600" />
               </div>
               <div class="ms-4 text-sm">
                 <label for="paypal" class="font-medium leading-none text-white">PayPal</label>
                 <p id="paypal-text" class="mt-1 text-xs font-normal text-gray-400">Pay using PayPal</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
+            <div class="flex items-start">
+              <div class="flex h-5 items-center">
+                <input id="shipcod" aria-describedby="paypal-text" type="radio" name="paymentMethod" value="ShipCOD" class="h-4 w-4 text-blue-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-blue-600" />
+              </div>
+              <div class="ms-4 text-sm">
+                <label for="shipcod" class="font-medium leading-none text-white">ShipCOD</label>
+                <p id="shipcod-text" class="mt-1 text-xs font-normal text-gray-400">Cash on delivery</p>
               </div>
             </div>
           </div>
@@ -188,16 +200,16 @@
             </div>
 
             <div class="flex items-start sm:items-center">
-              <input id="terms-checkbox-2" type="checkbox" value="" class="h-4 w-4 rounded text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-primary-600" required />
+              <input id="terms-checkbox-2" type="checkbox" value="" class="h-4 w-4 rounded text-primary-600 focus:ring-2 border-gray-600 bg-gray-700 ring-offset-gray-800 focus:ring-blue-600" required />
               <label for="terms-checkbox-2" class="ms-2 text-sm font-medium text-gray-300">
-                I agree with the <a href="/terms-conditions" class="underline hover:no-underline text-primary-500">Terms and Conditions</a> of use of the marketplace
+                I agree with the <a href="/terms-conditions" class="underline hover:no-underline text-blue-500">Terms and Conditions</a> of use of the marketplace
               </label>
             </div>
 
             <div class="gap-4 sm:flex sm:items-center">
               <button type="button" class="w-full rounded-lg border px-5 py-2.5 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 border-gray-600 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-gray-700 focus:ring-offset-gray-800"><a href="/shopping">Return to Shopping</a></button>
 
-              <button type="submit" class="bg-blue-500 mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 bg-primary-600 hover:bg-primary-700 focus:ring-primary-800 sm:mt-0">Send the order</button>
+              <button type="submit" class="bg-blue-500 mt-4 flex w-full items-center justify-center rounded-lg  px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 bg-primary-600 hover:bg-blue-700 focus:ring-blue-800 sm:mt-0">Send the order</button>
             </div>
           </div>
         </div>
