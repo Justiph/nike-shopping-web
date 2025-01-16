@@ -1,178 +1,172 @@
 <section class="flex flex-col lg:flex-row gap-6 pt-12 px-4 lg:px-0">
   <!-- Sidebar Filters -->
-  <aside class="w-full lg:w-1/4 bg-gray-800 rounded-lg shadow-lg border-white p-4 lg:sticky lg:top-6">
+  <aside class="w-full lg:w-1/4 bg-gray-800 rounded-lg shadow-lg border border-gray-700 p-6 lg:sticky lg:top-6">
     <h3 class="text-white text-2xl mb-6 font-semibold border-b-2 border-gray-600 pb-3">Filters</h3>
-    <form id="filter-form">
+    <form id="filter-form" class="space-y-8">
       <!-- Filter: Gender -->
-      <div class="mb-6">
-        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Gender</h4>
-        <div class="flex flex-col gap-2 ">
-          <% ['MEN', 'WOMEN' , 'KIDS' ].forEach((option)=> { %>
-            <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
+      <div>
+        <h4 class="text-white mb-4 text-lg font-medium uppercase dark:text-white">Gender</h4>
+        <div class="grid grid-cols-2 gap-4">
+          <% ['MEN', 'WOMEN', 'KIDS'].forEach((option) => { %>
+            <label class="flex items-center gap-2 text-sm font-medium text-gray-300 transition-transform transform hover:scale-105">
               <input type="checkbox"
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                name="gender" value="<%= option %>" <%=gender && gender.includes(option) ? 'checked' : '' %>
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                name="gender" value="<%= option %>" <%= gender && gender.includes(option) ? 'checked' : '' %>
               />
-              <%= option.charAt(0) + option.slice(1).toLowerCase() %>
+              <span><%= option.charAt(0) + option.slice(1).toLowerCase() %></span>
             </label>
-            <% }) %>
+          <% }) %>
         </div>
       </div>
-
+  
       <!-- Filter: Size -->
-      <div class="mb-6">
-        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Size</h4>
-        <div class="flex flex-col gap-2">
-          <% [40, 41, 42, 43, 44, 45].forEach((sizeOption)=> { %>
-            <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
+      <div>
+        <h4 class="text-white mb-4 text-lg font-medium uppercase dark:text-white">Size</h4>
+        <div class="grid grid-cols-3 gap-4">
+          <% [40, 41, 42, 43, 44, 45].forEach((sizeOption) => { %>
+            <label class="flex items-center gap-2 text-sm font-medium text-gray-300 transition-transform transform hover:scale-105">
               <input type="checkbox"
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                name="size" value="<%= sizeOption %>" <%=size && size.includes(sizeOption.toString()) ? 'checked' : ''
-                %>
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                name="size" value="<%= sizeOption %>" <%= size && size.includes(sizeOption.toString()) ? 'checked' : '' %>
               />
-              <%= sizeOption %>
+              <span><%= sizeOption %></span>
             </label>
-            <% }) %>
+          <% }) %>
         </div>
       </div>
-
+  
       <!-- Filter: Category -->
-      <div class="mb-6">
-        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Category</h4>
-        <div class="flex flex-col gap-2">
-          <% ['Running', 'Basketball' , 'Lifestyle' , 'Soccer' ].forEach((categoryOption)=> { %>
-            <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
+      <div>
+        <h4 class="text-white mb-4 text-lg font-medium uppercase dark:text-white">Category</h4>
+        <div class="grid grid-cols-2 gap-4">
+          <% ['Running', 'Basketball', 'Lifestyle', 'Soccer'].forEach((categoryOption) => { %>
+            <label class="flex items-center gap-2 text-sm font-medium text-gray-300 transition-transform transform hover:scale-105">
               <input type="checkbox"
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                name="category" value="<%= categoryOption %>" <%=category &&
-                category.includes(categoryOption.toString()) ? 'checked' : '' %>
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                name="category" value="<%= categoryOption %>" <%= category && category.includes(categoryOption) ? 'checked' : '' %>
               />
-              <%= categoryOption %>
+              <span><%= categoryOption %></span>
             </label>
-            <% }) %>
+          <% }) %>
         </div>
       </div>
-
+  
       <!-- Filter: Price -->
-      <div class="mb-6">
-        <h4 class="text-white mb-2 text-lg font-medium uppercase dark:text-white">Price</h4>
-        <div class="flex flex-col gap-2">
-          <% [ { label: 'Under $100' , value: 'under100' }, { label: '$100 - $200' , value: '100to200' }, {
-            label: '$200 - $300' , value: '200to300' }, { label: 'Over $300' , value: 'over300' },
-            ].forEach((priceOption)=> { %>
-            <label class="ml-2 text-sm font-medium text-white dark:text-gray-300">
+      <div>
+        <h4 class="text-white mb-4 text-lg font-medium uppercase dark:text-white">Price</h4>
+        <div class="grid grid-cols-1 gap-4">
+          <% [
+            { label: 'Under $100', value: 'under100' },
+            { label: '$100 - $200', value: '100to200' },
+            { label: '$200 - $300', value: '200to300' },
+            { label: 'Over $300', value: 'over300' },
+          ].forEach((priceOption) => { %>
+            <label class="flex items-center gap-2 text-sm font-medium text-gray-300 transition-transform transform hover:scale-105">
               <input type="checkbox"
-                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                name="price" value="<%= priceOption.value %>" <%=price && price.includes(priceOption.value) ? 'checked'
-                : '' %>
+                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                name="price" value="<%= priceOption.value %>" <%= price && price.includes(priceOption.value) ? 'checked' : '' %>
               />
-              <%= priceOption.label %>
+              <span><%= priceOption.label %></span>
             </label>
-            <% }) %>
+          <% }) %>
         </div>
       </div>
     </form>
   </aside>
+  
 
   <!-- Main Content -->
   <main class="w-full lg:w-3/4 flex flex-col gap-12">
-    <!-- Search Bar -->
-    <div class="flex justify-center mb-12">
-      <form id="search-form" class="w-1/2 flex border rounded-lg overflow-hidden shadow-md">
-        <input type="text" name="searchQuery" value="<%= searchQuery %>" placeholder="Search for products..."
-          class="px-4 py-2 w-full border-none outline-none text-black" />
-        <button type="submit"
-          class="bg-orange-500 text-white px-4 py-2 rounded-r-lg transition-colors hover:bg-orange-600">
-          Search
+    <!-- Search Bar and Sort Dropdown -->
+    <div class="flex justify-center items-center mb-8 gap-4 relative">
+      <!-- Search Bar -->
+      
+        <form id="search-form" class="w-1/2 flex border rounded-lg overflow-hidden shadow-md">
+          <input type="text" name="searchQuery" value="<%= searchQuery %>" placeholder="Search for products..."
+            class="px-4 py-2 w-full border-none outline-none text-black" />
+          <button type="submit"
+            class="bg-orange-500 text-white px-4 py-2 rounded-r-lg transition-colors hover:bg-orange-600">
+            Search
+          </button>
+        </form>
+
+      <!-- Sort Dropdown -->
+      <div class="relative flex items-center space-x-4">
+        <button
+          id="sortDropdownButton"
+          data-dropdown-toggle="dropdownSort"
+          type="button"
+          class="flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium focus:z-10 focus:outline-none focus:ring-4 border-gray-600 bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-gray-700 sm:w-auto"
+        >
+          <svg
+            class="-ms-0.5 me-2 h-4 w-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4"
+            />
+          </svg>
+          Sort
+          <svg
+            class="-me-0.5 ms-2 h-4 w-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m19 9-7 7-7-7"
+            />
+          </svg>
         </button>
-      </form>
-    </div>
-
-    <!-- Product Categories -->
-    <!-- <div class="flex gap-5 items-center justify-center px-4">
-      <% [men, women, kid].forEach((img, index)=> { %>
-        <img src="<%= img %>" alt="product-type-<%= index %>"
-          class="product-type h-24 w-24 rounded-full border-4 border-gray-300 transition-transform transform hover:scale-110" />
-        <% }) %>
-    </div> -->
-
-    <!-- Sort Dropdown -->
-    <div class="relative flex items-center space-x-4">
-      <button
-        id="sortDropdownButton"
-        data-dropdown-toggle="dropdownSort"
-        type="button"
-        class="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto"
-      >
-        <svg
-          class="-ms-0.5 me-2 h-4 w-4"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
+      
+        <!-- Dropdown -->
+        <div
+          id="dropdownSort"
+          class="absolute left-0 top-full z-50 hidden w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
+          data-popper-placement="bottom"
         >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4"
-          />
-        </svg>
-        Sort
-        <svg
-          class="-me-0.5 ms-2 h-4 w-4"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="m19 9-7 7-7-7"
-          />
-        </svg>
-      </button>
-    
-      <!-- Dropdown -->
-      <div
-        id="dropdownSort"
-        class="absolute left-0 top-full z-50 hidden w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
-        data-popper-placement="bottom"
-      >
-        <ul
-          class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400"
-          aria-labelledby="sortDropdownButton"
-        >
-          <% const sortingOptions = [
-            { label: 'Newest', value: 'newest' },
-            { label: 'Increasing price', value: 'increasing_price' },
-            { label: 'Decreasing price', value: 'decreasing_price' },
-          ]; %>
-          <% sortingOptions.forEach(option => { %>
-            <li>
-              <button
-                data-value="<%= option.value %>"
-                class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white sort-option"
-              >
-                <%= option.label %>
-              </button>
-            </li>
-          <% }); %>
-        </ul>
+          <ul
+            class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400"
+            aria-labelledby="sortDropdownButton"
+          >
+            <% const sortingOptions = [
+              { label: 'Newest', value: 'newest' },
+              { label: 'Increasing price', value: 'increasing_price' },
+              { label: 'Decreasing price', value: 'decreasing_price' },
+            ]; %>
+            <% sortingOptions.forEach(option => { %>
+              <li>
+                <button
+                  data-value="<%= option.value %>"
+                  class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white sort-option"
+                >
+                  <%= option.label %>
+                </button>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
       </div>
     </div>
-    
 
     <!-- Product List -->
-    <section class="py-8 antialiased bg-gray-900 md:py-12">
+    <section class="py-8 antialiased bg-gray-900 md:py-1">
       <div id="product-list" class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <% if (filteredData.length===0) { %>
           <p class="text-center text-gray-500 col-span-full">No products found.</p>
