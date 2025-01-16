@@ -50,27 +50,22 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 // Google Callback
 //router.get('/google/callback', authController.googleCallback); // Google callback
-router.get(
-  '/google/callback',
-  async (req, res, next) => {
-    try {
-      // Fetch guest cart from Redis using session ID before passport authentication
-      const redisKey = `guestCart:${req.sessionID}`;
-      const cartData = await redis.get(redisKey);
-      const sessionCart = cartData ? JSON.parse(cartData) : { products: [] };
-      console.log("Redis sessionCart:", sessionCart);
-
-      // Continue with Google authentication
-      passport.authenticate('google', { failureRedirect: '/auth/login' })(req, res, next);
-    } catch (err) {
-      console.error('Error before passport authenticate:', err);
-      res.status(500).send('Internal Server Error');
+router.get("/google/callback", (req, res, next) => {
+  const oldSessionID = req.sessionID; // Save old session ID before authentication
+  passport.authenticate("google", { failureRedirect: "/login" }, async (err, user, info) => {
+    if (!user) {
+      console.error('Authentication error:', err || info);  // Log the error
+      return res.redirect("/auth/login"); // Handle authentication failure
     }
-  },
-  async (req, res) => {
-    try {
-      // Merge Redis cart with logged-in user's cart
-      const redisKey = `guestCart:${req.sessionID}`;
+
+    // Log the user in and establish session
+    req.login(user, async (loginErr) => {
+      if (loginErr) {
+        return next(loginErr); // Handle login error
+      }
+
+      // After successful login, merge guest cart with user cart
+      const redisKey = `guestCart:${oldSessionID}`;
       const cartData = await redis.get(redisKey);
       const sessionCart = cartData ? JSON.parse(cartData) : { products: [] };
 
@@ -78,16 +73,14 @@ router.get(
         await mergeCart(req, res, sessionCart);
       }
 
-      // Remove guest cart from Redis after successful merge
+      // Remove guest cart from Redis
       await redis.del(redisKey);
 
-      res.redirect('/'); // Redirect after successful login and cart merge
-    } catch (err) {
-      console.error('Callback error:', err);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-);
+      res.redirect("/"); // Redirect to home
+    });
+  })(req, res, next);
+});
+
 
 
 

@@ -46,8 +46,8 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
-      passReqToCallback: false, // We don't need to pass req since account linking is not required
-      prompt: 'consent', // Prompt for consent each time
+      //passReqToCallback: false, 
+      //prompt: 'consent', // Prompt for consent each time
       //scope: ['profile'],
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -76,7 +76,7 @@ passport.use(
         // Create a new user if none exists
         const newUser = await User.create({
           username: profile.displayName || `GoogleUser${Date.now()}`,
-          email: null,//profile.emails[0].value, // Use the primary email returned by Google
+          email: `${Date.now()}` + profile?.emails[0]?.value || null, // Use the primary email returned by Google
           password: null, // Password not needed for Google-authenticated users
           avatar: profile.photos?.[0]?.value || null, // Use Google profile photo if available
           googleID: profile.id,
