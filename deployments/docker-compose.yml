@@ -26,8 +26,6 @@ services:
     container_name: nike_shopping
     ports:
       - "5005:5005"
-    env_file:
-      - .env
     environment:
       - PORT=5005
       - DB_URI=mongodb+srv://ducthien19012004:thien19012004@cluster0.jafns.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

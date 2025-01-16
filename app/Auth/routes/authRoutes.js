@@ -3,6 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const Redis = require('ioredis');
+
 //const redis = new Redis();
 //const redis = new Redis({host : 'redisdb'});
 
